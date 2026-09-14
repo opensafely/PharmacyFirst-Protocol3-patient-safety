@@ -589,7 +589,6 @@ For safety outcomes, excluding PF-coded consultations may miss outcomes recorded
 '''
 safety_gp_events = selected_events
 
-
 '''
 TODO: Discuss for Protocol 3 analysis:
 The data dictionary currently describes these as "number of events".
@@ -602,10 +601,19 @@ for name, codes in safety_outcomes_gp_codes.items():
     setattr(dataset, f"numerator_gp_consultation_{name}", count_gp_consultation)
 
 ########################################################
-'''
-Safety outcome in A&E attendance data
+"""
+Safety outcomes recorded in A&E attendance data.
 
-'''
+TODO: Confirm whether these outcomes should be sourced from TPP.emergency_care_attendances:
+https://docs.opensafely.org/ehrql/reference/schemas/tpp/#emergency_care_attendances
+
+TODO: Confirm which diagnosis fields should be used:
+- primary diagnosis only, e.g. diagnosis_01
+- any diagnosis field, e.g. diagnosis_01 to diagnosis_24
+- primary and non-primary diagnoses as separate outputs
+
+TODO: Confirm whether the available A&E diagnosis coding system is compatible with the supplied SNOMED CT codelists.
+"""
 
 
 
@@ -623,10 +631,23 @@ Safety outcome in A&E attendance data
 
 
 ########################################################
-'''
-Safety outcome in hospital admission HES data
+"""
+Safety outcomes recorded in hospital admission data.
 
-'''
+TODO: Confirm whether these outcomes should be sourced from TPP.apcs:
+https://docs.opensafely.org/ehrql/reference/schemas/tpp/#apcs
+
+TODO: Confirm which diagnosis fields should be used:
+- primary_diagnosis only
+- all_diagnoses 
+- separate outputs
+
+TODO: Confirm the counting unit for hospital outcomes:
+- admissions/spells
+- patients with at least one matching admission
+
+TODO: Confirm whether all-cause hospitalisation should count all admissions in the monthly study period regardless of diagnosis.
+"""
 
 
 
