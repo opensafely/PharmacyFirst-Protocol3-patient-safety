@@ -218,3 +218,55 @@ otitismedia_code = ["3110003"]
 sorethroat_code = ["363746003"]
 shingles_code = ["4740000"]
 impetigo_code = ["48277006"]
+
+####################################################
+#Snomed codes used for safety evaluation - GP clinical events
+
+gp_snomed_codelist_pyelonephritis = codelist_from_csv(
+    "codelists/pharmacy-first-project-pyelonephritis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_sepsis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sepsis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_quinsy = codelist_from_csv(
+    "codelists/pharmacy-first-project-quinsy-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_post_herpetic_neuralgia = codelist_from_csv(
+    "codelists/pharmacy-first-project-post-herpetic-neuralgia-using-snomed-ct.csv",
+    column="code"
+)
+
+gp_snomed_codelist_mastoiditis = codelist_from_csv(
+    "codelists/pharmacy-first-project-mastoiditis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_meningitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-meningitis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_intracranial_abscess = codelist_from_csv(
+    "codelists/pharmacy-first-project-intracranial-abscess-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_sinus_thrombosis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sinus-thrombosis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_facial_nerve_paralysis = codelist_from_csv(
+    "codelists/pharmacy-first-project-facial-nerve-paralysis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+# gp_snomed_codelist_cellulitis_only: cellulitis_insectbite and cellulitis_impetigo
+# gp_snomed_codelist_meningitis: meningitis_sinusitis and meningitis_om
+# gp_snomed_codelist_sinus_thrombosis for sinus_thrombosis_om and sinus_thrombosis_sinusitis

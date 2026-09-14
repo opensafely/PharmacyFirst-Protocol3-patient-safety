@@ -30,3 +30,12 @@ user/paolomazzone/openpregnosis-miscarriage-codes_v1/383197f1
 user/paolomazzone/openpregnosis-molar-codes_v1/035ff191 
 user/paolomazzone/openpregnosis-blighted-ovum-codes_v1/1c6f64c6 
 user/paolomazzone/openpregnosis-ectopic-codes_v1/6a507e5b 
+pharmacy-first-project/pyelonephritis-using-snomed-ct-codes/6f6ab65f
+pharmacy-first-project/sepsis-using-snomed-ct-codes/3d4bcff5
+pharmacy-first-project/quinsy-using-snomed-ct-codes/6b2a8f4b
+pharmacy-first-project/post-herpetic-neuralgia-using-snomed-ct/390ba8e1
+pharmacy-first-project/mastoiditis-using-snomed-ct-codes/6ddd4f41
+pharmacy-first-project/meningitis-using-snomed-ct-codes/3bbe68d7
+pharmacy-first-project/intracranial-abscess-using-snomed-ct-codes/099f826d
+pharmacy-first-project/sinus-thrombosis-using-snomed-ct-codes/57809c02
+pharmacy-first-project/facial-nerve-paralysis-using-snomed-ct-codes/2561b598
