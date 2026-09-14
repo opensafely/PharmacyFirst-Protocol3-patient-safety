@@ -1,0 +1,839 @@
+version: '4.0'
+
+actions:
+  # generate_dataset:
+  #   run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --output output/dataset_patients.csv.gz
+  #   outputs:
+  #     highly_sensitive:
+  #       dataset: output/dataset_patients.csv.gz
+
+  #################################################################
+  # Actions defined for checking pregnancy variables
+
+  generate_dataset_preg_2024_11_01:
+    run: ehrql:v1 generate-dataset analysis/check_pregnancy_variables/dataset_definition_pregnancy.py --output output/dataset_preg_2024_11_01.csv.gz -- --start_date 2024-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_preg_2024_11_01.csv.gz
+
+  generate_dataset_preg_2025_11_01:
+    run: ehrql:v1 generate-dataset analysis/check_pregnancy_variables/dataset_definition_pregnancy.py --output output/dataset_preg_2025_11_01.csv.gz -- --start_date 2025-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_preg_2025_11_01.csv.gz
+
+  generate_dataset_preg_measures: 
+    run: ehrql:v1 generate-measures analysis/check_pregnancy_variables/dataset_definition_pregnancy_measures.py --output output/measures/:csv
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/ck_*.csv
+        dataset2: output/measures/pregnant_source_all_ages.csv
+
+  generate_dataset_preg_measures_u16: 
+    run: ehrql:v1 generate-measures analysis/check_pregnancy_variables/dataset_definition_pregnancy_measures.py --output output/measures/:csv -- --age_band "<16"
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/*_u16.csv
+
+  generate_dataset_preg_measures_16_19: 
+    run: ehrql:v1 generate-measures analysis/check_pregnancy_variables/dataset_definition_pregnancy_measures.py --output output/measures/:csv -- --age_band "16-19"
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/*16_19.csv
+
+  generate_dataset_preg_measures_o65:
+    run: ehrql:v1 generate-measures analysis/check_pregnancy_variables/dataset_definition_pregnancy_measures.py --output output/measures/:csv -- --age_band "65+"
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/*_o65.csv
+
+  analyse_preg_measures:
+    run: python:v2 analysis/check_pregnancy_variables/pregnancy_checks.py --output output/measures/pregnancy_checks.csv --input output/measures/*.csv
+    needs: 
+      [generate_dataset_preg_measures]
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/*by_year.csv
+        charts: output/measures/*by_year.png
+
+  analyse_preg_measures_agesex:
+    run: python:v2 analysis/check_pregnancy_variables/pregnancy_checks_age_sex.py --output output/measures/:csv --input output/measures/*.csv
+    needs: 
+      [generate_dataset_preg_measures_u16, generate_dataset_preg_measures_16_19, generate_dataset_preg_measures_o65]
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/flag_source_*_summary_by_sex.csv
+        charts: output/measures/flag_source_*_summary_by_sex.png
+        dataset2: output/measures/summary_*.csv
+  
+  #################################################################
+  # Actions for retrieving patient-level data for each specified month AND combine all into one csv.gz for downstream analysis
+  # Testing purpose
+
+  # # retrieve csv.gz for each specified month
+  # generate_patient_dataset_2024_02_01:
+  #   run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables dummy-folder --output output/dataset_patients_2024-02-01.csv.gz -- --start_date 2024-02-01
+  #   outputs:
+  #     highly_sensitive:
+  #       dataset: output/dataset_patients_2024-02-01.csv.gz
+  # generate_patient_dataset_2024_03_01:
+  #   run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables dummy-folder --output output/dataset_patients_2024-03-01.csv.gz -- --start_date 2024-03-01
+  #   outputs:
+  #     highly_sensitive:
+  #       dataset: output/dataset_patients_2024-03-01.csv.gz
+
+  # # combine monthly tables into one csv.gz
+  # combine_monthly_patient_gz:
+  #   run: python:v2 analysis/project_setup/preprocess_combine_gz.py --output output/dataset_patients_combined.csv.gz
+  #   needs: [generate_patient_dataset_2024_02_01, generate_patient_dataset_2024_03_01]
+  #   outputs:
+  #     highly_sensitive:
+  #       dataset: output/dataset_patients_combined.csv.gz
+
+  #################################################################
+  # patient-level measures for sense checking; not final measures for analysis
+  
+  # Population structure
+  # # local testing with dummy tables
+  # generate_patient_measures_population_structure:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_population_structure.py --dummy-tables dummy_tables --output output/patient_measures_population_structure.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_population_structure.csv
+  
+  generate_patient_measures_population_structure:
+    run: ehrql:v1 generate-measures analysis/validation/measures_patient_population_structure.py --output output/patient_measures_population_structure.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_population_structure.csv
+  
+  process_patient_measures_population_structure:
+    run: python:v2 analysis/validation/process_measure_population_structure.py --output output/patient_measures_population_structure_longformat.csv
+    needs: [generate_patient_measures_population_structure]
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_population_structure_longformat.csv
+  
+  # Measures for checking PF eligibility variables; consultation count variables
+  # # local testing with dummy tables
+  # generate_patient_measures_eligibility:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_eligibility_validation.py --dummy-tables dummy_tables --output output/patient_measures_eligibility_validation.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_eligibility_validation.csv
+  
+  # generate_patient_measures_eligibility_v1:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_eligibility_validation_v1.py --dummy-tables dummy-folder --output output/patient_measures_eligibility_validation_v1.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_eligibility_validation_v1.csv
+  
+  # generate_patient_measures_eligibility_v2:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_eligibility_validation_v2.py --dummy-tables dummy-folder --output output/patient_measures_eligibility_validation_v2.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_eligibility_validation_v2.csv
+
+  # generate_patient_measures_eligibility_v3:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_eligibility_validation_v3.py --dummy-tables dummy-folder --output output/patient_measures_eligibility_validation_v3.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_eligibility_validation_v3.csv
+
+  generate_patient_measures_eligibility_final:
+    run: ehrql:v1 generate-measures analysis/validation/measures_patient_eligibility_validation_final.py --dummy-tables dummy-folder --output output/patient_measures_eligibility_validation_final.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_eligibility_validation_final.csv
+  
+  process_patient_measures_eligibility:
+    run: python:v2 analysis/validation/process_measure_eligibility_validation.py --output output/patient_measures_eligibility_validation_ordered_final.csv
+    # needs: [generate_patient_measures_eligibility_v1, generate_patient_measures_eligibility_v2, generate_patient_measures_eligibility_v3]
+    needs: [generate_patient_measures_eligibility_final]
+    outputs:
+      moderately_sensitive:
+        measure_table: output/patient_measures_eligibility_validation_ordered_final.csv
+        # measure_table1: output/patient_measures_eligibility_validation_ordered_v1.csv
+        # measure_table2: output/patient_measures_eligibility_validation_ordered_v2.csv
+        # measure_table3: output/patient_measures_eligibility_validation_ordered_v3.csv
+
+  # Measures for checking consultation count variables
+  # # local testing with dummy tables
+  # generate_patient_measures_consultation_validation:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultations_validation.py --dummy-tables dummy-folder --output output/patient_measures_consultation_validation.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_validation.csv
+
+  generate_patient_measures_consultation_validation:
+    run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultations_validation.py --output output/patient_measures_consultation_validation.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_validation.csv
+
+  process_patient_measures_consultation_validation:
+    run: python:v2 analysis/validation/process_measure_consultation_validation.py --output output/patient_measures_consultation_validation_ordered.csv
+    needs: [generate_patient_measures_consultation_validation]
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_validation_ordered.csv
+        summary_tables: output/patient_measures_consultation_validation_summary.csv
+        pf_consultation_chart: output/patient_measures_pf_consultations_by_condition.png
+        gp_consultation_chart: output/patient_measures_gp_consultation_by_condition.png
+
+  surppress_measure_consultation_validation:
+    run: python:v2 analysis/validation/surppress_measure_consultation_validation.py --output output/patient_measures_consultation_validation_summary_release.csv
+    needs: [process_patient_measures_consultation_validation]
+    outputs:
+      moderately_sensitive:
+        release_tables: output/patient_measures_consultation_validation_summary_release.csv
+        release_pf_consultation_chart: output/patient_measures_pf_consultations_by_condition_release.png
+        release_gp_consultation_chart: output/patient_measures_gp_consultation_by_condition_release.png
+
+  generate_patient_measures_consultation_events:
+    run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultation_events.py --output output/patient_measures_consultation_events.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_events.csv
+  
+  # # Measures for checking consultation population definition variables
+  # generate_patient_measures_consultation_basepop:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultation_basepop.py --output output/patient_measures_consultation_basepop.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_basepop.csv
+
+  # Measures for checking consultation mode variables
+  # # local testing with dummy tables
+  # generate_patient_measures_consultation_mode:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultation_mode.py --dummy-tables dummy-folder --output output/patient_measures_consultation_mode.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_mode.csv
+
+  # generate_patient_measures_consultation_mode:
+  #   run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultation_mode.py --output output/patient_measures_consultation_mode_june.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_mode_june.csv
+  
+  # process_patient_measures_consultation_mode:
+  #   run: python:v2 analysis/validation/process_measure_consultation_mode.py --output output/patient_measures_consultation_mode_ordered_june.csv
+  #   needs: [generate_patient_measures_consultation_mode]
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_mode_ordered_june.csv
+  #       summary_tables: output/patient_measures_consultation_mode_summary_june.csv
+  #       consultation_mode_chart: output/patient_measures_gp_pf_patient_date_by_mode_june.png
+
+  # generate_patient_measures_consultation_mode_econsultation:
+  #   run: ehrql:v1 generate-measures analysis/validation_econsultations/measures_patient_consultation_mode.py --output output/patient_measures_consultation_mode_econsultation.csv
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_tables: output/patient_measures_consultation_mode_econsultation.csv
+
+  # Validation measure for insect bite codelists
+  generate_measures_insect_bite:
+    run: ehrql:v1 generate-measures analysis/validation_insectbites/measure_insectbites.py --output output/patient_measures_insectbites.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_insectbites.csv
+  
+  process_measures_insect_bite:
+    run: python:v2 analysis/validation_insectbites/process_insectbites.py --output output/patient_measures_insectbites_summary.csv
+    needs: [generate_measures_insect_bite]
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_insectbites_summary.csv
+
+
+#################################################################
+  # Dataset definition and measures for checking snomedcode appearance for PF conditions
+  # local testing with dummy tables
+  generate_dataset_snomed_count_uti:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_uti.csv.gz -- --start_date 2025-10-01 --condition uti
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_uti.csv.gz
+
+  generate_dataset_snomed_count_sinusitis:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_sinusitis.csv.gz -- --start_date 2025-10-01 --condition sinusitis
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_sinusitis.csv.gz
+
+  generate_dataset_snomed_count_insectbite:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_insectbite.csv.gz -- --start_date 2025-10-01 --condition insectbite
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_insectbite.csv.gz
+
+  generate_dataset_snomed_count_otitismedia:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_otitismedia.csv.gz -- --start_date 2025-10-01 --condition otitismedia
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_otitismedia.csv.gz
+
+  generate_dataset_snomed_count_sorethroat:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_sorethroat.csv.gz -- --start_date 2025-10-01 --condition sorethroat
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_sorethroat.csv.gz
+
+  generate_dataset_snomed_count_shingles:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_shingles.csv.gz -- --start_date 2025-10-01 --condition shingles
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_shingles.csv.gz
+
+  generate_dataset_snomed_count_impetigo:
+    run: ehrql:v1 generate-dataset analysis/validation_snomed/dataset_definition_snomed.py --output output/dataset_patients_snomed_impetigo.csv.gz -- --start_date 2025-10-01 --condition impetigo
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_snomed_impetigo.csv.gz
+
+  process_dataset_snomed_count:
+    run: python:v2 analysis/validation_snomed/process.py --output output/snomed_count_summary_uti.csv
+    needs: [
+      generate_dataset_snomed_count_uti,
+      generate_dataset_snomed_count_sinusitis,
+      generate_dataset_snomed_count_insectbite,
+      generate_dataset_snomed_count_otitismedia,
+      generate_dataset_snomed_count_sorethroat,
+      generate_dataset_snomed_count_shingles,
+      generate_dataset_snomed_count_impetigo,
+    ]
+    outputs:
+      moderately_sensitive:
+        snomed_count_summary_uti: output/snomed_count_summary_uti.csv
+        snomed_count_summary_sinusitis: output/snomed_count_summary_sinusitis.csv
+        snomed_count_summary_insectbite: output/snomed_count_summary_insectbite.csv
+        snomed_count_summary_otitismedia: output/snomed_count_summary_otitismedia.csv
+        snomed_count_summary_sorethroat: output/snomed_count_summary_sorethroat.csv
+        snomed_count_summary_shingles: output/snomed_count_summary_shingles.csv
+        snomed_count_summary_impetigo: output/snomed_count_summary_impetigo.csv
+
+
+  #################################################################
+# Actions defined for getting practice-level data and measures
+
+  # practice-level data step 1: run patient dataset measures 
+
+  # # version for debugging
+  # generate_patient_measures_for_practices:
+  #   run: ehrql:v1 generate-measures analysis/practice_variables/measures_practice.py --dummy-tables dummy_tables --output output/practice_measures.csv.gz
+  #   outputs:
+  #     highly_sensitive:
+  #       measure_tables: output/practice_measures.csv.gz
+
+  generate_patient_measures_for_practices:
+    run: ehrql:v1 generate-measures analysis/practice_variables/measures_practice.py --output output/practice_measures.csv.gz
+    outputs:
+      highly_sensitive:
+        measure_tables: output/practice_measures.csv.gz
+  
+  # practice-level data step 2: aggregate patient measures to practice-level data
+  process_measures_to_practice_dataset:
+    run: python:v2 analysis/practice_variables/process_measures_to_practice_dataset.py --output output/dataset_practices.csv.gz
+    needs: [generate_patient_measures_for_practices]
+    outputs:
+      highly_sensitive:
+        practice_level_data: output/dataset_practices.csv.gz
+  
+  # practice-level data step 3: extract info from practice-level data
+  process_practice_dataset_stp:
+    run: python:v2 analysis/practice_variables/practice_to_stp.py --output output/practice_summary_by_stp.csv
+    needs: [process_measures_to_practice_dataset]
+    outputs:
+      moderately_sensitive:
+        practice_level_data: output/practice_summary_by_stp.csv
+  
+  process_practice_dataset_region:
+    run: python:v2 analysis/practice_variables/practice_to_region.py --output output/practice_summary_by_region.csv
+    needs: [process_measures_to_practice_dataset]
+    outputs:
+      moderately_sensitive:
+        practice_level_data: output/practice_summary_by_region.csv
+  
+  process_practice_size_distribution:
+    run: python:v2 analysis/practice_variables/practice_size_distribution.py --output output/practice_size_distribution.png
+    needs: [process_measures_to_practice_dataset]
+    outputs:
+      moderately_sensitive:
+        practice_level_plot: output/practice_size_distribution.png
+
+  #################################################################
+
+# https://actions.opensafely.org/actions/safetab/v3.0.2/
+# safetabs: create two-way tables for the specified variables; redact results for small numbers
+  # generate_safetabs:
+  #   run: safetab:v3.0.2 output/dataset_patients_combined.csv.gz
+  #   needs: [combine_monthly_patient_gz]
+  #   config:
+  #     output_path: output
+  #     redaction_limit: 2
+  #     tables:
+  #       two_way:
+  #         tab_type: 2-way
+  #         variables:
+  #           - sex
+  #           - region
+  #   outputs:
+  #     moderately_sensitive:
+  #       safetab_log: output/dataset_patients_combined.csv_tables/table_log.txt
+  #       safetab_two_way: output/dataset_patients_combined.csv_tables/two_way/*.md
+
+# https://actions.opensafely.org/actions/cohort-report/v3.0.0/
+# generate cohort report; require all variable_types
+  # generate_cohort_report:
+  #   run: cohort-report:v3.0.0 output/dataset_patients_combined.csv.gz
+  #   needs: [combine_monthly_patient_gz]
+  #   config:
+  #     variable_types:
+  #       start_date: date
+  #       index_date: date
+  #       registered_start: categorical
+  #       registered_index: categorical
+  #       alive: categorical
+  #       sex: categorical
+  #       age: int
+  #       date_of_birth: date
+  #       imd: categorical
+  #       ethnicity: categorical
+  #       region: categorical
+  #   outputs:
+  #     moderately_sensitive:
+  #       reports: cohort_reports_outputs/descriptives_dataset_patients_combined.csv.html
+  #       figures: cohort_reports_outputs/*.png
+
+# https://actions.opensafely.org/actions/dataset-report/v0.0.29/
+# dataset report
+  # generate_dataset_report:
+  #   run: >
+  #     dataset-report:v0.0.29
+  #       --input-files output/dataset_patients_combined.csv.gz
+  #       --output-dir output
+  #   needs: [combine_monthly_patient_gz]
+  #   outputs:
+  #     moderately_sensitive:
+  #       dataset_report: output/dataset_patients_combined.html
+
+  #################################################################
+# Protocol 2 specific: actions defined for producing monthly CSVs (study period: Feb 2022 - Jan 2026)
+  generate_patient_dataset_2022_02_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-02-01.csv.gz -- --start_date
+      2022-02-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-02-01.csv.gz
+  generate_patient_dataset_2022_03_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-03-01.csv.gz -- --start_date
+      2022-03-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-03-01.csv.gz
+  generate_patient_dataset_2022_04_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-04-01.csv.gz -- --start_date
+      2022-04-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-04-01.csv.gz
+  generate_patient_dataset_2022_05_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-05-01.csv.gz -- --start_date
+      2022-05-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-05-01.csv.gz
+  generate_patient_dataset_2022_06_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-06-01.csv.gz -- --start_date
+      2022-06-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-06-01.csv.gz
+  generate_patient_dataset_2022_07_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-07-01.csv.gz -- --start_date
+      2022-07-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-07-01.csv.gz
+  generate_patient_dataset_2022_08_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-08-01.csv.gz -- --start_date
+      2022-08-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-08-01.csv.gz
+  generate_patient_dataset_2022_09_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-09-01.csv.gz -- --start_date
+      2022-09-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-09-01.csv.gz
+  generate_patient_dataset_2022_10_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-10-01.csv.gz -- --start_date
+      2022-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-10-01.csv.gz
+  generate_patient_dataset_2022_11_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-11-01.csv.gz -- --start_date
+      2022-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-11-01.csv.gz
+  generate_patient_dataset_2022_12_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2022-12-01.csv.gz -- --start_date
+      2022-12-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2022-12-01.csv.gz
+  generate_patient_dataset_2023_01_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-01-01.csv.gz -- --start_date
+      2023-01-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-01-01.csv.gz
+  generate_patient_dataset_2023_02_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-02-01.csv.gz -- --start_date
+      2023-02-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-02-01.csv.gz
+  generate_patient_dataset_2023_03_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-03-01.csv.gz -- --start_date
+      2023-03-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-03-01.csv.gz
+  generate_patient_dataset_2023_04_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-04-01.csv.gz -- --start_date
+      2023-04-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-04-01.csv.gz
+  generate_patient_dataset_2023_05_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-05-01.csv.gz -- --start_date
+      2023-05-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-05-01.csv.gz
+  generate_patient_dataset_2023_06_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-06-01.csv.gz -- --start_date
+      2023-06-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-06-01.csv.gz
+  generate_patient_dataset_2023_07_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-07-01.csv.gz -- --start_date
+      2023-07-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-07-01.csv.gz
+  generate_patient_dataset_2023_08_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-08-01.csv.gz -- --start_date
+      2023-08-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-08-01.csv.gz
+  generate_patient_dataset_2023_09_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-09-01.csv.gz -- --start_date
+      2023-09-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-09-01.csv.gz
+  generate_patient_dataset_2023_10_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-10-01.csv.gz -- --start_date
+      2023-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-10-01.csv.gz
+  generate_patient_dataset_2023_11_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-11-01.csv.gz -- --start_date
+      2023-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-11-01.csv.gz
+  generate_patient_dataset_2023_12_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2023-12-01.csv.gz -- --start_date
+      2023-12-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2023-12-01.csv.gz
+  generate_patient_dataset_2024_01_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-01-01.csv.gz -- --start_date
+      2024-01-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-01-01.csv.gz
+  generate_patient_dataset_2024_02_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-02-01.csv.gz -- --start_date
+      2024-02-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-02-01.csv.gz
+  generate_patient_dataset_2024_03_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-03-01.csv.gz -- --start_date
+      2024-03-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-03-01.csv.gz
+  generate_patient_dataset_2024_04_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-04-01.csv.gz -- --start_date
+      2024-04-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-04-01.csv.gz
+  generate_patient_dataset_2024_05_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-05-01.csv.gz -- --start_date
+      2024-05-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-05-01.csv.gz
+  generate_patient_dataset_2024_06_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-06-01.csv.gz -- --start_date
+      2024-06-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-06-01.csv.gz
+  generate_patient_dataset_2024_07_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-07-01.csv.gz -- --start_date
+      2024-07-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-07-01.csv.gz
+  generate_patient_dataset_2024_08_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-08-01.csv.gz -- --start_date
+      2024-08-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-08-01.csv.gz
+  generate_patient_dataset_2024_09_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-09-01.csv.gz -- --start_date
+      2024-09-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-09-01.csv.gz
+  generate_patient_dataset_2024_10_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-10-01.csv.gz -- --start_date
+      2024-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-10-01.csv.gz
+  generate_patient_dataset_2024_11_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-11-01.csv.gz -- --start_date
+      2024-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-11-01.csv.gz
+  generate_patient_dataset_2024_12_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2024-12-01.csv.gz -- --start_date
+      2024-12-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2024-12-01.csv.gz
+  generate_patient_dataset_2025_01_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-01-01.csv.gz -- --start_date
+      2025-01-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-01-01.csv.gz
+  generate_patient_dataset_2025_02_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-02-01.csv.gz -- --start_date
+      2025-02-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-02-01.csv.gz
+  generate_patient_dataset_2025_03_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-03-01.csv.gz -- --start_date
+      2025-03-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-03-01.csv.gz
+  generate_patient_dataset_2025_04_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-04-01.csv.gz -- --start_date
+      2025-04-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-04-01.csv.gz
+  generate_patient_dataset_2025_05_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-05-01.csv.gz -- --start_date
+      2025-05-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-05-01.csv.gz
+  generate_patient_dataset_2025_06_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-06-01.csv.gz -- --start_date
+      2025-06-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-06-01.csv.gz
+  generate_patient_dataset_2025_07_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-07-01.csv.gz -- --start_date
+      2025-07-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-07-01.csv.gz
+  generate_patient_dataset_2025_08_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-08-01.csv.gz -- --start_date
+      2025-08-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-08-01.csv.gz
+  generate_patient_dataset_2025_09_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-09-01.csv.gz -- --start_date
+      2025-09-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-09-01.csv.gz
+  generate_patient_dataset_2025_10_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-10-01.csv.gz -- --start_date
+      2025-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-10-01.csv.gz
+  generate_patient_dataset_2025_11_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-11-01.csv.gz -- --start_date
+      2025-11-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-11-01.csv.gz
+  generate_patient_dataset_2025_12_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2025-12-01.csv.gz -- --start_date
+      2025-12-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2025-12-01.csv.gz
+  generate_patient_dataset_2026_01_01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition_patients.py --dummy-tables
+      dummy_tables --output output/dataset_patients_2026-01-01.csv.gz -- --start_date
+      2026-01-01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_2026-01-01.csv.gz
+  combine_monthly_patient_gz:
+    run: python:v2 analysis/project_setup/preprocess_combine_gz.py --output output/dataset_patients_combined.csv.gz
+    needs:
+    - generate_patient_dataset_2022_02_01
+    - generate_patient_dataset_2022_03_01
+    - generate_patient_dataset_2022_04_01
+    - generate_patient_dataset_2022_05_01
+    - generate_patient_dataset_2022_06_01
+    - generate_patient_dataset_2022_07_01
+    - generate_patient_dataset_2022_08_01
+    - generate_patient_dataset_2022_09_01
+    - generate_patient_dataset_2022_10_01
+    - generate_patient_dataset_2022_11_01
+    - generate_patient_dataset_2022_12_01
+    - generate_patient_dataset_2023_01_01
+    - generate_patient_dataset_2023_02_01
+    - generate_patient_dataset_2023_03_01
+    - generate_patient_dataset_2023_04_01
+    - generate_patient_dataset_2023_05_01
+    - generate_patient_dataset_2023_06_01
+    - generate_patient_dataset_2023_07_01
+    - generate_patient_dataset_2023_08_01
+    - generate_patient_dataset_2023_09_01
+    - generate_patient_dataset_2023_10_01
+    - generate_patient_dataset_2023_11_01
+    - generate_patient_dataset_2023_12_01
+    - generate_patient_dataset_2024_01_01
+    - generate_patient_dataset_2024_02_01
+    - generate_patient_dataset_2024_03_01
+    - generate_patient_dataset_2024_04_01
+    - generate_patient_dataset_2024_05_01
+    - generate_patient_dataset_2024_06_01
+    - generate_patient_dataset_2024_07_01
+    - generate_patient_dataset_2024_08_01
+    - generate_patient_dataset_2024_09_01
+    - generate_patient_dataset_2024_10_01
+    - generate_patient_dataset_2024_11_01
+    - generate_patient_dataset_2024_12_01
+    - generate_patient_dataset_2025_01_01
+    - generate_patient_dataset_2025_02_01
+    - generate_patient_dataset_2025_03_01
+    - generate_patient_dataset_2025_04_01
+    - generate_patient_dataset_2025_05_01
+    - generate_patient_dataset_2025_06_01
+    - generate_patient_dataset_2025_07_01
+    - generate_patient_dataset_2025_08_01
+    - generate_patient_dataset_2025_09_01
+    - generate_patient_dataset_2025_10_01
+    - generate_patient_dataset_2025_11_01
+    - generate_patient_dataset_2025_12_01
+    - generate_patient_dataset_2026_01_01
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_combined.csv.gz
+  
+  decompress_combined_patient_dataset:
+    run: python:v2 python analysis/project_setup/decompress_gz.py
+    needs: [combine_monthly_patient_gz]
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_patients_combined.csv
+
+  #################################################################
+  # Actions defined for Protocol 2 analysis
+  # PLEASE ADD ANALYSIS ACTIONS FROM HERE
+  test_analysis:
+    run: python:v2 analysis/test_analysis_chunk.py --output output/pf_consultations_by_month.csv
+    needs: [combine_monthly_patient_gz]
+    outputs:
+      moderately_sensitive:
+        summary_table: output/pf_consultations_by_month.csv
+
+  
+run_objective_1_analysis:
+    run: stata-mp:workspaces/ACT-PharmacyFirst-Protocol2-healthcare-usage/analysis/Objective_1_analysis.do
+    needs: [combine_monthly_patient_gz]
+    outputs:
+      moderately_sensitive:
+        log1: "outputs/PF_WP2_P2_obj1_totals.log"
+       
+
