@@ -554,17 +554,9 @@ dataset.appointment_seen = appointments.where(
 Safety outcomes recorded in GP clinical events.
 
 For each safety outcome, identify matching SNOMED-coded clinical events within the monthly study period using the corresponding GP codelist.
+The outputs are event and consultation counts; meeting on Sept 18 discussed about using consultation count as the primary numerator.
 '''
 
-'''
-TODO: Discuss for Protocol 3 analysis:
-Protocol 2 creates a monthly patient-level dataset first, then applies condition-specific eligibility denominators in the analysis scripts.
-If Protocol 3 follows the same approach, some safety outcome variables that share the same clinical codelist will be identical at the patient-month level in the dataset definition. 
-For example, meningitis for sinusitis and meningitis for otitis media would both use the same meningitis codelist here, and only differ later when analysed using different denominators:
-- include_patient_sinusitis
-- include_patient_otitis_media
-Should Protocol 3 keep this approach, or should condition-specific outcome variables be created directly in the dataset definition?
-'''
 safety_outcomes_gp_codes = {
     "pyelonephritis": codelists.gp_snomed_codelist_pyelonephritis,
     "sepsis": codelists.gp_snomed_codelist_sepsis,
@@ -581,20 +573,8 @@ safety_outcomes_gp_codes = {
     "facial_nerve_paralysis": codelists.gp_snomed_codelist_facial_nerve_paralysis,
 }
 
-'''
-TODO: Confirm whether Protocol 3 GP safety outcomes should exclude PF-coded consultations. 
-'selected_events' - all events in this month
-'gp_events_clean' is derived by excluding all events belonging to consultations in 'pf_ids' - to avoid overlapping between PF and GP consultation counts.
-For safety outcomes, excluding PF-coded consultations may miss outcomes recorded in the same consultation as a PF service code. 
-'''
 safety_gp_events = selected_events
 
-'''
-TODO: Discuss for Protocol 3 analysis:
-The data dictionary currently describes these as "number of events".
-For GP clinical events, a single consultation may contain multiple matching SNOMED-coded rows, so event counts may overcount clinical episodes.
-Following the Protocol 2 pattern, we output event and consultation counts here; the final measure definition should decide which count is used as the primary numerator.
-'''
 for name, codes in safety_outcomes_gp_codes.items():
     count_gp_event, count_gp_consultation, _ = has_event_count(safety_gp_events, codes)
     setattr(dataset, f"numerator_gp_event_{name}", count_gp_event)
@@ -602,17 +582,13 @@ for name, codes in safety_outcomes_gp_codes.items():
 
 ########################################################
 """
+TODO:
 Safety outcomes recorded in A&E attendance data.
-
-TODO: Confirm whether these outcomes should be sourced from TPP.emergency_care_attendances:
+These outcomes should be sourced from TPP.emergency_care_attendances:
 https://docs.opensafely.org/ehrql/reference/schemas/tpp/#emergency_care_attendances
 
-TODO: Confirm which diagnosis fields should be used:
-- primary diagnosis only, e.g. diagnosis_01
-- any diagnosis field, e.g. diagnosis_01 to diagnosis_24
-- primary and non-primary diagnoses as separate outputs
-
-TODO: Confirm whether the available A&E diagnosis coding system is compatible with the supplied SNOMED CT codelists.
+The diagnosis fields should be used to count in several ways:
+- primary, non-primary, any dignosis fields as separate outputs
 """
 
 
@@ -632,21 +608,18 @@ TODO: Confirm whether the available A&E diagnosis coding system is compatible wi
 
 ########################################################
 """
+TODO:
 Safety outcomes recorded in hospital admission data.
-
-TODO: Confirm whether these outcomes should be sourced from TPP.apcs:
+These outcomes should be sourced from TPP.apcs:
 https://docs.opensafely.org/ehrql/reference/schemas/tpp/#apcs
 
-TODO: Confirm which diagnosis fields should be used:
+The counting unit for condition-based hospital outcomes is spells. 
+These diagnosis fields should be used to create seperate outputs:
 - primary_diagnosis only
+- non-primary
 - all_diagnoses 
-- separate outputs
 
-TODO: Confirm the counting unit for hospital outcomes:
-- admissions/spells
-- patients with at least one matching admission
-
-TODO: Confirm whether all-cause hospitalisation should count all admissions in the monthly study period regardless of diagnosis.
+The all-cause hospitalisation count the number of admission dates in the monthly regardless of diagnosis.
 """
 
 
@@ -669,6 +642,7 @@ TODO: Confirm whether all-cause hospitalisation should count all admissions in t
 
 ########################################################
 '''
+TODO:
 PGD contravention
 
 '''
