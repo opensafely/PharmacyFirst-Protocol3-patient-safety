@@ -2,7 +2,7 @@
 # Get new dummy tables: opensafely exec ehrql:v1 create-dummy-tables analysis_protocol3/protocol3_dataset_definition_patients.py dummy_tables
 # gunzip -c output/dataset_patients.csv.gz > example_protocol3/dataset_patients.csv
 
-from ehrql import create_dataset, show, days, weeks, months, years, case, when, get_parameter
+from ehrql import create_dataset, show, days, weeks, months, years, case, when, get_parameter, INTERVAL
 from ehrql.tables.tpp import (patients, practice_registrations, clinical_events, addresses, 
                               ethnicity_from_sus,
                               emergency_care_attendances,appointments, apcs)
@@ -18,11 +18,8 @@ dataset = create_dataset()
 dataset.configure_dummy_data(population_size=500)
 
 # One month time period (to start with this is Nov 25) 
-# start_date = "2025-10-31"     
-# index_date = "2025-11-30"  
-start_date = get_parameter("start_date", default="2024-02-01")
-index_date = start_date + months(1) - days(1)
-# index_date = start_date + years(1)
+start_date = INTERVAL.start_date    
+index_date = INTERVAL.end_date
 
 """
 Monthly patient-level denominator + numerator dataset
@@ -85,10 +82,11 @@ age = patients.age_on(index_date)
 # base_population = patients.exists_for_patient()
 age_valid = (patients.age_on(index_date) <= 120) # "Exclude any patients over 120 years old as the date of birth is most likely to be missing"
 base_population = alive & registered_start & registered_index & age_valid 
-dataset.define_population(base_population) # include all patients or those alive and registered
+# dataset.define_population(base_population) # include all patients or those alive and registered
+dataset.define_population(patients.exists_for_patient())
 
-dataset.start_date = case(when(base_population).then(start_date))
-dataset.index_date = case(when(base_population).then(index_date))
+dataset.start_date = start_date
+dataset.index_date = index_date
 dataset.registered_start = registered_start
 dataset.registered_index = registered_index
 dataset.alive = alive
@@ -689,9 +687,5 @@ PGD contravention
 
 
 
-
-
 ########################################################
-
-show(dataset) # DEBUG: show the patients in the base population
 # TODO: replace the UTI codelist

@@ -6,3 +6,31 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/dataset_patients.csv.gz
+
+  generate_safety_outcome_measures_count_validation:
+    run: ehrql:v1 generate-measures analysis_protocol3/validation/measures_safety_count_validation.py --output output/safety_measures_count_validation.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/safety_measures_count_validation.csv
+  
+  postprocess_safety_count_validation:
+    run: python:latest analysis_protocol3/validation/postprocess_safety_count_validation.py
+    needs: [generate_safety_outcome_measures_count_validation]
+    outputs:
+      moderately_sensitive:
+        safety_count_validation_summary: output/safety_count_validation_summary.csv
+        safety_count_validation_flags: output/safety_count_validation_flags.csv
+  
+  generate_safety_outcome_measures_rate_validation:
+    run: ehrql:v1 generate-measures analysis_protocol3/validation/measures_safety_rate_validation.py --output output/safety_measures_rate_validation.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/safety_measures_rate_validation.csv
+  
+  postprocess_safety_rate_validation:
+    run: python:latest analysis_protocol3/validation/postprocess_safety_rate_validation.py
+    needs: [generate_safety_outcome_measures_rate_validation]
+    outputs:
+      moderately_sensitive:
+        safety_rate_validation_summary: output/safety_rate_validation_summary.csv
+        safety_rate_validation_flags: output/safety_rate_validation_flags.csv
