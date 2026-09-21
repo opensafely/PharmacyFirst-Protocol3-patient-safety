@@ -245,6 +245,66 @@
       "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/facial-nerve-paralysis-using-snomed-ct-codes/2561b598/",
       "downloaded_at": "2026-09-14 16:38:10.171792+00:00Z",
       "sha": "170863bede62d8047b5336434adb379c78f3da35"
+    },
+    "pharmacy-first-project-pyelonephritis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/pyelonephritis-using-icd10-codes/3ffe8feb",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/pyelonephritis-using-icd10-codes/3ffe8feb/",
+      "downloaded_at": "2026-09-21 14:42:43.092984+00:00Z",
+      "sha": "ca35ac01b47977f3b1e0989eaa1a92a4752d00d0"
+    },
+    "pharmacy-first-project-sepsis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/sepsis-using-icd10-codes/243c5cc0",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/sepsis-using-icd10-codes/243c5cc0/",
+      "downloaded_at": "2026-09-21 14:42:43.201908+00:00Z",
+      "sha": "eba28888bd13cd9e07cdc965fbea727c2067a840"
+    },
+    "pharmacy-first-project-cellulitis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/cellulitis-using-icd10-codes/1d4975b6",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/cellulitis-using-icd10-codes/1d4975b6/",
+      "downloaded_at": "2026-09-21 14:42:43.285818+00:00Z",
+      "sha": "2468d18ee59bcb828dce63e968e32f8993aea71d"
+    },
+    "pharmacy-first-project-quinsy-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/quinsy-using-icd10-codes/043a0281",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/quinsy-using-icd10-codes/043a0281/",
+      "downloaded_at": "2026-09-21 14:42:43.401882+00:00Z",
+      "sha": "e51b31508b6eeb4552ac1b8c4571b6c0df2aea32"
+    },
+    "pharmacy-first-project-post-herpetic-neuralgia-using-icd10.csv": {
+      "id": "pharmacy-first-project/post-herpetic-neuralgia-using-icd10/1ffc35ac",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/post-herpetic-neuralgia-using-icd10/1ffc35ac/",
+      "downloaded_at": "2026-09-21 14:42:43.500753+00:00Z",
+      "sha": "6025ea5c041e713b147e051bd5eee795190bd806"
+    },
+    "pharmacy-first-project-mastoiditis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/mastoiditis-using-icd10-codes/06ecc277",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/mastoiditis-using-icd10-codes/06ecc277/",
+      "downloaded_at": "2026-09-21 14:42:43.615357+00:00Z",
+      "sha": "c3b6a30efd7d71265fa26ee6cd0a941453096ec3"
+    },
+    "pharmacy-first-project-meningitis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/meningitis-using-icd10-codes/54cddc0c",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/meningitis-using-icd10-codes/54cddc0c/",
+      "downloaded_at": "2026-09-21 14:42:43.718272+00:00Z",
+      "sha": "1a8d7255494a56603c6023a262662628a7e64f73"
+    },
+    "pharmacy-first-project-intracranial-abscess-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/intracranial-abscess-using-icd10-codes/22aef5a2",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/intracranial-abscess-using-icd10-codes/22aef5a2/",
+      "downloaded_at": "2026-09-21 14:42:43.835954+00:00Z",
+      "sha": "e11d7109c04abeb2aac223d9a0566aa062bbc5cc"
+    },
+    "pharmacy-first-project-sinus-thrombosis-usign-icd10-codes.csv": {
+      "id": "pharmacy-first-project/sinus-thrombosis-usign-icd10-codes/70900f37",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/sinus-thrombosis-usign-icd10-codes/70900f37/",
+      "downloaded_at": "2026-09-21 14:42:43.990749+00:00Z",
+      "sha": "3d73e393e3f4a75928488d54d76a6a53c069fe02"
+    },
+    "pharmacy-first-project-facial-nerve-paralysis-using-icd10-codes.csv": {
+      "id": "pharmacy-first-project/facial-nerve-paralysis-using-icd10-codes/0e18aad6",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/facial-nerve-paralysis-using-icd10-codes/0e18aad6/",
+      "downloaded_at": "2026-09-21 14:42:44.068064+00:00Z",
+      "sha": "a4728dfc36c0ab2924b810810be3e4c499714903"
     }
   }
 }

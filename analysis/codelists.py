@@ -267,6 +267,63 @@ gp_snomed_codelist_facial_nerve_paralysis = codelist_from_csv(
     column="code"
 )
 
-# gp_snomed_codelist_cellulitis_only: cellulitis_insectbite and cellulitis_impetigo
-# gp_snomed_codelist_meningitis: meningitis_sinusitis and meningitis_om
-# gp_snomed_codelist_sinus_thrombosis for sinus_thrombosis_om and sinus_thrombosis_sinusitis
+####################################################
+#Snomed codes used for safety evaluation - A&E events
+
+# when do we need this A&E codelist and UTC attendance?
+# snomed_codelist_ae_attendance = 
+# snomed_codelist_urgenttreatment_attendance = 
+
+
+####################################################
+#ICD10 codes used for safety evaluation - hospital events
+
+icd10_codelist_pyelonephritis = codelist_from_csv(
+    "codelists/pharmacy-first-project-pyelonephritis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_sepsis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sepsis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_cellulitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-cellulitis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_quinsy = codelist_from_csv(
+    "codelists/pharmacy-first-project-quinsy-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_post_herpetic_neuralgia = codelist_from_csv(
+    "codelists/pharmacy-first-project-post-herpetic-neuralgia-using-icd10.csv",
+    column="code"
+)
+
+icd10_codelist_mastoiditis = codelist_from_csv(
+    "codelists/pharmacy-first-project-mastoiditis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_meningitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-meningitis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_intracranial_abscess = codelist_from_csv(
+    "codelists/pharmacy-first-project-intracranial-abscess-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_sinus_thrombosis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sinus-thrombosis-usign-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_facial_nerve_paralysis = codelist_from_csv(
+    "codelists/pharmacy-first-project-facial-nerve-paralysis-using-icd10-codes.csv",
+    column="code"
+)
