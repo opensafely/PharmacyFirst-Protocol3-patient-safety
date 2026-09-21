@@ -5,12 +5,12 @@
 from ehrql import create_dataset, show, days, weeks, months, years, case, when, get_parameter
 from ehrql.tables.tpp import (patients, practice_registrations, clinical_events, addresses, 
                               ethnicity_from_sus,
-                              emergency_care_attendances,appointments)
+                              emergency_care_attendances,appointments, apcs)
 import analysis.codelists as codelists
 
 from analysis.pf_variable_library import (get_imd, get_latest_ethnicity, 
                                           select_events_between, select_events_from_codelist, select_events_by_consultation_id,
-                                          has_event_count, ae_non_primary_diagnosis_matches)
+                                          has_event_count, ae_non_primary_diagnosis_matches, ae_non_primary_diagnosis_match_events)
 from ehrql import claim_permissions
 claim_permissions("appointments")
 
@@ -582,33 +582,32 @@ for name, codes in safety_outcomes_gp_codes.items():
 
 ########################################################
 """
-TODO:
 Safety outcomes recorded in A&E attendance data.
 These outcomes should be sourced from TPP.emergency_care_attendances:
 https://docs.opensafely.org/ehrql/reference/schemas/tpp/#emergency_care_attendances
 
 The diagnosis fields should be used to count in several ways:
-- primary, non-primary, any dignosis fields as separate outputs
+- primary, non-primary dignosis fields as separate outputs
 """
+from analysis.pf_variable_library import ae_non_primary_diagnosis_match_events
 
+for name, codes in safety_outcomes_gp_codes.items():
+    ae_primary = ae_events.where(ae_events.diagnosis_01.is_in(codes))
 
+    ae_non_primary = ae_non_primary_diagnosis_match_events(
+        ae_events,
+        codes,
+    )
 
+    setattr(dataset, f"numerator_ae_primary_{name}", ae_primary.id.count_distinct_for_patient())
+    setattr(dataset, f"numerator_ae_non_primary_{name}", ae_non_primary.id.count_distinct_for_patient())
 
-
-
-
-
-
-
-
-
-
-
-
+"""
+TODO: confirm whether we still need these two codelists: A&E attendance, Urgent treatment centre attendance
+"""
 
 ########################################################
 """
-TODO:
 Safety outcomes recorded in hospital admission data.
 These outcomes should be sourced from TPP.apcs:
 https://docs.opensafely.org/ehrql/reference/schemas/tpp/#apcs
@@ -622,23 +621,54 @@ These diagnosis fields should be used to create seperate outputs:
 The all-cause hospitalisation count the number of admission dates in the monthly regardless of diagnosis.
 """
 
+safety_outcomes_icd10_codes = {
+    "pyelonephritis": codelists.icd10_codelist_pyelonephritis,
+    "sepsis": codelists.icd10_codelist_sepsis,
+    "cellulitis_insectbite": codelists.icd10_codelist_cellulitis,
+    "cellulitis_impetigo": codelists.icd10_codelist_cellulitis,
+    "quinsy": codelists.icd10_codelist_quinsy,
+    "post_herpetic_neuralgia": codelists.icd10_codelist_post_herpetic_neuralgia,
+    "mastoiditis": codelists.icd10_codelist_mastoiditis,
+    "meningitis_sinusitis": codelists.icd10_codelist_meningitis, 
+    "meningitis_om": codelists.icd10_codelist_meningitis,
+    "intracranial_abscess": codelists.icd10_codelist_intracranial_abscess,
+    "sinus_thrombosis_om": codelists.icd10_codelist_sinus_thrombosis,
+    "sinus_thrombosis_sinusitis": codelists.icd10_codelist_sinus_thrombosis,
+    "facial_nerve_paralysis": codelists.icd10_codelist_facial_nerve_paralysis,
+}
+
+hes_spells = apcs.where(apcs.admission_date.is_on_or_between(start_date, index_date))
+
+for name, codes in safety_outcomes_icd10_codes.items():
+    hes_primary = hes_spells.where(hes_spells.primary_diagnosis.is_in(codes))
+
+    hes_non_primary = hes_spells.where(
+        hes_spells.all_diagnoses.contains_any_of(codes)
+        & ~hes_spells.primary_diagnosis.is_in(codes)
+    )
+
+    hes_all_diagnoses = hes_spells.where(hes_spells.all_diagnoses.contains_any_of(codes))
 
 
+    setattr(
+        dataset,
+        f"numerator_hes_primary_{name}",
+        hes_primary.apcs_ident.count_distinct_for_patient(),
+    )
 
+    setattr(
+        dataset,
+        f"numerator_hes_non_primary_{name}",
+        hes_non_primary.apcs_ident.count_distinct_for_patient(),
+    )
 
+    setattr(
+        dataset,
+        f"numerator_hes_all_diagnoses_{name}",
+        hes_all_diagnoses.apcs_ident.count_distinct_for_patient(),
+    )
 
-
-
-
-
-
-
-
-
-
-
-
-
+dataset.numerator_hes_all_cause_hospitalisation = (hes_spells.admission_date.count_distinct_for_patient())
 
 ########################################################
 '''
