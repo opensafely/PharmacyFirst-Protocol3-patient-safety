@@ -1,0 +1,81 @@
+code,term
+104041000119108,Fungal sinusitis
+10629551000119101,Recurrent acute sphenoid sinusitis
+10629591000119106,Recurrent acute frontal sinusitis
+10629631000119106,Recurrent acute pansinusitis
+10629671000119109,Recurrent acute maxillary sinusitis
+10629711000119108,Recurrent acute ethmoid sinusitis
+10633991000119103,Empyema of nasal sinus
+111274000,Acute abscess of nasal sinus
+11134001,Acute suppuration of sphenoidal sinus
+13266007,Sphenoidal sinusitis
+1362126002,Odontogenic maxillary sinusitis due to oroantral fistula
+1362141002,Iatrogenic odontogenic maxillary sinusitis following procedure on tooth
+1362142009,Periapical inflammation of mucous membrane of maxillary sinus
+1363164006,Maxillary sinusitis due to endodontic disease
+1363165007,Maxillary sinusitis due to dental disorder
+1363413000,Maxillary sinusitis due to periodontal disease
+155498004,Acute sinusitis
+155499007,Acute maxillary sinusitis
+155500003,Acute frontal sinusitis
+155501004,(Acute sinusitis: [NOS] or [ethmoidal] or [sphenoidal]) or ([pansinusitis])
+15805002,Acute sinusitis
+16036000,Acute empyema of frontal sinus
+17357005,Acute suppuration of frontal sinus
+18643000,Ethmoidal sinusitis
+195649005,Sinusitis (& acute)
+195651009,Other acute sinusitis
+195652002,Other acute sinusitis NOS
+195653007,Acute sinusitis NOS
+195785003,(Maxillary sinusitis) or (chronic antritis)
+195788001,Recurrent sinusitis
+195790000,Pansinusitis
+196196007,[X]Other acute sinusitis
+232389000,Pott's puffy tumor
+232390009,Suppurative sinusitis with complications
+232391008,Recurrent acute sinusitis
+233666007,Young's syndrome
+23884004,Acute suppuration of maxillary sinus
+25764005,Acute abscess of frontal sinus
+266378004,(Acute sinusitis: [NOS] or [ethmoidal] or [sphenoidal]) or ([pansinusitis])
+26808007,Polypoid sinus degeneration
+27278006,Acute empyema of sphenoidal sinus
+275483004,Sinusitis
+275484005,Maxillary sinusitis
+275485006,Frontal sinusitis
+30239003,Acute abscess of sphenoidal sinus
+313281000000109,Acute rhinosinusitis
+338111000000109,Acute rhinosinusitis
+35168006,Acute empyema of ethmoidal sinus
+36971009,Sinusitis
+371127003,Obstructive sinusitis
+41931000119102,Sinusitis co-occurrent with nasal polyps
+425011002,Allergic fungal sinusitis
+429427008,Invasive fungal sinusitis
+431231008,Acute rhinosinusitis
+454211000000100,[X]Other acute sinusitis
+5028002,Acute pansinusitis
+52721006,Tuberculosis of nasal sinus
+58763001,Acute empyema of nasal sinus
+600981000000100,Other acute sinusitis NOS
+600991000000103,Acute sinusitis NOS
+607911000000108,Other acute sinusitis
+61711004,Acute abscess of ethmoidal sinus
+63140003,Acute suppuration of ethmoidal sinus
+67832005,Acute ethmoidal sinusitis
+68272006,Acute maxillary sinusitis
+703470001,Bacterial sinusitis
+721741006,Sinusitis caused by Streptococcus pneumoniae
+721755003,Sinusitis caused by Haemophilus influenzae
+725916003,Acute sinusitis caused by fungus
+725917007,Acute sinusitis caused by virus
+75498004,Acute bacterial sinusitis
+76653009,Acute empyema of maxillary sinus
+77919000,Acute sphenoidal sinusitis
+78737005,Frontal sinusitis
+80600003,Acute suppuration of nasal sinus
+838367000,Allergic rhinosinusitis caused by Aspergillus
+88348008,Maxillary sinusitis
+89194009,Acute abscess of maxillary sinus
+897656009,Rhinosinusitis
+91038008,Acute frontal sinusitis

@@ -1,0 +1,188 @@
+code,term
+10001005,Bacterial sepsis
+1036671000000106,Severe sepsis
+1048491000000106,Acute kidney injury due to acute tubular necrosis due to sepsis
+1048521000000109,Acute kidney injury due to acute tubular necrosis due to sepsis with histological evidence
+1076281000000108,Amber flag sepsis
+1092461000119104,Sepsis without acute organ dysfunction
+1092471000119105,Septic shock co-occurrent with acute organ dysfunction due to Chromobacterium
+1092481000119108,Septic shock co-occurrent with acute organ dysfunction due to coagulase-negative Staphylococcus
+1092491000119106,Septic shock co-occurrent with acute organ dysfunction due to Enterococcus
+1092501000119104,Septic shock co-occurrent with acute organ dysfunction due to Gonococcus
+1092511000119101,Septic shock co-occurrent with acute organ dysfunction due to Gram-positive coccus
+1092531000119106,Septic shock co-occurrent with acute organ dysfunction due to Group A streptococcus
+1092541000119102,Septic shock co-occurrent with acute organ dysfunction due to Group B streptococcus
+1092571000119109,Sepsis caused by Chromobacterium
+1092581000119107,Severe sepsis with acute organ dysfunction due to coagulase negative Staphylococcus
+1092591000119105,Sepsis caused by Enterococcus
+1092601000119103,Sepsis caused by Gonococcus
+1092611000119100,Severe sepsis with acute organ dysfunction caused by Gram-positive bacteria
+1092631000119105,Severe sepsis with acute organ dysfunction due to Group A streptococcus
+1092641000119101,Severe sepsis with acute organ dysfunction due to Group B streptococcus
+1149481006,Sepsis caused by coliform bacteria
+1149482004,Sepsis caused by Clostridium
+1149486001,Sepsis caused by Proteus
+1149494008,Sepsis caused by Erysipelothrix rhusiopathiae
+1153534006,Sepsis caused by vancomycin resistant Enterococcus
+1201760007,Sepsis caused by Bacteroides
+1204459002,Lung injury with sepsis
+1204460007,Myocardial dysfunction with sepsis
+1204461006,Gastrointestinal lesion with sepsis
+1204462004,Left ventricular failure with sepsis
+1204463009,Encephalopathy with sepsis
+1204464003,Gastrointestinal hemorrhage with sepsis
+1204466001,Gastritis with sepsis
+1204467005,Gastrointestinal ulceration due to sepsis
+1204468000,Right ventricular failure with sepsis
+1231140009,Lemierre syndrome
+127141000119107,Septic shock co-occurrent with acute organ dysfunction caused by anaerobic bacteria
+127171000119100,Septic shock co-occurrent with acute organ dysfunction caused by Haemophilus influenzae
+127181000119102,Septic shock co-occurrent with acute organ dysfunction caused by Meningococcus
+127191000119104,Septic shock co-occurrent with acute organ dysfunction caused by methicillin susceptible Staphylococcus aureus
+127201000119101,Septic shock co-occurrent with acute organ dysfunction caused by Pseudomonas
+127231000119108,Septic shock co-occurrent with acute organ dysfunction caused by Serratia
+127241000119104,Septic shock co-occurrent with acute organ dysfunction due to Staphylococcus
+127251000119102,Septic shock co-occurrent with acute organ dysfunction caused by Streptococcus
+127261000119100,Septic shock co-occurrent with acute organ dysfunction caused by Pneumococcus
+127271000119106,Severe sepsis with acute organ dysfunction caused by anaerobic bacteria
+127291000119107,Severe sepsis with acute organ dysfunction caused by Gram-negative bacteria
+127301000119108,Severe sepsis with acute organ dysfunction caused by Haemophilus influenzae
+127311000119106,Sepsis due to infection caused by Neisseria meningitidis
+127321000119104,Severe sepsis with acute organ dysfunction caused by methicillin resistant Staphylococcus aureus
+127331000119101,Sepsis caused by methicillin susceptible Staphylococcus aureus
+127341000119105,Severe sepsis with acute organ dysfunction caused by Pneumococcus
+127351000119107,Severe sepsis with acute organ dysfunction caused by Pseudomonas
+127361000119109,Severe sepsis with acute organ dysfunction caused by Salmonella
+127381000119100,Severe sepsis with acute organ dysfunction caused by Serratia
+127391000119102,Severe sepsis with acute organ dysfunction caused by Staphylococcus
+127401000119100,Severe sepsis with acute organ dysfunction caused by Streptococcus
+127411000119102,Toxic shock syndrome caused by methicillin susceptible Staphylococcus aureus
+127421000119109,Toxic shock syndrome caused by methicillin resistant Staphylococcus aureus infection
+128381000119104,Septic shock co-occurrent with acute organ dysfunction caused by methicillin resistant Staphylococcus aureus
+1290841000000104,Sepsis caused by monkeypox virus
+1303592000,Sepsis due to infection caused by Citrobacter
+137701000119106,Antepartum septicemia
+16751003,Acute tubulointerstitial nephritis associated with systemic infection
+18504008,Toxic shock syndrome
+186392004,(Septicaemia NOS) or (sepsis)
+194394004,Gram positive sepsis
+230361008,Sepsis-associated encephalopathy
+233626008,Chronic bronchial sepsis
+233812001,Sepsis-associated lung injury
+234173007,Hyperdynamic septic shock
+234174001,Hypodynamic septic shock
+235657005,Sepsis-related gastritis
+238150007,Sepsis syndrome
+238151006,Sepsis-associated organ dysfunction
+238152004,Sepsis-related gastrointestinal ulceration
+240450004,Staphylococcal toxic shock syndrome
+240451000,Streptococcal toxic shock syndrome
+276229008,Sepsis-associated gastrointestinal hemorrhage
+276741000,Sepsis-associated myocardial dysfunction
+277638005,Sepsis-associated left ventricular failure
+277639002,Sepsis-associated right ventricular failure
+310669007,Septicemia caused by enterococcus
+371044001,Transient respiratory distress with sepsis
+371093006,Urosepsis
+371769008,Endotoxic shock
+397843005,Sepsis-related gastrointestinal lesions
+42939002,Pyemia
+443980004,Neutropenic sepsis
+447684006,Sepsis caused by Erysipelothrix
+447685007,Sepsis caused by Haemophilus influenzae
+447841007,Sepsis caused by Candida
+447843005,Sepsis caused by anaerobic bacteria
+447894003,Sepsis caused by Staphylococcus
+447897005,Sepsis caused by Acinetobacter
+447898000,Sepsis caused by Actinomyces
+447899008,Sepsis caused by Escherichia coli
+447931005,Clinical sepsis
+448417001,Sepsis caused by Staphylococcus aureus
+448418006,Sepsis caused by Streptococcus
+448419003,Sepsis caused by Streptococcus agalactiae
+448420009,Sepsis caused by Streptococcus group D
+448421008,Sepsis caused by Streptococcus pneumoniae
+448422001,Sepsis caused by Streptococcus suis
+448482003,Sepsis caused by Bacillus anthracis
+448483008,Sepsis caused by Enterobacter
+448784003,Sepsis due to herpes simplex
+448812000,Sepsis caused by methicillin resistant Staphylococcus aureus
+448813005,Sepsis caused by Pseudomonas
+449082003,Sepsis caused by Gram negative bacteria
+449083008,Sepsis caused by Salmonella
+449084002,Sepsis caused by Serratia
+449335002,Sepsis caused by Listeria monocytogenes
+449504009,Sepsis caused by Streptococcus pyogenes
+449505005,Sepsis caused by coagulase negative Staphylococcus
+449546000,Sepsis caused by Haemophilus influenzae type b
+55528005,Menosepsis
+68190001,Wissler-Fanconi syndrome
+700050004,Overwhelming infection in asplenic patient
+700051000,Sepsis in asplenic subject
+700053002,Sepsis with acquired immunodeficiency syndrome
+700054008,Sepsis caused by fungus
+700055009,Sepsis with cutaneous manifestations
+707271004,Sepsis due to oral infection
+70993000,Pyrogenic shock
+714083007,Recurrent salmonella sepsis co-occurrent with human immunodeficiency virus infection
+715070000,Sepsis caused by Peptostreptococcus
+715071001,Sepsis caused by anaerobic streptococcus
+721104000,Sepsis due to urinary tract infection
+721572008,Sepsis caused by Pseudomonas aeruginosa
+722278006,Acute kidney injury due to sepsis
+750511000000101,Biliary sepsis
+757261000000103,Biliary sepsis
+762528007,Sepsis caused by Klebsiella pneumoniae
+762529004,Sepsis caused by Acinetobacter baumannii
+76571007,Septic shock
+770349000,Sepsis caused by virus
+789043007,Sepsis without septic shock
+811501000000102,Sepsis due to Bacillus anthracis
+812121000000105,Sepsis due to Actinomyces
+812131000000107,Sepsis due to Streptococcus
+812141000000103,Sepsis due to Streptococcus group A
+812151000000100,Sepsis due to Streptococcus group B
+812201000000105,Sepsis due to Streptococcus group D
+812211000000107,Sepsis due to Streptococcus pneumoniae
+812221000000101,Sepsis due to Staphylococcus
+812231000000104,Sepsis due to Staphylococcus aureus
+812241000000108,Sepsis due to anaerobic bacteria
+812251000000106,Sepsis due to Gram negative bacteria
+812261000000109,Sepsis due to Haemophilus influenzae
+812291000000103,Sepsis due to Listeria monocytogenes
+812301000000104,Sepsis due to Erysipelothrix
+812321000000108,Sepsis due to Candida
+822841000000100,Urosepsis
+831561000000109,Sepsis
+832071000000102,Sepsis due to Bacillus anthracis
+832121000000102,Sepsis due to Salmonella
+832201000000102,Sepsis due to Actinomyces
+832211000000100,Sepsis due to Streptococcus
+832221000000106,Sepsis due to Streptococcus group A
+832231000000108,Sepsis due to Streptococcus group B
+832241000000104,Sepsis due to Streptococcus group D
+832251000000101,Sepsis due to Streptococcus pneumoniae
+832261000000103,Sepsis due to Streptococcus
+832271000000105,Sepsis due to Streptococcus
+832281000000107,Sepsis due to Staphylococcus
+832291000000109,Sepsis due to Staphylococcus aureus
+832301000000108,Sepsis due to Staphylococcus
+832311000000105,Sepsis due to Staphylococcus
+832321000000104,Sepsis due to anaerobic bacterium
+832331000000102,Sepsis due to Gram negative bacterium
+832341000000106,Sepsis due to Haemophilus influenzae
+832351000000109,Sepsis due to Gram negative bacterium
+832361000000107,Sepsis
+832371000000100,Sepsis
+832411000000101,Sepsis due to Listeria monocytogenes
+832421000000107,Sepsis due to Erysipelothrix
+832451000000102,Sepsis due to Candida
+834751000000103,Urosepsis
+859701000000104,Suspected sepsis
+870588003,Sepsis due to disease caused by severe acute respiratory syndrome coronavirus 2
+875091000000107,Suspected sepsis
+91302008,Sepsis
+957421000000104,Uncomplicated sepsis
+957431000000102,Red flag sepsis
+975661000000100,Sepsis care
+975921000000104,Management of sepsis

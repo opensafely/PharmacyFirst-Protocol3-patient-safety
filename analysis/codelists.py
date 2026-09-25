@@ -67,47 +67,55 @@ tx_codelist_pf_urinary_tract_infection = codelist_from_csv(
 
 ####################################################
 #Snomed codes used for PF conditions by GPs
+# Updated from Protocol 2 to Protocol 3
 gp_snomed_codelist_uti = codelist_from_csv(
     # "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions.csv",
-    "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions-for-pharamcy-first-clone.csv",
+    # "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions-for-pharamcy-first-clone.csv",
+    "codelists/pharmacy-first-project-urinary-tract-infection-codes-for-pharmacy-first-clone.csv",
     column="code",
 )  
 gp_snomed_codelist_impetigo = codelist_from_csv(
-    "codelists/pharmacy-first-project-impetigo-related-conditions-administration-codes-for-pharmacy-first.csv",
+    # "codelists/pharmacy-first-project-impetigo-related-conditions-administration-codes-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-impetigo-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_otitis_media = codelist_from_csv(
-    "codelists/pharmacy-first-project-otitis-media-and-related-conditions.csv",
+    # "codelists/pharmacy-first-project-otitis-media-and-related-conditions.csv",
+    "codelists/pharmacy-first-project-otitis-media-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_sinusitis = codelist_from_csv(
-    "codelists/pharmacy-first-project-sinusitis-related-conditions-administration-codes-for-pharmacy-first.csv",
+    # "codelists/pharmacy-first-project-sinusitis-related-conditions-administration-codes-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-sinusitis-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_sore_throat = codelist_from_csv(
-    "codelists/pharmacy-first-project-Sore-throat-and-related-conditions.csv",
+    # "codelists/pharmacy-first-project-Sore-throat-and-related-conditions.csv",
+    "codelists/pharmacy-first-project-sore-throat-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_insect_bites = codelist_from_csv(
-    "codelists/pharmacy-first-project-insect-bites-and-related-conditions-administration-codes-for-pharmacy-first.csv",
-    column="code",
-) 
-gp_snomed_codelist_shingles = codelist_from_csv(
-    "codelists/pharmacy-first-project-shingles-and-related-conditions-for-pharmacy-first.csv",
-    column="code",
-)
-####################################################
-#Snomed codes used for deciding which one to use for insect bites
-
-gp_snomed_codelist_insect_bites_strict = codelist_from_csv(
+    # "codelists/pharmacy-first-project-insect-bites-and-related-conditions-administration-codes-for-pharmacy-first.csv",
     "codelists/pharmacy-first-project-infected-insect-bites-codes-for-pharmacy-first-strict-definition.csv",
     column="code",
 ) 
-
-gp_snomed_codelist_insect_bites_all = codelist_from_csv(
-    "codelists/pharmacy-first-project-all-insect-bites-codes-for-pharmacy-first.csv",
+gp_snomed_codelist_shingles = codelist_from_csv(
+    # "codelists/pharmacy-first-project-shingles-and-related-conditions-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-shingles-for-pharmacy-first-clone.csv",
     column="code",
-) 
+)
+####################################################
+#Snomed codes used for deciding which one to use for insect bites - Protocol 2
+
+# gp_snomed_codelist_insect_bites_strict = codelist_from_csv(
+#     "codelists/pharmacy-first-project-infected-insect-bites-codes-for-pharmacy-first-strict-definition.csv",
+#     column="code",
+# ) 
+
+# gp_snomed_codelist_insect_bites_all = codelist_from_csv(
+#     "codelists/pharmacy-first-project-all-insect-bites-codes-for-pharmacy-first.csv",
+#     column="code",
+# ) 
 
 gp_snomed_codelist_cellulitis_only = codelist_from_csv(
     "codelists/pharmacy-first-project-cellulitis-using-snomed-ct-codes.csv",
@@ -218,3 +226,104 @@ otitismedia_code = ["3110003"]
 sorethroat_code = ["363746003"]
 shingles_code = ["4740000"]
 impetigo_code = ["48277006"]
+
+####################################################
+#Snomed codes used for safety evaluation - GP clinical events
+
+gp_snomed_codelist_pyelonephritis = codelist_from_csv(
+    "codelists/pharmacy-first-project-pyelonephritis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_sepsis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sepsis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_quinsy = codelist_from_csv(
+    "codelists/pharmacy-first-project-quinsy-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_post_herpetic_neuralgia = codelist_from_csv(
+    "codelists/pharmacy-first-project-post-herpetic-neuralgia-using-snomed-ct.csv",
+    column="code"
+)
+
+gp_snomed_codelist_mastoiditis = codelist_from_csv(
+    "codelists/pharmacy-first-project-mastoiditis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_meningitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-meningitis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_intracranial_abscess = codelist_from_csv(
+    "codelists/pharmacy-first-project-intracranial-abscess-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_sinus_thrombosis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sinus-thrombosis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+gp_snomed_codelist_facial_nerve_paralysis = codelist_from_csv(
+    "codelists/pharmacy-first-project-facial-nerve-paralysis-using-snomed-ct-codes.csv",
+    column="code"
+)
+
+####################################################
+#ICD10 codes used for safety evaluation - hospital events
+
+icd10_codelist_pyelonephritis = codelist_from_csv(
+    "codelists/pharmacy-first-project-pyelonephritis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_sepsis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sepsis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_cellulitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-cellulitis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_quinsy = codelist_from_csv(
+    "codelists/pharmacy-first-project-quinsy-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_post_herpetic_neuralgia = codelist_from_csv(
+    "codelists/pharmacy-first-project-post-herpetic-neuralgia-using-icd10.csv",
+    column="code"
+)
+
+icd10_codelist_mastoiditis = codelist_from_csv(
+    "codelists/pharmacy-first-project-mastoiditis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_meningitis = codelist_from_csv(
+    "codelists/pharmacy-first-project-meningitis-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_intracranial_abscess = codelist_from_csv(
+    "codelists/pharmacy-first-project-intracranial-abscess-using-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_sinus_thrombosis = codelist_from_csv(
+    "codelists/pharmacy-first-project-sinus-thrombosis-usign-icd10-codes.csv",
+    column="code"
+)
+
+icd10_codelist_facial_nerve_paralysis = codelist_from_csv(
+    "codelists/pharmacy-first-project-facial-nerve-paralysis-using-icd10-codes.csv",
+    column="code"
+)
