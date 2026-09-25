@@ -6,6 +6,22 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/dataset_patients.csv.gz
+  
+  generate_patient_measures_consultation_validation:
+    run: ehrql:v1 generate-measures analysis_protocol3/validation/measures_patient_consultations_validation.py --output output/patient_measures_consultation_validation.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_validation.csv
+
+  process_patient_measures_consultation_validation:
+    run: python:v2 analysis_protocol3/validation/process_measure_consultation_validation.py --output output/patient_measures_consultation_validation_ordered.csv
+    needs: [generate_patient_measures_consultation_validation]
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_validation_ordered.csv
+        summary_tables: output/patient_measures_consultation_validation_summary.csv
+        pf_consultation_chart: output/patient_measures_pf_consultations_by_condition.png
+        gp_consultation_chart: output/patient_measures_gp_consultation_by_condition.png
 
   generate_safety_outcome_measures_count_validation:
     run: ehrql:v1 generate-measures analysis_protocol3/validation/measures_safety_count_validation.py --output output/safety_measures_count_validation.csv
@@ -13,8 +29,8 @@ actions:
       moderately_sensitive:
         measure_tables: output/safety_measures_count_validation.csv
   
-  postprocess_safety_count_validation:
-    run: python:latest analysis_protocol3/validation/postprocess_safety_count_validation.py
+  process_safety_count_validation:
+    run: python:latest analysis_protocol3/validation/process_safety_count_validation.py
     needs: [generate_safety_outcome_measures_count_validation]
     outputs:
       moderately_sensitive:
@@ -27,8 +43,8 @@ actions:
       moderately_sensitive:
         measure_tables: output/safety_measures_rate_validation.csv
   
-  postprocess_safety_rate_validation:
-    run: python:latest analysis_protocol3/validation/postprocess_safety_rate_validation.py
+  process_safety_rate_validation:
+    run: python:latest analysis_protocol3/validation/process_safety_rate_validation.py
     needs: [generate_safety_outcome_measures_rate_validation]
     outputs:
       moderately_sensitive:
