@@ -117,10 +117,10 @@ gp_snomed_codelist_shingles = codelist_from_csv(
 #     column="code",
 # ) 
 
-# gp_snomed_codelist_cellulitis_only = codelist_from_csv(
-#     "codelists/pharmacy-first-project-cellulitis-using-snomed-ct-codes.csv",
-#     column="code",
-# ) 
+gp_snomed_codelist_cellulitis_only = codelist_from_csv(
+    "codelists/pharmacy-first-project-cellulitis-using-snomed-ct-codes.csv",
+    column="code",
+) 
 
 ####################################################
 #Snomed codes used for control conditions by GPs
