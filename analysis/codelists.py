@@ -67,52 +67,60 @@ tx_codelist_pf_urinary_tract_infection = codelist_from_csv(
 
 ####################################################
 #Snomed codes used for PF conditions by GPs
+# Updated from Protocol 2 to Protocol 3
 gp_snomed_codelist_uti = codelist_from_csv(
     # "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions.csv",
-    "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions-for-pharamcy-first-clone.csv",
+    # "codelists/pharmacy-first-project-urinary-tract-infection-and-related-conditions-for-pharamcy-first-clone.csv",
+    "codelists/pharmacy-first-project-urinary-tract-infection-codes-for-pharmacy-first-clone.csv",
     column="code",
 )  
 gp_snomed_codelist_impetigo = codelist_from_csv(
-    "codelists/pharmacy-first-project-impetigo-related-conditions-administration-codes-for-pharmacy-first.csv",
+    # "codelists/pharmacy-first-project-impetigo-related-conditions-administration-codes-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-impetigo-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_otitis_media = codelist_from_csv(
-    "codelists/pharmacy-first-project-otitis-media-and-related-conditions.csv",
+    # "codelists/pharmacy-first-project-otitis-media-and-related-conditions.csv",
+    "codelists/pharmacy-first-project-otitis-media-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_sinusitis = codelist_from_csv(
-    "codelists/pharmacy-first-project-sinusitis-related-conditions-administration-codes-for-pharmacy-first.csv",
+    # "codelists/pharmacy-first-project-sinusitis-related-conditions-administration-codes-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-sinusitis-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_sore_throat = codelist_from_csv(
-    "codelists/pharmacy-first-project-Sore-throat-and-related-conditions.csv",
+    # "codelists/pharmacy-first-project-Sore-throat-and-related-conditions.csv",
+    "codelists/pharmacy-first-project-sore-throat-codes-for-pharmacy-first-clone.csv",
     column="code",
 ) 
 gp_snomed_codelist_insect_bites = codelist_from_csv(
-    "codelists/pharmacy-first-project-insect-bites-and-related-conditions-administration-codes-for-pharmacy-first.csv",
-    column="code",
-) 
-gp_snomed_codelist_shingles = codelist_from_csv(
-    "codelists/pharmacy-first-project-shingles-and-related-conditions-for-pharmacy-first.csv",
-    column="code",
-)
-####################################################
-#Snomed codes used for deciding which one to use for insect bites
-
-gp_snomed_codelist_insect_bites_strict = codelist_from_csv(
+    # "codelists/pharmacy-first-project-insect-bites-and-related-conditions-administration-codes-for-pharmacy-first.csv",
     "codelists/pharmacy-first-project-infected-insect-bites-codes-for-pharmacy-first-strict-definition.csv",
     column="code",
 ) 
-
-gp_snomed_codelist_insect_bites_all = codelist_from_csv(
-    "codelists/pharmacy-first-project-all-insect-bites-codes-for-pharmacy-first.csv",
+gp_snomed_codelist_shingles = codelist_from_csv(
+    # "codelists/pharmacy-first-project-shingles-and-related-conditions-for-pharmacy-first.csv",
+    "codelists/pharmacy-first-project-shingles-for-pharmacy-first-clone.csv",
     column="code",
-) 
+)
+####################################################
+#Snomed codes used for deciding which one to use for insect bites - Protocol 2
 
-gp_snomed_codelist_cellulitis_only = codelist_from_csv(
-    "codelists/pharmacy-first-project-cellulitis-using-snomed-ct-codes.csv",
-    column="code",
-) 
+# gp_snomed_codelist_insect_bites_strict = codelist_from_csv(
+#     "codelists/pharmacy-first-project-infected-insect-bites-codes-for-pharmacy-first-strict-definition.csv",
+#     column="code",
+# ) 
+
+# gp_snomed_codelist_insect_bites_all = codelist_from_csv(
+#     "codelists/pharmacy-first-project-all-insect-bites-codes-for-pharmacy-first.csv",
+#     column="code",
+# ) 
+
+# gp_snomed_codelist_cellulitis_only = codelist_from_csv(
+#     "codelists/pharmacy-first-project-cellulitis-using-snomed-ct-codes.csv",
+#     column="code",
+# ) 
 
 ####################################################
 #Snomed codes used for control conditions by GPs
@@ -266,14 +274,6 @@ gp_snomed_codelist_facial_nerve_paralysis = codelist_from_csv(
     "codelists/pharmacy-first-project-facial-nerve-paralysis-using-snomed-ct-codes.csv",
     column="code"
 )
-
-####################################################
-#Snomed codes used for safety evaluation - A&E events
-
-# when do we need this A&E codelist and UTC attendance?
-# snomed_codelist_ae_attendance = 
-# snomed_codelist_urgenttreatment_attendance = 
-
 
 ####################################################
 #ICD10 codes used for safety evaluation - hospital events

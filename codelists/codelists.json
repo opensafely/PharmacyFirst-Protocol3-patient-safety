@@ -305,6 +305,48 @@
       "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/facial-nerve-paralysis-using-icd10-codes/0e18aad6/",
       "downloaded_at": "2026-09-21 14:42:44.068064+00:00Z",
       "sha": "a4728dfc36c0ab2924b810810be3e4c499714903"
+    },
+    "pharmacy-first-project-impetigo-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/impetigo-codes-for-pharmacy-first-clone/7daf29bc",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/impetigo-codes-for-pharmacy-first-clone/7daf29bc/",
+      "downloaded_at": "2026-09-25 11:42:26.967474+00:00Z",
+      "sha": "2e5e3605c3259aea7791052f0d2467808c5fcfe6"
+    },
+    "pharmacy-first-project-Infected-insect-bites-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/Infected-insect-bites-codes-for-pharmacy-first-clone/456d78d4",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/Infected-insect-bites-codes-for-pharmacy-first-clone/456d78d4/",
+      "downloaded_at": "2026-09-25 11:36:07.823187+00:00Z",
+      "sha": "049ccecba23905d8c3bd3653c46a82f98b7c7848"
+    },
+    "pharmacy-first-project-otitis-media-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/otitis-media-codes-for-pharmacy-first-clone/3280d01d",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/otitis-media-codes-for-pharmacy-first-clone/3280d01d/",
+      "downloaded_at": "2026-09-25 11:36:07.971017+00:00Z",
+      "sha": "a9401076c3ca4322f4cc82b1f0847ef7a3318116"
+    },
+    "pharmacy-first-project-shingles-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/shingles-for-pharmacy-first-clone/74d99f48",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/shingles-for-pharmacy-first-clone/74d99f48/",
+      "downloaded_at": "2026-09-25 11:36:08.058094+00:00Z",
+      "sha": "6040ec32d7acf4e6c2f56bc2ab1410284636ca35"
+    },
+    "pharmacy-first-project-sinusitis-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/sinusitis-codes-for-pharmacy-first-clone/4e430348",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/sinusitis-codes-for-pharmacy-first-clone/4e430348/",
+      "downloaded_at": "2026-09-25 11:36:08.151853+00:00Z",
+      "sha": "c2570a1e53b4b270b09f5cb7aefb69667a07a16d"
+    },
+    "pharmacy-first-project-sore-throat-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/sore-throat-codes-for-pharmacy-first-clone/0061e9b3",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/sore-throat-codes-for-pharmacy-first-clone/0061e9b3/",
+      "downloaded_at": "2026-09-25 11:36:08.255174+00:00Z",
+      "sha": "84daa5b5d93ab9def0acdee872ce0215d456f13e"
+    },
+    "pharmacy-first-project-urinary-tract-infection-codes-for-pharmacy-first-clone.csv": {
+      "id": "pharmacy-first-project/urinary-tract-infection-codes-for-pharmacy-first-clone/6752767d",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/urinary-tract-infection-codes-for-pharmacy-first-clone/6752767d/",
+      "downloaded_at": "2026-09-25 11:36:08.335156+00:00Z",
+      "sha": "62bd0ce55303e958478adc8a3ab43e05681feb39"
     }
   }
 }

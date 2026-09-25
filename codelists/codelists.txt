@@ -49,3 +49,10 @@ pharmacy-first-project/meningitis-using-icd10-codes/54cddc0c
 pharmacy-first-project/intracranial-abscess-using-icd10-codes/22aef5a2
 pharmacy-first-project/sinus-thrombosis-usign-icd10-codes/70900f37
 pharmacy-first-project/facial-nerve-paralysis-using-icd10-codes/0e18aad6
+pharmacy-first-project/impetigo-codes-for-pharmacy-first-clone/7daf29bc/
+pharmacy-first-project/Infected-insect-bites-codes-for-pharmacy-first-clone/456d78d4
+pharmacy-first-project/otitis-media-codes-for-pharmacy-first-clone/3280d01d
+pharmacy-first-project/shingles-for-pharmacy-first-clone/74d99f48
+pharmacy-first-project/sinusitis-codes-for-pharmacy-first-clone/4e430348
+pharmacy-first-project/sore-throat-codes-for-pharmacy-first-clone/0061e9b3
+pharmacy-first-project/urinary-tract-infection-codes-for-pharmacy-first-clone/6752767d

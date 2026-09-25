@@ -1,0 +1,453 @@
+code,term
+10461000,Nonvenomous insect bite with infection
+10629791000119104,Cellulitis of left axilla
+10629831000119105,Cellulitis of right axilla
+10629871000119108,Cellulitis of left hip
+10629911000119106,Cellulitis of right hip
+10632951000119102,Cellulitis of left thigh
+10632991000119107,Cellulitis of right thigh
+10633031000119101,Cellulitis of left ankle
+10633071000119103,Cellulitis of right ankle
+10633191000119101,Cellulitis of left foot
+10633231000119105,Cellulitis of right foot
+10633271000119108,Cellulitis of left knee
+10633311000119108,Cellulitis of right knee
+10633351000119109,Cellulitis of left lower limb
+10633391000119104,Cellulitis of right lower limb
+10633431000119109,Cellulitis of left wrist
+10633471000119107,Cellulitis of right wrist
+10633511000119103,Cellulitis of left shoulder
+10633551000119102,Cellulitis of right shoulder
+10633591000119107,Cellulitis of left thumb
+10633631000119107,Cellulitis of right thumb
+10633791000119100,Cellulitis of left hand
+10633831000119106,Cellulitis of left forearm
+10633871000119109,Cellulitis of right forearm
+10633911000119107,Cellulitis of right upper limb
+10633951000119108,Cellulitis of left upper limb
+10662001,Nonvenomous insect bite of face with infection
+10751991000119105,Postpartum cellulitis of breast
+109245003,Cellulitis of periorbital region
+109247006,Cellulitis of infratemporal fossa
+109362006,Cellulitis of parapharyngeal space
+109784009,Cellulitis of masticator space of mouth
+111186009,Cellulitis of other specified site
+11773571000119109,Infected wound of right elbow due to non venomous insect bite
+11773651000119104,Infected wound of left elbow due to non venomous insect bite
+11773731000119102,Nonvenomous insect bite of right thumb with infection
+11773811000119104,Nonvenomous insect bite of left thumb with infection
+11779561000119100,Infected wound of right forearm due to non venomous insect bite
+11779601000119100,Infected wound of left forearm due to non venomous insect bite
+11783401000119109,Infected wound of right hip due to nonvenomous insect bite
+11783441000119106,Infected wound of left hip due to nonvenomous insect bite
+11783681000119103,Nonvenomous insect bite of finger of right hand with infection
+11783721000119109,Nonvenomous insect bite of right index finger with infection
+11783761000119104,Nonvenomous insect bite of right little finger with infection
+11783801000119107,Nonvenomous insect bite of right middle finger with infection
+11783841000119109,Nonvenomous insect bite of right ring finger with infection
+11783961000119101,Infected wound of right thigh due to nonvenomous insect bite
+11784001000119100,Infected wound of left thigh due to nonvenomous insect bite
+11784041000119103,Infected wound of right wrist due to non venomous insect bite
+11784081000119108,Infected wound of left wrist due to non venomous insect bite
+11789361000119103,Nonvenomous insect bite of finger of left hand with infection
+11789401000119107,Nonvenomous insect bite of left index finger with infection
+11789441000119109,Nonvenomous insect bite of left little finger with infection
+11789481000119104,Nonvenomous insect bite of left middle finger with infection
+11789521000119104,Nonvenomous insect bite of left ring finger with infection
+11793541000119106,Infected nonvenomous insect bite of right ankle
+11793581000119101,Infected nonvenomous insect bite of left ankle
+11809141000119104,Nonvenomous insect bite of male genitalia with infection
+11809221000119101,Infected wound of low back due to nonvenomous insect bite
+11809301000119103,Nonvenomous insect bite of pelvis with infection
+11809661000119109,Infected wound of right knee due to nonvenomous insect bite
+11809701000119102,Infected wound of left knee due to nonvenomous insect bite
+11810261000119103,Nonvenomous insect bite of female genitalia with infection
+11822601000119105,Nonvenomous insect bite of right axilla with infection
+11822641000119107,Nonvenomous insect bite of left axilla with infection
+11823241000119101,Nonvenomous insect bite of right shoulder with infection
+11823281000119106,Nonvenomous insect bite of left shoulder with infection
+11823321000119101,Infected wound of right upper arm due to non venomous insect bite
+11823361000119106,Infected wound of left upper arm due to non venomous insect bite
+11837001000119102,Infected wound of right lower leg due to nonvenomous insect bite
+11837041000119100,Infected wound of left lower leg due to nonvenomous insect bite
+11843471000119109,Nonvenomous insect bite of right ear with infection
+11843511000119100,Nonvenomous insect bite of left ear with infection
+11847691000119103,Nonvenomous insect bite of tongue with infection
+11848301000119100,Infected wound of right eyelid due to nonvenomous insect bite
+11848381000119108,Infected wound of left eyelid due to nonvenomous insect bite
+11849141000119108,Nonvenomous insect bite of right breast with infection
+11849181000119103,Nonvenomous insect bite of left breast with infection
+11849301000119109,Nonvenomous insect bite of right half of chest wall with infection
+11849341000119106,Nonvenomous insect bite of left half of chest wall with infection
+11851361000119106,Nonvenomous insect bite of right half of posterior thorax with infection
+11851441000119100,Nonvenomous insect bite of left half of posterior thorax with infection
+11852981000119108,Nonvenomous insect bite of chin with infection
+11862361000119107,Nonvenomous insect bite of right great toe with infection
+11862401000119103,Nonvenomous insect bite of left great toe with infection
+11862441000119101,Nonvenomous insect bite of lesser toe of right foot with infection
+11862481000119106,Nonvenomous insect bite of lesser toe of left foot with infection
+11862521000119106,Infected wound of right foot due to nonvenomous insect bite
+11862561000119101,Infected wound of left foot due to nonvenomous insect bite
+1197179009,Acute cellulitis
+123951002,Cellulitis of skin
+12713001,Cellulitis of skin with lymphangitis
+128045006,Cellulitis
+128276007,Cellulitis of foot
+128277003,Cellulitis of head
+1297277004,Cellulitis of index finger
+1297278009,Cellulitis of middle finger
+1297281004,Cellulitis of ring finger
+1297283001,Cellulitis of little finger
+1297306005,Cellulitis of great toe
+1297307001,Cellulitis of second toe
+1297308006,Cellulitis of third toe
+1297309003,Cellulitis of toe of left foot
+1297310008,Cellulitis of toe of right foot
+1297311007,Cellulitis of fourth toe
+1297312000,Cellulitis of little toe
+13000001000004102,Cellulitis of right hand
+13301002,Cellulitis of knee
+1332473009,Necrotizing cellulitis
+1332475002,Necrotizing cellulitis
+1366286009,Nonvenomous insect bite of great toe with infection
+1366287000,Nonvenomous insect bite of lesser toe with infection
+1366288005,Nonvenomous insect bite of index finger with infection
+1366289002,Nonvenomous insect bite of little finger with infection
+1366290006,Nonvenomous insect bite of middle finger with infection
+1366291005,Nonvenomous insect bite of ring finger with infection
+1366292003,Nonvenomous insect bite of thumb with infection
+1366293008,Nonvenomous insect bite of posterior thorax with infection
+13680009,Cellulitis of forearm
+1372801007,Cellulitis of clavicular region
+1372802000,Cellulitis of calf of leg
+1372805003,Cellulitis of skin of anterior surface of knee
+14096004,Nonvenomous insect bite of scapular region with infection
+15034009,Nonvenomous insect bite of breast with infection
+156304001,(Cellulitis &/or abscess finger/toe) or (felon - whitlow)
+156305000,(Cellulitis - finger-paronychia) or (paronychia)
+156306004,Toe: [cellulitis] or [paronychia]
+156307008,Cellulitis - digit NOS
+156308003,(Cellulitis/abscess: [NOS] or [other]) or (abscess NOS)
+156309006,(Cellulitis/abscess - face) or (cellulitis - lips)
+156310001,Cellulitis and abscess of neck
+156311002,Cellulitis and abscess of trunk
+156312009,Cellulitis and abscess of arm
+156313004,Cellulitis -hand (& -excl. finger)
+156315006,"Cellulitis of leg, excluding foot"
+156316007,Cellulitis - foot (& - excl. toe)
+156317003,Cellulitis NOS
+15936661000119103,Erysipelas of bilateral lower limbs
+15936701000119105,Erysipelas of right lower limb
+15936741000119107,Erysipelas of left lower limb
+16005551000119105,Cellulitis of left elbow
+16005591000119100,Cellulitis of right elbow
+17198008,Nonvenomous insect bite of ear with infection
+17384006,Nonvenomous insect bite of toe with infection
+190280006,Phlegmon
+19108007,Nonvenomous insect bite of trunk with infection
+191132005,Cellulitis
+19240003,Cellulitis of digit
+193915003,Cellulitis of eyelid
+19457002,Cellulitis of axilla
+196545002,(Infection mouth) or (oral cellulitis and abscess NOS)
+196553005,Cellulitis of lip
+200628009,Cellulitis and abscess of finger and toe
+200630006,Cellulitis and abscess of finger
+200631005,Cellulitis and abscess of finger unspecified
+200637009,Cellulitis and abscess of finger NOS
+200638004,Cellulitis and abscess of toe
+200639007,Cellulitis and abscess of toe unspecified
+200642001,Toe: [Perionychia] or [cellulitis and abscess NOS]
+200644000,(Skin area excluding digits of hand or foot: [abscess] or [acute lymphangitis of skin] or [cellulitis]) or (other cellulitis and abscess)
+200645004,Cellulitis and abscess of face
+200646003,Cellulitis and abscess of cheek (& external)
+200647007,Cellulitis and abscess of nose (& external)
+200648002,Cellulitis and abscess of chin
+200650005,Cellulitis and abscess of forehead
+200651009,Cellulitis and abscess of temple region
+200652002,Cellulitis of face
+200653007,Cellulitis and abscess of face NOS
+200654001,(Cellulitis and abscess of neck) or (cervical abscess)
+200655000,Cellulitis and abscess of trunk
+200656004,Cellulitis and abscess of chest wall
+200657008,Cellulitis and abscess of breast
+200658003,Cellulitis and abscess of back
+200661002,Cellulitis and abscess of flank
+200662009,Cellulitis and abscess of groin
+200664005,Cellulitis and abscess of trunk NOS
+200665006,Cellulitis and abscess of arm
+200666007,Cellulitis and abscess of shoulder
+200667003,Cellulitis and abscess of axilla
+200668008,Cellulitis and abscess of upper arm
+200669000,Cellulitis and abscess of elbow
+200670004,Cellulitis and abscess of forearm
+200671000,Cellulitis and abscess of arm NOS
+200672007,Cellulitis and abscess of hand (& excluding digits)
+200673002,Hand: (abscess and/or cellulitis) of (dorsum or palm or unspecified)
+200674008,Cellulitis and abscess of wrist
+200675009,Cellulitis and abscess of hand NOS
+200676005,Cellulitis and abscess of buttock
+200677001,Cellulitis and abscess of leg (& excluding foot)
+200678006,Cellulitis and abscess of hip
+200679003,Cellulitis and abscess of thigh
+200680000,Cellulitis and abscess of knee
+200681001,Cellulitis and abscess of lower leg
+200682008,Cellulitis and abscess of ankle
+200683003,Cellulitis and abscess of leg NOS
+200684009,Cellulitis and abscess of foot (& excluding toe)
+200685005,Cellulitis and abscess of foot unspecified
+200686006,Cellulitis and abscess of heel
+200687002,Cellulitis of foot due to diabetes mellitus
+200688007,Cellulitis and abscess of foot NOS
+200689004,Cellulitis of external ear
+200690008,Other specified cellulitis and abscess
+200691007,(Cellulitis and abscess of head unspecified) or (abscess of scalp)
+200692000,Cellulitis and abscess NOS
+200693005,Cellulitis NOS
+200695003,(Cellulitis and abscess NOS) or (acute lymphangitis NOS)
+200733000,(Septic spots) or (sinus) or (infected skin: [insect bite] or [ulcer] or [dermatitis] or [local infection skin/subcutaneous tissue NOS])
+200737004,Cutaneous cellulitis
+200738009,(Cellulitis: [of thumb] or [[X] of finger and toe]) or (nail bed infection) or (septic thumb)
+200739001,[X]Cellulitis of other parts limb
+200740004,Cellulitis of face
+200741000,Cellulitis of trunk
+200742007,[X]Cellulitis of breast
+200743002,Cellulitis of leg
+200745009,Cellulitis of arm
+200746005,Cellulitis of neck
+200747001,Cellulitis of axilla
+200748006,Cellulitis of foot
+200749003,[X]Cellulitis of other sites
+201335000,Eosinophilic cellulitis
+211012003,"Insect bite, nonvenomous, of head, infected"
+211013008,"Insect bite, nonvenomous, of head, infected, NOS"
+211118002,"Insect bite, nonvenomous, of scrotum &/or testis, infected"
+211119005,"Insect bite, nonvenomous, of trunk, infected, NOS"
+211220005,"Insect bite, nonvenomous, of shoulder and upper arm, infected"
+211221009,"Insect bite, nonvenomous, of interscapular region, infected"
+211222002,"Insect bite, nonvenomous, of shoulder and upper arm, infected, NOS"
+211276002,"Insect bite, nonvenomous, of lower arm, infected"
+211277006,"Insect bite, nonvenomous, of lower arm, infected, NOS"
+211364004,"Insect bite, nonvenomous, of lower limb, infected"
+211365003,"Insect bite, nonvenomous, of knee, infected"
+211366002,"Insect bite, nonvenomous, of lower limb, infected, NOS"
+211423005,"Insect bite, nonvenomous, infected: [foot and toe] or [heel]"
+211424004,"Insect bite, nonvenomous, of foot and toe, infected, NOS"
+211461008,"Insect bite, nonvenomous, infected, NOS"
+21494009,Nonvenomous insect bite of leg with infection
+220145006,Diffuse cellulitis of face
+23166004,Cellulitis of pharynx
+231796003,Cellulitis of eyelid
+232213007,Cellulitis of external ear
+238395006,Cellulitis of skin area excluding digits of hand or foot
+238396007,Cellulitis of dorsum of hand
+238398008,Cellulitis of palm of hand
+238402004,Cellulitis of leg
+238455005,Seal finger
+2385003,Cellulitis of pectoral region
+238931006,Eosinophilic cellulitis
+239162003,Wound cellulitis
+240425002,Facial erysipelas
+240584003,Gonococcal cellulitis
+24232008,Cellulitis with lymphangitis of digit
+24288004,Cellulitis of ankle
+24347001,Cellulitis of vocal cords
+25726008,Nonvenomous insect bite of groin with infection
+262550002,Infected insect bite
+267774008,Cellulitis and abscess of toe NOS
+267775009,Cellulitis and abscess of digit NOS
+267776005,Other cellulitis and abscess
+267777001,Cellulitis and abscess of cheek (external)
+267778006,Cellulitis and abscess of nose (external)
+267779003,Cellulitis and abscess of neck
+267780000,Cellulitis and abscess of hand excluding digits
+267781001,Cellulitis and abscess of hand unspecified
+267782008,Cellulitis and abscess of leg
+267783003,Cellulitis and abscess of foot excluding toe
+267784009,Cellulitis and abscess of head unspecified
+267789004,[X]Cellulitis of finger and toe
+267829005,(Cellulitis &/or abscess finger/toe) or (felon - whitlow)
+267830000,(Cellulitis - finger-paronychia) or (paronychia)
+267831001,(Cellulitis/abscess: [NOS] or [other]) or (abscess NOS)
+267832008,(Cellulitis/abscess - face) or (cellulitis - lips)
+267833003,Cellulitis -hand (& -excl. finger)
+267835005,Cellulitis - foot (& - excl. toe)
+269197008,"Insect bite, nonvenomous, of scrotum and/or testis, infected"
+269206003,"Insect bite, nonvenomous, of foot and toe, infected"
+270541009,Toe: [cellulitis] or [paronychia]
+27561001,Cellulitis of finger
+276433004,Insect bite - wound
+27767004,Cellulitis of forehead
+278037002,Streptococcal cellulitis
+283346007,Infected insect bite of head and neck
+283347003,Infected insect bite of upper limb
+283348008,Infected insect bite of dorsum of hand
+283349000,Infected insect bite of palm of hand
+283350000,Infected insect bite of thumb
+283351001,Infected insect bite of pelvic region
+283352008,Infected insect bite of genitalia
+283353003,Infected insect bite of dorsum of foot
+283354009,Infected insect bite of sole of foot
+284480000,Cellulitis of arm
+286999002,Cellulitis of toe
+287000004,Cellulitis of hand excluding finger
+287001000,"Cellulitis of leg, excluding foot"
+287002007,Cellulitis of foot excluding toe
+28709001,Cellulitis of larynx
+288211000,Cellulitis - digit NOS
+301710008,Cellulitis of elbow
+30584002,"Cellulitis of back, except buttock"
+30818003,Nonvenomous insect bite of perineum with infection
+309254003,Cellulitis of skin of back
+314516007,Preseptal cellulitis
+33155001,Nonvenomous insect bite of flank with infection
+338171000000104,Cellulitis of toe
+35057008,Nonvenomous insect bite of penis with infection
+367118008,Cellulitis of arm
+37098000,Cellulitis of external nose
+37223007,Cellulitis of neck
+37887002,Nonvenomous insect bite of neck with infection
+38189003,Nonvenomous insect bite of ankle with infection
+38217004,Cellulitis of upper arm
+385627004,Cellulitis
+389391000000103,[X]Cellulitis of other sites
+393598005,Cellulitis of leg
+402925001,Erysipelas of lower limb
+402927009,Gram-negative bacterial cellulitis
+402928004,Haemophilus cellulitis
+402929007,Bacterial cellulitis
+402934006,Streptococcal cellulitis of external ear
+41071000087108,Cellulitis of left little toe
+41081000087105,Cellulitis of right little toe
+41091000087107,Cellulitis of left fourth toe
+41101000087102,Cellulitis of right fourth toe
+41111000087100,Cellulitis of left great toe
+41121000087108,Cellulitis of right great toe
+41131000087105,Cellulitis of left second toe
+41141000087104,Cellulitis of right second toe
+41151000087101,Cellulitis of left third toe
+41161000087103,Cellulitis of right third toe
+4124006,Nonvenomous insect bite of vagina with infection
+41631000087102,Cellulitis of left index finger
+41641000087108,Cellulitis of left little finger
+41651000087106,Cellulitis of left lower limb from knee to ankle
+41731000087109,Cellulitis of left middle finger
+41741000087103,Cellulitis of left ring finger
+41751000087100,Cellulitis of right index finger
+41761000087102,Cellulitis of right little finger
+41771000087106,Cellulitis of right lower limb from knee to ankle
+41781000087108,Cellulitis of right middle finger
+41791000087105,Cellulitis of right ring finger
+41801000087109,Cellulitis of left upper arm
+41811000087106,Cellulitis of right upper arm
+41841000087107,Cellulitis of left buttock
+41851000087105,Cellulitis of right buttock
+41958008,Nonvenomous insect bite of back with infection
+42001000087106,Cellulitis of all toes of left foot
+42011000087108,Cellulitis of all toes of right foot
+42032008,Nonvenomous insect bite of abdominal wall with infection
+42089007,Nonvenomous insect bite of anus with infection
+428471001,Nonvenomous insect bite of multiple sites with infection
+428762009,Infected insect bite of hand
+44352004,Nonvenomous insect bite of hand with infection
+443761000000106,(Cellulitis: [of thumb] or [[X] of finger and toe]) or (nail bed infection) or (septic thumb)
+44428005,Cellulitis of buttock
+44464006,Postpartum AND/OR puerperal erysipelas
+44653001,Erysipelas
+449643001,Nonvenomous insect bite of lower leg with infection
+449671007,Cellulitis of upper limb
+449702005,Cellulitis and abscess of lower limb
+449710006,Cellulitis of lower limb
+449711005,Cellulitis of lower leg
+449717009,Cellulitis and abscess of upper limb
+449825003,Cellulitis of thumb
+451451000000104,[X]Cellulitis of finger and toe
+45915002,Nonvenomous insect bite of upper arm with infection
+461991000000108,[X]Cellulitis of other parts limb
+46876003,Cellulitis of trunk
+47027001,Nonvenomous insect bite of scrotum with infection
+477591000000101,[X]Cellulitis of breast
+48420008,Cellulitis of face
+49810002,Cellulitis of shoulder
+50124004,Nonvenomous insect bite of buttock with infection
+51030006,Cellulitis of lip
+51882009,Nonvenomous insect bite of interscapular region with infection
+52190008,Cellulitis of scalp
+52705001,Nonvenomous insect bite of finger with infection
+53188002,Nonvenomous insect bite of gum with infection
+53706009,Nonvenomous insect bite of vulva with infection
+56351000,Cellulitis of heel
+56690006,"Cellulitis of foot, except toe"
+56892000,Nonvenomous insect bite of chest wall with infection
+584491000000109,Cellulitis and abscess of finger unspecified
+584501000000103,Cellulitis and abscess of finger NOS
+584521000000107,Cellulitis and abscess of toe unspecified
+584531000000109,Cellulitis and abscess of face NOS
+584541000000100,Cellulitis and abscess of trunk NOS
+584551000000102,Cellulitis and abscess of arm NOS
+58945008,Cellulitis of chin
+59101000087100,Cellulitis of left heel
+59111000087103,Cellulitis of right heel
+59141000087102,Cellulitis of calf of left lower leg
+59151000087104,Cellulitis of calf of right lower leg
+59443003,Nonvenomous insect bite of thigh with infection
+59532009,Cellulitis of chest wall
+60298004,Nonvenomous insect bite of forearm with infection
+60540006,Cellulitis of external cheek
+606621000000108,"Insect bite, nonvenomous, of foot and toe, infected, NOS"
+60807005,Nonvenomous insect bite of lip with infection
+609337004,Infected insect bite by site
+622241000000109,"Insect bite, nonvenomous, infected, NOS"
+6281007,"Cellulitis of head, except face"
+62837005,Cellulitis of hand
+635581000000107,"Insect bite, nonvenomous, of head, infected, NOS"
+635651000000102,"Insect bite, nonvenomous, of lower arm, infected, NOS"
+643171000000101,Cellulitis and abscess of toe NOS
+653721000000104,"Insect bite, nonvenomous, of trunk, infected, NOS"
+666551000000101,Cellulitis and abscess of digit NOS
+666561000000103,Other cellulitis and abscess
+666571000000105,Cellulitis and abscess of hand unspecified
+666581000000107,Cellulitis and abscess of head unspecified
+66918004,Cellulitis of flank
+673241000000103,"Insect bite, nonvenomous, of lower limb, infected, NOS"
+676271000000103,"Insect bite, nonvenomous, of shoulder and upper arm, infected, NOS"
+677401000000107,Cellulitis and abscess of leg NOS
+677411000000109,Cellulitis and abscess of foot unspecified
+677421000000103,Cellulitis and abscess of foot NOS
+677441000000105,Cellulitis NOS
+67862004,Nonvenomous insect bite of elbow with infection
+67974004,Nonvenomous insect bite of nose with infection
+686701000000107,Cellulitis and abscess of hand NOS
+686711000000109,Other specified cellulitis and abscess
+686721000000103,Cellulitis and abscess NOS
+70294003,Nonvenomous insect bite of scalp with infection
+703721000000102,Cellulitis - digit NOS
+70637004,Cellulitis of toe
+71392009,Cellulitis of wrist
+717857009,Acute cellulitis
+74276003,Cellulitis
+75817003,Cellulitis of breast
+762284008,Cellulitis caused by Staphylococcus aureus
+76584003,Nonvenomous insect bite of hip with infection
+77054009,Cellulitis of thigh
+77874001,Nonvenomous insect bite of shoulder with infection
+78450007,"Cellulitis of leg, except foot"
+789229008,Infected wound of eyelid due to nonvenomous insect bite
+789230003,Infected wound of bilateral eyelids due to nonvenomous insect bite
+801006,Nonvenomous insect bite of foot with infection
+805511000000100,Cellulitis of thumb
+81769002,Nonvenomous insect bite of testis with infection
+83587009,Nonvenomous insect bite of cheek with infection
+838283002,Cellulitis and abscess of hand
+84070009,Nonvenomous insect bite of axilla with infection
+860816004,Cellulitis at injection site
+88361008,Cellulitis of groin
+91060006,Nonvenomous insect bite of wrist with infection
+92351000087104,Cellulitis of left clavicular region
+92361000087101,Cellulitis of right clavicular region
+92741000087103,Cellulitis of skin of anterior surface of left knee
+92751000087100,Cellulitis of skin of anterior surface of right knee
+9557000,Cellulitis of hip
+95806007,Cellulitis of external ear
+9701000119103,Cellulitis of vaginal cuff
+987007,Cellulitis of temple region
