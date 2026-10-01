@@ -50,3 +50,20 @@ actions:
       moderately_sensitive:
         safety_rate_validation_summary: output/safety_rate_validation_summary.csv
         safety_rate_validation_flags: output/safety_rate_validation_flags.csv
+  
+  postprocess_safety_count_by_outcome_source:
+    run: python:latest analysis_protocol3/validation/postprocess_count_by_outcome_source.py
+    needs: [generate_safety_outcome_measures_count_validation]
+    outputs:
+      moderately_sensitive:
+        safety_count_by_outcome_source: output/safety_count_by_outcome_source.csv
+
+  postprocess_safety_rate_by_outcome_source:
+    run: python:latest analysis_protocol3/validation/postprocess_rate_by_outcome_source.py
+    needs: [generate_safety_outcome_measures_rate_validation]
+    outputs:
+      moderately_sensitive:
+        safety_rate_by_outcome_source: output/safety_rate_by_outcome_source.csv
+        safety_numerator_gp_consultation_by_month: output/safety_numerator_gp_consultation_by_month.png
+        safety_numerator_ae_primary_non_primary_by_month: output/safety_numerator_ae_primary_non_primary_by_month.png
+        safety_numerator_hes_primary_non_primary_by_month: output/safety_numerator_hes_primary_non_primary_by_month.png
