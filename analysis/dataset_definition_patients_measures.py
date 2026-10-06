@@ -160,409 +160,409 @@ for name, codes in pf_conditions_pf_codes.items():
     setattr(dataset, f"numerator_pf_consultation_{name}", count_pf_consultation)
     setattr(dataset, f"numerator_pf_date_{name}", count_pf_date)
 
-########################################################
-'''
-This section counts the number of GP consultations for PF-related conditions and control conditions, explicitly excluding consultations identified as PF consultations using general PF service codes.
+# ########################################################
+# '''
+# This section counts the number of GP consultations for PF-related conditions and control conditions, explicitly excluding consultations identified as PF consultations using general PF service codes.
 
-Key logic:
-- pf_ids' represents consultation IDs where at least one event contains a general PF service code.
+# Key logic:
+# - pf_ids' represents consultation IDs where at least one event contains a general PF service code.
 
-1. 'gp_events_clean' is derived by excluding all events belonging to consultations in 'pf_ids'. 
-- This ensures that GP consultation counts do not overlap with PF consultation counts.
-2. Identify PF-related conditions in managed in GP using the condition-specific SNOMED codelists (e.g. UTI, sinusitis)
-3. Consultations are counted using distinct consultation IDs per patient and consultation dates
+# 1. 'gp_events_clean' is derived by excluding all events belonging to consultations in 'pf_ids'. 
+# - This ensures that GP consultation counts do not overlap with PF consultation counts.
+# 2. Identify PF-related conditions in managed in GP using the condition-specific SNOMED codelists (e.g. UTI, sinusitis)
+# 3. Consultations are counted using distinct consultation IDs per patient and consultation dates
 
-Outputs:
-- numerator_gp_consultation_{name}: number of GP consultations for a specific PF condition
-- numerator_gp_date_{name}: number of GP consultation dates for a specific PF condition
-'''
+# Outputs:
+# - numerator_gp_consultation_{name}: number of GP consultations for a specific PF condition
+# - numerator_gp_date_{name}: number of GP consultation dates for a specific PF condition
+# '''
 
-gp_events_clean = selected_events.where(
-    ~selected_events.consultation_id.is_in(pf_ids)
-)
+# gp_events_clean = selected_events.where(
+#     ~selected_events.consultation_id.is_in(pf_ids)
+# )
 
-pf_conditions_gp_codes = {
-    "uti": codelists.gp_snomed_codelist_uti,
-    "sinusitis": codelists.gp_snomed_codelist_sinusitis,
-    "insectbite": codelists.gp_snomed_codelist_insect_bites,
-    "otitismedia": codelists.gp_snomed_codelist_otitis_media,
-    "sorethroat": codelists.gp_snomed_codelist_sore_throat,
-    "shingles": codelists.gp_snomed_codelist_shingles,
-    "impetigo": codelists.gp_snomed_codelist_impetigo,
-}
+# pf_conditions_gp_codes = {
+#     "uti": codelists.gp_snomed_codelist_uti,
+#     "sinusitis": codelists.gp_snomed_codelist_sinusitis,
+#     "insectbite": codelists.gp_snomed_codelist_insect_bites,
+#     "otitismedia": codelists.gp_snomed_codelist_otitis_media,
+#     "sorethroat": codelists.gp_snomed_codelist_sore_throat,
+#     "shingles": codelists.gp_snomed_codelist_shingles,
+#     "impetigo": codelists.gp_snomed_codelist_impetigo,
+# }
 
-# Combined definition: strict infected insect bites OR all insect bites
-insectbite_all_or_strict_event_codes = (
-    *codelists.gp_snomed_codelist_insect_bites_strict,
-    *codelists.gp_snomed_codelist_insect_bites_all,
-)
+# # Combined definition: strict infected insect bites OR all insect bites
+# insectbite_all_or_strict_event_codes = (
+#     *codelists.gp_snomed_codelist_insect_bites_strict,
+#     *codelists.gp_snomed_codelist_insect_bites_all,
+# )
 
-otherinsectbite_gp_codes = {
-    "insectbite_strict": codelists.gp_snomed_codelist_insect_bites_strict,
-    "insectbite_all": codelists.gp_snomed_codelist_insect_bites_all,
-    "cellulitis_only": codelists.gp_snomed_codelist_cellulitis_only,
-    "insectbite_strict_or_all": insectbite_all_or_strict_event_codes,
-}
+# otherinsectbite_gp_codes = {
+#     "insectbite_strict": codelists.gp_snomed_codelist_insect_bites_strict,
+#     "insectbite_all": codelists.gp_snomed_codelist_insect_bites_all,
+#     "cellulitis_only": codelists.gp_snomed_codelist_cellulitis_only,
+#     "insectbite_strict_or_all": insectbite_all_or_strict_event_codes,
+# }
 
-control_conditions_gp_codes = {
-    "lowerbackpain": codelists.gp_snomed_codelist_lower_back_pain,
-}
+# control_conditions_gp_codes = {
+#     "lowerbackpain": codelists.gp_snomed_codelist_lower_back_pain,
+# }
 
-all_conditions_gp_codes = {
-    **pf_conditions_gp_codes,
-    **otherinsectbite_gp_codes,
-    **control_conditions_gp_codes,
-}
+# all_conditions_gp_codes = {
+#     **pf_conditions_gp_codes,
+#     **otherinsectbite_gp_codes,
+#     **control_conditions_gp_codes,
+# }
 
-# for name, codes in pf_conditions_gp_codes.items():
-for name, codes in all_conditions_gp_codes.items():
-    count_gp_event, count_gp_consultation, count_gp_date = has_event_count(gp_events_clean, codes)
-    setattr(dataset, f"numerator_gp_event_{name}", count_gp_event)
-    setattr(dataset, f"numerator_gp_consultation_{name}", count_gp_consultation)
-    setattr(dataset, f"numerator_gp_date_{name}", count_gp_date)
+# # for name, codes in pf_conditions_gp_codes.items():
+# for name, codes in all_conditions_gp_codes.items():
+#     count_gp_event, count_gp_consultation, count_gp_date = has_event_count(gp_events_clean, codes)
+#     setattr(dataset, f"numerator_gp_event_{name}", count_gp_event)
+#     setattr(dataset, f"numerator_gp_consultation_{name}", count_gp_consultation)
+#     setattr(dataset, f"numerator_gp_date_{name}", count_gp_date)
 
-# ------------------------------------------------------
-# Definition 5: at least one code from the all-insect-bites codelist AND at least one cellulitis code.
-# ------------------------------------------------------
-# Combined definition: all insect bites PLUS cellulitis
-insectbite_all_and_cellulitis_event_codes = (
-    *codelists.gp_snomed_codelist_insect_bites_all,
-    *codelists.gp_snomed_codelist_cellulitis_only,
-)
-# Events with an all-insect-bites code
-insectbite_all_events = gp_events_clean.where(
-    gp_events_clean.snomedct_code.is_in(
-        codelists.gp_snomed_codelist_insect_bites_all
-    )
-)
-# Events with a cellulitis code
-cellulitis_events = gp_events_clean.where(
-    gp_events_clean.snomedct_code.is_in(
-        codelists.gp_snomed_codelist_cellulitis_only
-    )
-)
-cellulitis_ids = cellulitis_events.consultation_id
-# Consultations containing both an all-insect-bites code AND a cellulitis code
-insectbite_all_plus_cellulitis_ids = (
-    insectbite_all_events.where(
-        insectbite_all_events.consultation_id.is_in(cellulitis_ids)
-    ).consultation_id
-)
-# Retain relevant insect-bite and cellulitis events
-# from consultations satisfying definition 5
-insectbite_all_plus_cellulitis_condition_events = gp_events_clean.where(
-    gp_events_clean.consultation_id.is_in(
-        insectbite_all_plus_cellulitis_ids
-    )
-    & gp_events_clean.snomedct_code.is_in(
-        insectbite_all_and_cellulitis_event_codes
-    )
-)
+# # ------------------------------------------------------
+# # Definition 5: at least one code from the all-insect-bites codelist AND at least one cellulitis code.
+# # ------------------------------------------------------
+# # Combined definition: all insect bites PLUS cellulitis
+# insectbite_all_and_cellulitis_event_codes = (
+#     *codelists.gp_snomed_codelist_insect_bites_all,
+#     *codelists.gp_snomed_codelist_cellulitis_only,
+# )
+# # Events with an all-insect-bites code
+# insectbite_all_events = gp_events_clean.where(
+#     gp_events_clean.snomedct_code.is_in(
+#         codelists.gp_snomed_codelist_insect_bites_all
+#     )
+# )
+# # Events with a cellulitis code
+# cellulitis_events = gp_events_clean.where(
+#     gp_events_clean.snomedct_code.is_in(
+#         codelists.gp_snomed_codelist_cellulitis_only
+#     )
+# )
+# cellulitis_ids = cellulitis_events.consultation_id
+# # Consultations containing both an all-insect-bites code AND a cellulitis code
+# insectbite_all_plus_cellulitis_ids = (
+#     insectbite_all_events.where(
+#         insectbite_all_events.consultation_id.is_in(cellulitis_ids)
+#     ).consultation_id
+# )
+# # Retain relevant insect-bite and cellulitis events
+# # from consultations satisfying definition 5
+# insectbite_all_plus_cellulitis_condition_events = gp_events_clean.where(
+#     gp_events_clean.consultation_id.is_in(
+#         insectbite_all_plus_cellulitis_ids
+#     )
+#     & gp_events_clean.snomedct_code.is_in(
+#         insectbite_all_and_cellulitis_event_codes
+#     )
+# )
 
-dataset.numerator_gp_event_insectbite_all_plus_cellulitis = (
-    insectbite_all_plus_cellulitis_condition_events.count_for_patient()
-)
+# dataset.numerator_gp_event_insectbite_all_plus_cellulitis = (
+#     insectbite_all_plus_cellulitis_condition_events.count_for_patient()
+# )
 
-dataset.numerator_gp_consultation_insectbite_all_plus_cellulitis = (
-    insectbite_all_plus_cellulitis_condition_events.consultation_id
-    .count_distinct_for_patient()
-)
+# dataset.numerator_gp_consultation_insectbite_all_plus_cellulitis = (
+#     insectbite_all_plus_cellulitis_condition_events.consultation_id
+#     .count_distinct_for_patient()
+# )
 
-dataset.numerator_gp_date_insectbite_all_plus_cellulitis = (
-    insectbite_all_plus_cellulitis_condition_events.date
-    .count_distinct_for_patient()
-)
+# dataset.numerator_gp_date_insectbite_all_plus_cellulitis = (
+#     insectbite_all_plus_cellulitis_condition_events.date
+#     .count_distinct_for_patient()
+# )
 
-# ------------------------------------------------------
-# Definition combined: strict, or, at least one code from the all-insect-bites codelist AND at least one cellulitis code.
-# ------------------------------------------------------
-# Combined definition: definition 2 OR definition 5
-insectbite_strict_or_all_plus_cellulitis_events = gp_events_clean.where(
-    # Events identified by the strict codelist (definition 2)
-    (
-        gp_events_clean.snomedct_code.is_in(codelists.gp_snomed_codelist_insect_bites_strict)
-    )
-    |
-    # Relevant insect-bite plus cellulitis events from definition-5 consultations
-    (
-        gp_events_clean.consultation_id.is_in(insectbite_all_plus_cellulitis_ids)
-        & gp_events_clean.snomedct_code.is_in(insectbite_all_and_cellulitis_event_codes)
-    )
-)
-dataset.numerator_gp_event_insectbite_strict_or_all_plus_cellulitis = (
-    insectbite_strict_or_all_plus_cellulitis_events.count_for_patient()
-)
+# # ------------------------------------------------------
+# # Definition combined: strict, or, at least one code from the all-insect-bites codelist AND at least one cellulitis code.
+# # ------------------------------------------------------
+# # Combined definition: definition 2 OR definition 5
+# insectbite_strict_or_all_plus_cellulitis_events = gp_events_clean.where(
+#     # Events identified by the strict codelist (definition 2)
+#     (
+#         gp_events_clean.snomedct_code.is_in(codelists.gp_snomed_codelist_insect_bites_strict)
+#     )
+#     |
+#     # Relevant insect-bite plus cellulitis events from definition-5 consultations
+#     (
+#         gp_events_clean.consultation_id.is_in(insectbite_all_plus_cellulitis_ids)
+#         & gp_events_clean.snomedct_code.is_in(insectbite_all_and_cellulitis_event_codes)
+#     )
+# )
+# dataset.numerator_gp_event_insectbite_strict_or_all_plus_cellulitis = (
+#     insectbite_strict_or_all_plus_cellulitis_events.count_for_patient()
+# )
 
-dataset.numerator_gp_consultation_insectbite_strict_or_all_plus_cellulitis = (
-    insectbite_strict_or_all_plus_cellulitis_events.consultation_id
-    .count_distinct_for_patient()
-)
+# dataset.numerator_gp_consultation_insectbite_strict_or_all_plus_cellulitis = (
+#     insectbite_strict_or_all_plus_cellulitis_events.consultation_id
+#     .count_distinct_for_patient()
+# )
 
-dataset.numerator_gp_date_insectbite_strict_or_all_plus_cellulitis = (
-    insectbite_strict_or_all_plus_cellulitis_events.date
-    .count_distinct_for_patient()
-)
+# dataset.numerator_gp_date_insectbite_strict_or_all_plus_cellulitis = (
+#     insectbite_strict_or_all_plus_cellulitis_events.date
+#     .count_distinct_for_patient()
+# )
 
-########################################################
-'''
-This section counts PF-related GP condition activity by consultation mode,
-excluding consultations with general PF service codes.
+# ########################################################
+# '''
+# This section counts PF-related GP condition activity by consultation mode,
+# excluding consultations with general PF service codes.
 
-Key logic:
-- 'gp_events_clean' excludes all events belonging to consultations with general PF service codes (pf_ids).
-- The current implementation uses a patient-date-based approach for consultation mode classification.
-- The previous May 2026 implementation used consultation_id to identify all events within condition-related consultations; this has been retained below as commented-out code for reference.
+# Key logic:
+# - 'gp_events_clean' excludes all events belonging to consultations with general PF service codes (pf_ids).
+# - The current implementation uses a patient-date-based approach for consultation mode classification.
+# - The previous May 2026 implementation used consultation_id to identify all events within condition-related consultations; this has been retained below as commented-out code for reference.
 
-1. 'pf_conditions_gp_code_set' is created, including all GP SNOMED codes for the seven PF-related conditions.
-2. Events in 'gp_events_clean' are filtered using the combined code set to identify PF-related GP condition events.
-3. The dates of these condition events are used to define PF-related GP condition patient-dates.
-4. Consultation-mode codes are identified separately from all events in 'gp_events_clean'.
-5. PF-related GP condition patient-dates are classified by matching to consultation-mode patient-dates, using a hierarchical assignment.
+# 1. 'pf_conditions_gp_code_set' is created, including all GP SNOMED codes for the seven PF-related conditions.
+# 2. Events in 'gp_events_clean' are filtered using the combined code set to identify PF-related GP condition events.
+# 3. The dates of these condition events are used to define PF-related GP condition patient-dates.
+# 4. Consultation-mode codes are identified separately from all events in 'gp_events_clean'.
+# 5. PF-related GP condition patient-dates are classified by matching to consultation-mode patient-dates, using a hierarchical assignment.
 
--- Version May 2026: consultation_id-based approach --
-5.1 Condition-related events were first identified using the combined PF-related GP condition codelist.
-5.2 Consultation IDs were extracted from these condition-related events.
-5.3 All events belonging to those consultation IDs were retrieved.
-5.4 Face-to-face, online, and telephone mode-code events were identified within those retrieved consultation events.
-5.5 A hierarchical assignment was applied at consultation-ID level:
-- face-to-face took precedence;
-- online excluded consultations already classified as face-to-face;
-- telephone excluded consultations already classified as face-to-face or online;
-- remaining consultations were classified as othermode.
-5.6 Counts were based on distinct consultation IDs per patient.
+# -- Version May 2026: consultation_id-based approach --
+# 5.1 Condition-related events were first identified using the combined PF-related GP condition codelist.
+# 5.2 Consultation IDs were extracted from these condition-related events.
+# 5.3 All events belonging to those consultation IDs were retrieved.
+# 5.4 Face-to-face, online, and telephone mode-code events were identified within those retrieved consultation events.
+# 5.5 A hierarchical assignment was applied at consultation-ID level:
+# - face-to-face took precedence;
+# - online excluded consultations already classified as face-to-face;
+# - telephone excluded consultations already classified as face-to-face or online;
+# - remaining consultations were classified as othermode.
+# 5.6 Counts were based on distinct consultation IDs per patient.
 
--- Version June 2026: patient-date-based approach --
-6.1 PF-related GP condition patient-dates are identified directly from condition-specific SNOMED-coded events in 'gp_events_clean'.
-6.2 Patient-dates associated with face-to-face, online, and telephone consultation-mode codes are identified separately from all events in 'gp_events_clean'.
-6.3 A hierarchical assignment is applied to PF-related GP condition patient-dates:
-- if any face-to-face mode code is recorded for the patient on the same date, the date is classified as face-to-face;
-- otherwise, if any online mode code is recorded for the patient on the same date, the date is classified as online;
-- otherwise, if any telephone mode code is recorded for the patient on the same date, the date is classified as telephone;
-- remaining PF-related GP condition patient-dates are classified as othermode.
-6.4 Counts are based on distinct dates per patient, not distinct consultation IDs.
-6.5 Multiple PF-related GP condition events for the same patient on the same date are counted once, with consultation mode assigned according to the hierarchy:
-face-to-face > online > telephone > othermode.
+# -- Version June 2026: patient-date-based approach --
+# 6.1 PF-related GP condition patient-dates are identified directly from condition-specific SNOMED-coded events in 'gp_events_clean'.
+# 6.2 Patient-dates associated with face-to-face, online, and telephone consultation-mode codes are identified separately from all events in 'gp_events_clean'.
+# 6.3 A hierarchical assignment is applied to PF-related GP condition patient-dates:
+# - if any face-to-face mode code is recorded for the patient on the same date, the date is classified as face-to-face;
+# - otherwise, if any online mode code is recorded for the patient on the same date, the date is classified as online;
+# - otherwise, if any telephone mode code is recorded for the patient on the same date, the date is classified as telephone;
+# - remaining PF-related GP condition patient-dates are classified as othermode.
+# 6.4 Counts are based on distinct dates per patient, not distinct consultation IDs.
+# 6.5 Multiple PF-related GP condition events for the same patient on the same date are counted once, with consultation mode assigned according to the hierarchy:
+# face-to-face > online > telephone > othermode.
 
-Outputs:
-- gp_pf_patient_date_f2f
-- gp_pf_patient_date_online
-- gp_pf_patient_date_telephone
-- gp_pf_patient_date_econsultation
-- gp_pf_patient_date_othermode
-- gp_pf_patient_date_total
-- gp_pf_patient_date_mode_sum
+# Outputs:
+# - gp_pf_patient_date_f2f
+# - gp_pf_patient_date_online
+# - gp_pf_patient_date_telephone
+# - gp_pf_patient_date_econsultation
+# - gp_pf_patient_date_othermode
+# - gp_pf_patient_date_total
+# - gp_pf_patient_date_mode_sum
 
-Notes:
-- These outputs are patient-date counts, not distinct consultation-ID counts.
-- The May 2026 consultation-ID-based output variables are retained only in commented-out code for reference.
-'''
+# Notes:
+# - These outputs are patient-date counts, not distinct consultation-ID counts.
+# - The May 2026 consultation-ID-based output variables are retained only in commented-out code for reference.
+# '''
 
-pf_conditions_gp_code_set = []
-for codes in pf_conditions_gp_codes.values():
-    pf_conditions_gp_code_set += codes
+# pf_conditions_gp_code_set = []
+# for codes in pf_conditions_gp_codes.values():
+#     pf_conditions_gp_code_set += codes
 
-gp_pf_condition_events = gp_events_clean.where(gp_events_clean.snomedct_code.is_in(pf_conditions_gp_code_set))
+# gp_pf_condition_events = gp_events_clean.where(gp_events_clean.snomedct_code.is_in(pf_conditions_gp_code_set))
 
-######### Version May 2026 #########
-# gp_pf_condition_ids = gp_pf_condition_events.consultation_id
-# gp_pf_condition_all_events = select_events_by_consultation_id(gp_events_clean,gp_pf_condition_ids)
+# ######### Version May 2026 #########
+# # gp_pf_condition_ids = gp_pf_condition_events.consultation_id
+# # gp_pf_condition_all_events = select_events_by_consultation_id(gp_events_clean,gp_pf_condition_ids)
 
-# gp_pf_f2f_type_events = select_events_from_codelist(
-#     gp_pf_condition_all_events,
+# # gp_pf_f2f_type_events = select_events_from_codelist(
+# #     gp_pf_condition_all_events,
+# #     codelists.gp_codelist_consultation_f2f
+# # )
+# # gp_pf_online_type_events = select_events_from_codelist(
+# #     gp_pf_condition_all_events,
+# #     codelists.gp_codelist_consultation_online
+# # )
+# # gp_pf_telephone_type_events = select_events_from_codelist(
+# #     gp_pf_condition_all_events,
+# #     codelists.gp_codelist_consultation_telephone
+# # )
+# # gp_pf_f2f_ids = gp_pf_f2f_type_events.consultation_id
+# # gp_pf_online_ids = gp_pf_online_type_events.consultation_id
+# # gp_pf_telephone_ids = gp_pf_telephone_type_events.consultation_id
+
+# # dataset.gp_pf_consultation_f2f = (
+# #     gp_pf_f2f_ids.count_distinct_for_patient()
+# # )
+
+# # dataset.gp_pf_consultation_online = (
+# #     gp_pf_online_type_events.where(
+# #         ~gp_pf_online_type_events.consultation_id.is_in(gp_pf_f2f_ids)
+# #     ).consultation_id.count_distinct_for_patient()
+# # )
+
+# # dataset.gp_pf_consultation_telephone = (
+# #     gp_pf_telephone_type_events.where(
+# #         ~gp_pf_telephone_type_events.consultation_id.is_in(gp_pf_f2f_ids)
+# #         & ~gp_pf_telephone_type_events.consultation_id.is_in(gp_pf_online_ids)
+# #     ).consultation_id.count_distinct_for_patient()
+# # )
+
+# # dataset.gp_pf_consultation_othermode = (
+# #     gp_pf_condition_all_events.where(
+# #         ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_f2f_ids)
+# #         & ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_online_ids)
+# #         & ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_telephone_ids)
+# #     ).consultation_id.count_distinct_for_patient()
+# # )
+
+# ######### Version June 2026: patient-date level #########
+# # Instead of retrieving all events linked by consultation_id, 
+# # first, identify patient-dates with PF-related GP condition codes, 
+# # then classify those dates according to whether any face-to-face, online, or telephone consultation mode code was recorded on the same patient-date.
+
+# gp_f2f_dates = select_events_from_codelist(
+#     gp_events_clean,
 #     codelists.gp_codelist_consultation_f2f
-# )
-# gp_pf_online_type_events = select_events_from_codelist(
-#     gp_pf_condition_all_events,
+# ).date
+
+# gp_online_dates = select_events_from_codelist(
+#     gp_events_clean,
 #     codelists.gp_codelist_consultation_online
-# )
-# gp_pf_telephone_type_events = select_events_from_codelist(
-#     gp_pf_condition_all_events,
+# ).date
+
+# gp_telephone_dates = select_events_from_codelist(
+#     gp_events_clean,
 #     codelists.gp_codelist_consultation_telephone
+# ).date
+
+# gp_econsultation_dates = select_events_from_codelist(
+#     gp_events_clean,
+#     codelists.gp_codelist_consultation_econsultation
+# ).date
+
+# gp_pf_f2f = gp_pf_condition_events.where(
+#     gp_pf_condition_events.date.is_in(gp_f2f_dates)
+#     )
+# gp_pf_online = gp_pf_condition_events.where(
+#     ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
+#     & gp_pf_condition_events.date.is_in(gp_online_dates)
+#     )
+# gp_pf_telephone = gp_pf_condition_events.where(
+#     ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_online_dates)
+#     & gp_pf_condition_events.date.is_in(gp_telephone_dates)
+#     )
+# gp_pf_econsultation = gp_pf_condition_events.where(
+#     ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_online_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_telephone_dates)
+#     & gp_pf_condition_events.date.is_in(gp_econsultation_dates)
+#     )
+# gp_pf_other = gp_pf_condition_events.where(
+#     ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_online_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_telephone_dates)
+#     & ~gp_pf_condition_events.date.is_in(gp_econsultation_dates)
+#     )
+
+# dataset.gp_pf_patient_date_f2f = (gp_pf_f2f.date.count_distinct_for_patient())
+# dataset.gp_pf_patient_date_online = (gp_pf_online.date.count_distinct_for_patient())
+# dataset.gp_pf_patient_date_telephone = (gp_pf_telephone.date.count_distinct_for_patient())
+# dataset.gp_pf_patient_date_econsultation = (gp_pf_econsultation.date.count_distinct_for_patient())
+# dataset.gp_pf_patient_date_othermode = (gp_pf_other.date.count_distinct_for_patient())
+
+# # Validation variables
+# dataset.gp_pf_patient_date_total = (
+#     gp_pf_condition_events.date.count_distinct_for_patient()
 # )
-# gp_pf_f2f_ids = gp_pf_f2f_type_events.consultation_id
-# gp_pf_online_ids = gp_pf_online_type_events.consultation_id
-# gp_pf_telephone_ids = gp_pf_telephone_type_events.consultation_id
 
-# dataset.gp_pf_consultation_f2f = (
-#     gp_pf_f2f_ids.count_distinct_for_patient()
+# dataset.gp_pf_patient_date_mode_sum = (
+#     dataset.gp_pf_patient_date_f2f
+#     + dataset.gp_pf_patient_date_online
+#     + dataset.gp_pf_patient_date_telephone
+#     + dataset.gp_pf_patient_date_econsultation
+#     + dataset.gp_pf_patient_date_othermode
 # )
 
-# dataset.gp_pf_consultation_online = (
-#     gp_pf_online_type_events.where(
-#         ~gp_pf_online_type_events.consultation_id.is_in(gp_pf_f2f_ids)
-#     ).consultation_id.count_distinct_for_patient()
-# )
+# ########################################################
+# '''
+# This section counts the number of condition-specific GP patient-dates for each PF-related conditions and control conditions by consultation mode (excluding consultations with PF service codes)
 
-# dataset.gp_pf_consultation_telephone = (
-#     gp_pf_telephone_type_events.where(
-#         ~gp_pf_telephone_type_events.consultation_id.is_in(gp_pf_f2f_ids)
-#         & ~gp_pf_telephone_type_events.consultation_id.is_in(gp_pf_online_ids)
-#     ).consultation_id.count_distinct_for_patient()
-# )
+# Outputs:
+# - gp_<name>_patient_date_f2f
+# - gp_<name>_patient_date_online
+# - gp_<name>_patient_date_telephone
+# - gp_<name>_patient_date_othermode
+# '''
 
-# dataset.gp_pf_consultation_othermode = (
-#     gp_pf_condition_all_events.where(
-#         ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_f2f_ids)
-#         & ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_online_ids)
-#         & ~gp_pf_condition_all_events.consultation_id.is_in(gp_pf_telephone_ids)
-#     ).consultation_id.count_distinct_for_patient()
-# )
+# selected_conditions_gp_codes = {
+#     **pf_conditions_gp_codes,
+#     **control_conditions_gp_codes,
+# }
+# for name, codes in selected_conditions_gp_codes.items():
 
-######### Version June 2026: patient-date level #########
-# Instead of retrieving all events linked by consultation_id, 
-# first, identify patient-dates with PF-related GP condition codes, 
-# then classify those dates according to whether any face-to-face, online, or telephone consultation mode code was recorded on the same patient-date.
-
-gp_f2f_dates = select_events_from_codelist(
-    gp_events_clean,
-    codelists.gp_codelist_consultation_f2f
-).date
-
-gp_online_dates = select_events_from_codelist(
-    gp_events_clean,
-    codelists.gp_codelist_consultation_online
-).date
-
-gp_telephone_dates = select_events_from_codelist(
-    gp_events_clean,
-    codelists.gp_codelist_consultation_telephone
-).date
-
-gp_econsultation_dates = select_events_from_codelist(
-    gp_events_clean,
-    codelists.gp_codelist_consultation_econsultation
-).date
-
-gp_pf_f2f = gp_pf_condition_events.where(
-    gp_pf_condition_events.date.is_in(gp_f2f_dates)
-    )
-gp_pf_online = gp_pf_condition_events.where(
-    ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
-    & gp_pf_condition_events.date.is_in(gp_online_dates)
-    )
-gp_pf_telephone = gp_pf_condition_events.where(
-    ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_online_dates)
-    & gp_pf_condition_events.date.is_in(gp_telephone_dates)
-    )
-gp_pf_econsultation = gp_pf_condition_events.where(
-    ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_online_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_telephone_dates)
-    & gp_pf_condition_events.date.is_in(gp_econsultation_dates)
-    )
-gp_pf_other = gp_pf_condition_events.where(
-    ~gp_pf_condition_events.date.is_in(gp_f2f_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_online_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_telephone_dates)
-    & ~gp_pf_condition_events.date.is_in(gp_econsultation_dates)
-    )
-
-dataset.gp_pf_patient_date_f2f = (gp_pf_f2f.date.count_distinct_for_patient())
-dataset.gp_pf_patient_date_online = (gp_pf_online.date.count_distinct_for_patient())
-dataset.gp_pf_patient_date_telephone = (gp_pf_telephone.date.count_distinct_for_patient())
-dataset.gp_pf_patient_date_econsultation = (gp_pf_econsultation.date.count_distinct_for_patient())
-dataset.gp_pf_patient_date_othermode = (gp_pf_other.date.count_distinct_for_patient())
-
-# Validation variables
-dataset.gp_pf_patient_date_total = (
-    gp_pf_condition_events.date.count_distinct_for_patient()
-)
-
-dataset.gp_pf_patient_date_mode_sum = (
-    dataset.gp_pf_patient_date_f2f
-    + dataset.gp_pf_patient_date_online
-    + dataset.gp_pf_patient_date_telephone
-    + dataset.gp_pf_patient_date_econsultation
-    + dataset.gp_pf_patient_date_othermode
-)
-
-########################################################
-'''
-This section counts the number of condition-specific GP patient-dates for each PF-related conditions and control conditions by consultation mode (excluding consultations with PF service codes)
-
-Outputs:
-- gp_<name>_patient_date_f2f
-- gp_<name>_patient_date_online
-- gp_<name>_patient_date_telephone
-- gp_<name>_patient_date_othermode
-'''
-
-selected_conditions_gp_codes = {
-    **pf_conditions_gp_codes,
-    **control_conditions_gp_codes,
-}
-for name, codes in selected_conditions_gp_codes.items():
-
-    # condition-specific events -> condition patient-dates
-    condition_events = gp_events_clean.where(gp_events_clean.snomedct_code.is_in(codes))
+#     # condition-specific events -> condition patient-dates
+#     condition_events = gp_events_clean.where(gp_events_clean.snomedct_code.is_in(codes))
     
-    ######### Version May 2026 #########
-    # condition_ids = condition_events.consultation_id
-    # condition_all_events = select_events_by_consultation_id(gp_events_clean,condition_ids)
+#     ######### Version May 2026 #########
+#     # condition_ids = condition_events.consultation_id
+#     # condition_all_events = select_events_by_consultation_id(gp_events_clean,condition_ids)
 
-    # # assign consultation mode
-    # f2f_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_f2f)
-    # online_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_online)
-    # telephone_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_telephone)
-    # f2f_ids = f2f_events.consultation_id
-    # online_ids = online_events.consultation_id
-    # telephone_ids = telephone_events.consultation_id
+#     # # assign consultation mode
+#     # f2f_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_f2f)
+#     # online_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_online)
+#     # telephone_events = select_events_from_codelist(condition_all_events,codelists.gp_codelist_consultation_telephone)
+#     # f2f_ids = f2f_events.consultation_id
+#     # online_ids = online_events.consultation_id
+#     # telephone_ids = telephone_events.consultation_id
 
-    # setattr(dataset,f"gp_consultation_{name}_f2f",f2f_ids.count_distinct_for_patient())
-    # setattr(dataset,f"gp_consultation_{name}_online",
-    #     online_events.where(
-    #         ~online_events.consultation_id.is_in(f2f_ids)
-    #     ).consultation_id.count_distinct_for_patient()
-    # )
-    # setattr(dataset,f"gp_consultation_{name}_telephone",
-    #     telephone_events.where(
-    #         ~telephone_events.consultation_id.is_in(f2f_ids)
-    #         & ~telephone_events.consultation_id.is_in(online_ids)
-    #     ).consultation_id.count_distinct_for_patient()
-    # )
-    # setattr(dataset,f"gp_consultation_{name}_othermode",
-    #     condition_all_events.where(
-    #         ~condition_all_events.consultation_id.is_in(f2f_ids)
-    #         & ~condition_all_events.consultation_id.is_in(online_ids)
-    #         & ~condition_all_events.consultation_id.is_in(telephone_ids)
-    #     ).consultation_id.count_distinct_for_patient()
-    # )
+#     # setattr(dataset,f"gp_consultation_{name}_f2f",f2f_ids.count_distinct_for_patient())
+#     # setattr(dataset,f"gp_consultation_{name}_online",
+#     #     online_events.where(
+#     #         ~online_events.consultation_id.is_in(f2f_ids)
+#     #     ).consultation_id.count_distinct_for_patient()
+#     # )
+#     # setattr(dataset,f"gp_consultation_{name}_telephone",
+#     #     telephone_events.where(
+#     #         ~telephone_events.consultation_id.is_in(f2f_ids)
+#     #         & ~telephone_events.consultation_id.is_in(online_ids)
+#     #     ).consultation_id.count_distinct_for_patient()
+#     # )
+#     # setattr(dataset,f"gp_consultation_{name}_othermode",
+#     #     condition_all_events.where(
+#     #         ~condition_all_events.consultation_id.is_in(f2f_ids)
+#     #         & ~condition_all_events.consultation_id.is_in(online_ids)
+#     #         & ~condition_all_events.consultation_id.is_in(telephone_ids)
+#     #     ).consultation_id.count_distinct_for_patient()
+#     # )
 
-    ######### Version June 2026: patient-date level #########
-    # Apply hierarchy at patient-date level: f2f > online > telephone > other
-    condition_f2f = condition_events.where(condition_events.date.is_in(gp_f2f_dates))
+#     ######### Version June 2026: patient-date level #########
+#     # Apply hierarchy at patient-date level: f2f > online > telephone > other
+#     condition_f2f = condition_events.where(condition_events.date.is_in(gp_f2f_dates))
 
-    condition_online = condition_events.where(
-        ~condition_events.date.is_in(gp_f2f_dates)
-        & condition_events.date.is_in(gp_online_dates)
-    )
+#     condition_online = condition_events.where(
+#         ~condition_events.date.is_in(gp_f2f_dates)
+#         & condition_events.date.is_in(gp_online_dates)
+#     )
 
-    condition_telephone = condition_events.where(
-        ~condition_events.date.is_in(gp_f2f_dates)
-        & ~condition_events.date.is_in(gp_online_dates)
-        & condition_events.date.is_in(gp_telephone_dates)
-    )
+#     condition_telephone = condition_events.where(
+#         ~condition_events.date.is_in(gp_f2f_dates)
+#         & ~condition_events.date.is_in(gp_online_dates)
+#         & condition_events.date.is_in(gp_telephone_dates)
+#     )
 
-    condition_econsultation = condition_events.where(
-        ~condition_events.date.is_in(gp_f2f_dates)
-        & ~condition_events.date.is_in(gp_online_dates)
-        & ~condition_events.date.is_in(gp_telephone_dates)
-        & condition_events.date.is_in(gp_econsultation_dates)
-    )
+#     condition_econsultation = condition_events.where(
+#         ~condition_events.date.is_in(gp_f2f_dates)
+#         & ~condition_events.date.is_in(gp_online_dates)
+#         & ~condition_events.date.is_in(gp_telephone_dates)
+#         & condition_events.date.is_in(gp_econsultation_dates)
+#     )
 
-    condition_other = condition_events.where(
-        ~condition_events.date.is_in(gp_f2f_dates)
-        & ~condition_events.date.is_in(gp_online_dates)
-        & ~condition_events.date.is_in(gp_telephone_dates)
-        & ~condition_events.date.is_in(gp_econsultation_dates)
-    )
+#     condition_other = condition_events.where(
+#         ~condition_events.date.is_in(gp_f2f_dates)
+#         & ~condition_events.date.is_in(gp_online_dates)
+#         & ~condition_events.date.is_in(gp_telephone_dates)
+#         & ~condition_events.date.is_in(gp_econsultation_dates)
+#     )
 
-    setattr(dataset,f"gp_{name}_patient_date_f2f",condition_f2f.date.count_distinct_for_patient(),)
-    setattr(dataset,f"gp_{name}_patient_date_online",condition_online.date.count_distinct_for_patient(),)
-    setattr(dataset,f"gp_{name}_patient_date_telephone",condition_telephone.date.count_distinct_for_patient(),)
-    setattr(dataset,f"gp_{name}_patient_date_econsultation",condition_econsultation.date.count_distinct_for_patient(),)
-    setattr(dataset,f"gp_{name}_patient_date_othermode",condition_other.date.count_distinct_for_patient(),)
+#     setattr(dataset,f"gp_{name}_patient_date_f2f",condition_f2f.date.count_distinct_for_patient(),)
+#     setattr(dataset,f"gp_{name}_patient_date_online",condition_online.date.count_distinct_for_patient(),)
+#     setattr(dataset,f"gp_{name}_patient_date_telephone",condition_telephone.date.count_distinct_for_patient(),)
+#     setattr(dataset,f"gp_{name}_patient_date_econsultation",condition_econsultation.date.count_distinct_for_patient(),)
+#     setattr(dataset,f"gp_{name}_patient_date_othermode",condition_other.date.count_distinct_for_patient(),)
 
 ########################################################
 """
@@ -768,44 +768,44 @@ include_patient_overall_eligible = (include_patient_otitis_media|include_patient
                                   |include_patient_sore_throat|include_patient_insect_bites
                                   |include_patient_shingles|include_patient_impetigo|include_patient_uuti)
 dataset.include_patient_overall_eligible = include_patient_overall_eligible
-########################################################
-'''A&E variables'''
-# select A&E clinical events in month based on arrival date
-ae_events = emergency_care_attendances.where(emergency_care_attendances.arrival_date.is_on_or_between(start_date, index_date))
-# overall A&E attendances in month
-dataset.ae_attendance_count = ae_events.count_for_patient()
-# A&E PF-condition matching using GP codelists
-# for name, codes in pf_conditions_gp_codes.items():
-for name, codes in all_conditions_gp_codes.items(): 
-    # primary diagnosis match
-    ae_primary = ae_events.where(ae_events.diagnosis_01.is_in(codes))
-    # non-primary diagnosis match
-    ae_non_primary = ae_non_primary_diagnosis_matches(ae_events, codes)
-    # count and flag
-    setattr(dataset, f"ae_{name}_primary_count", ae_primary.count_for_patient())
-    setattr(dataset, f"has_ae_{name}_non_primary", ae_non_primary)
-########################################################
-'''Appointments variables'''
-# select attended appointments in month
-dataset.appointment_scheduled = appointments.where(
-    (appointments.start_date.is_on_or_between(start_date, index_date)) &
-    (appointments.status.is_in([
-            "Arrived",
-            "In Progress",
-            "Finished",
-            "Visit",
-            "Patient Walked Out",
-            "Did Not Attend"
-        ]))
-).count_for_patient()
-dataset.appointment_seen = appointments.where(
-    (appointments.seen_date.is_on_or_between(start_date, index_date)) &
-    (appointments.status.is_in([
-            "Arrived",
-            "In Progress",
-            "Finished",
-            "Visit",
-            "Patient Walked Out",
-            "Did Not Attend"
-        ]))
-).count_for_patient()
+# ########################################################
+# '''A&E variables'''
+# # select A&E clinical events in month based on arrival date
+# ae_events = emergency_care_attendances.where(emergency_care_attendances.arrival_date.is_on_or_between(start_date, index_date))
+# # overall A&E attendances in month
+# dataset.ae_attendance_count = ae_events.count_for_patient()
+# # A&E PF-condition matching using GP codelists
+# # for name, codes in pf_conditions_gp_codes.items():
+# for name, codes in all_conditions_gp_codes.items(): 
+#     # primary diagnosis match
+#     ae_primary = ae_events.where(ae_events.diagnosis_01.is_in(codes))
+#     # non-primary diagnosis match
+#     ae_non_primary = ae_non_primary_diagnosis_matches(ae_events, codes)
+#     # count and flag
+#     setattr(dataset, f"ae_{name}_primary_count", ae_primary.count_for_patient())
+#     setattr(dataset, f"has_ae_{name}_non_primary", ae_non_primary)
+# ########################################################
+# '''Appointments variables'''
+# # select attended appointments in month
+# dataset.appointment_scheduled = appointments.where(
+#     (appointments.start_date.is_on_or_between(start_date, index_date)) &
+#     (appointments.status.is_in([
+#             "Arrived",
+#             "In Progress",
+#             "Finished",
+#             "Visit",
+#             "Patient Walked Out",
+#             "Did Not Attend"
+#         ]))
+# ).count_for_patient()
+# dataset.appointment_seen = appointments.where(
+#     (appointments.seen_date.is_on_or_between(start_date, index_date)) &
+#     (appointments.status.is_in([
+#             "Arrived",
+#             "In Progress",
+#             "Finished",
+#             "Visit",
+#             "Patient Walked Out",
+#             "Did Not Attend"
+#         ]))
+# ).count_for_patient()
