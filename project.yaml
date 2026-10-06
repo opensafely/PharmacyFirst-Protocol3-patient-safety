@@ -6,6 +6,12 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/dataset_patients.csv.gz
+
+  generate_patient_measures_consultation_validation_p2:
+    run: ehrql:v1 generate-measures analysis/validation/measures_patient_consultations_validation.py --output output/patient_measures_consultation_validation_p2.csv
+    outputs:
+      moderately_sensitive:
+        measure_tables: output/patient_measures_consultation_validation_p2.csv
   
   generate_patient_measures_consultation_validation:
     run: ehrql:v1 generate-measures analysis_protocol3/validation/measures_patient_consultations_validation.py --output output/patient_measures_consultation_validation.csv

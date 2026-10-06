@@ -80,47 +80,47 @@ for condition in pf_conditions:
         denominator=measure_base_population,
     )
 
-    # check numerator only
-    measures.define_measure(
-        name=f"pf_date_{condition}",
-        numerator=getattr(dataset, f"numerator_pf_date_{condition}"),
-        denominator=measure_base_population,
-    )
+    # # check numerator only
+    # measures.define_measure(
+    #     name=f"pf_date_{condition}",
+    #     numerator=getattr(dataset, f"numerator_pf_date_{condition}"),
+    #     denominator=measure_base_population,
+    # )
 
-    # check numerator only
-    measures.define_measure(
-        name=f"gp_consultation_{condition}",
-        numerator=getattr(dataset, f"numerator_gp_consultation_{condition}"),
-        denominator=measure_base_population,
-    )
+    # # check numerator only
+    # measures.define_measure(
+    #     name=f"gp_consultation_{condition}",
+    #     numerator=getattr(dataset, f"numerator_gp_consultation_{condition}"),
+    #     denominator=measure_base_population,
+    # )
 
-    # check numerator only
-    measures.define_measure(
-        name=f"gp_date_{condition}",
-        numerator=getattr(dataset, f"numerator_gp_date_{condition}"),
-        denominator=measure_base_population,
-    )
+    # # check numerator only
+    # measures.define_measure(
+    #     name=f"gp_date_{condition}",
+    #     numerator=getattr(dataset, f"numerator_gp_date_{condition}"),
+    #     denominator=measure_base_population,
+    # )
 
-    # check numerator only
-    measures.define_measure(
-        name=f"ae_{condition}_primary_count",
-        numerator=getattr(dataset, f"ae_{condition}_primary_count"),
-        denominator=measure_base_population,
-    )
+    # # check numerator only
+    # measures.define_measure(
+    #     name=f"ae_{condition}_primary_count",
+    #     numerator=getattr(dataset, f"ae_{condition}_primary_count"),
+    #     denominator=measure_base_population,
+    # )
 
-    # proportion of patients with ≥1 non-primary A&E diagnosis
-    measures.define_measure(
-        name=f"patient_has_non_primary_ae_{condition}",
-        numerator=getattr(dataset, f"has_ae_{condition}_non_primary"),
-        denominator=measure_base_population,
-    )
+    # # proportion of patients with ≥1 non-primary A&E diagnosis
+    # measures.define_measure(
+    #     name=f"patient_has_non_primary_ae_{condition}",
+    #     numerator=getattr(dataset, f"has_ae_{condition}_non_primary"),
+    #     denominator=measure_base_population,
+    # )
 
-# check numerator only
-measures.define_measure(
-    name="ae_attendance_total",
-    numerator=dataset.ae_attendance_count,
-    denominator=measure_base_population,
-)
+# # check numerator only
+# measures.define_measure(
+#     name="ae_attendance_total",
+#     numerator=dataset.ae_attendance_count,
+#     denominator=measure_base_population,
+# )
 
 pf_condition_map = {
     "uti": "uuti",
@@ -149,14 +149,14 @@ for condition, eligibility_name in pf_condition_map.items():
 # Overall appointment totals
 ########################################################
 
-measures.define_measure(
-    name="appointment_scheduled_total",
-    numerator=dataset.appointment_scheduled,
-    denominator=measure_base_population,
-)
+# measures.define_measure(
+#     name="appointment_scheduled_total",
+#     numerator=dataset.appointment_scheduled,
+#     denominator=measure_base_population,
+# )
 
-measures.define_measure(
-    name="appointment_seen_total",
-    numerator=dataset.appointment_seen,
-    denominator=measure_base_population,
-)
+# measures.define_measure(
+#     name="appointment_seen_total",
+#     numerator=dataset.appointment_seen,
+#     denominator=measure_base_population,
+# )
