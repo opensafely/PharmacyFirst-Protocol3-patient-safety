@@ -1,4 +1,4 @@
-version: '4.0'
+version: '5.0'
 
 actions:
   generate_dataset:
@@ -42,7 +42,7 @@ actions:
         measure_tables: output/safety_measures_count_validation.csv
   
   process_safety_count_validation:
-    run: python:latest analysis_protocol3/validation/process_safety_count_validation.py
+    run: python:v2 analysis_protocol3/validation/process_safety_count_validation.py
     needs: [generate_safety_outcome_measures_count_validation]
     outputs:
       moderately_sensitive:
@@ -56,7 +56,7 @@ actions:
         measure_tables: output/safety_measures_rate_validation.csv
   
   process_safety_rate_validation:
-    run: python:latest analysis_protocol3/validation/process_safety_rate_validation.py
+    run: python:v2 analysis_protocol3/validation/process_safety_rate_validation.py
     needs: [generate_safety_outcome_measures_rate_validation]
     outputs:
       moderately_sensitive:
@@ -64,14 +64,14 @@ actions:
         safety_rate_validation_flags: output/safety_rate_validation_flags.csv
   
   postprocess_safety_count_by_outcome_source:
-    run: python:latest analysis_protocol3/validation/postprocess_count_by_outcome_source.py
+    run: python:v2 analysis_protocol3/validation/postprocess_count_by_outcome_source.py
     needs: [generate_safety_outcome_measures_count_validation]
     outputs:
       moderately_sensitive:
         safety_count_by_outcome_source: output/safety_count_by_outcome_source.csv
 
   postprocess_safety_rate_by_outcome_source:
-    run: python:latest analysis_protocol3/validation/postprocess_rate_by_outcome_source.py
+    run: python:v2 analysis_protocol3/validation/postprocess_rate_by_outcome_source.py
     needs: [generate_safety_outcome_measures_rate_validation]
     outputs:
       moderately_sensitive:
