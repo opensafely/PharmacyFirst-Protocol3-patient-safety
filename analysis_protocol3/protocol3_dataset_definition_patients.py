@@ -4,8 +4,8 @@
 
 from ehrql import create_dataset, show, days, weeks, months, years, case, when, get_parameter
 from ehrql.tables.tpp import (patients, practice_registrations, clinical_events, addresses, 
-                              ethnicity_from_sus,
-                              emergency_care_attendances,appointments, apcs)
+                              ethnicity_from_sus, emergency_care_attendances,appointments, apcs,
+                              medications)
 import analysis.codelists as codelists
 
 from analysis.pf_variable_library import (get_imd, get_latest_ethnicity, 
@@ -578,6 +578,37 @@ PGD contravention
 
 '''
 
+# # Allergy history - boolean
+# has_penicillin_allergy_before_month = ...
+# has_previous_penicillin_after_allergy = ... # for sensitivity analysis
+
+# # Counts of distinct consultations with a linked penicillin prescription
+# # TODO: to check with Kim - 6 or 5 conditions?
+# for condition in penicillin_conditions:
+#     numerator_penicillin_rx_pf_<condition> = ...
+#     numerator_penicillin_rx_gp_<condition> = ...
+# numerator_penicillin_rx_pf_combined = ...
+# numerator_penicillin_rx_gp_combined = ...
+
+# # Subsequent allergic hospitalisation
+# # Number of hospital admissions due to penicillin allergy occurring within 0–72 hours following a penicillin prescription associated with a GP/PF consultation for the condition in question.
+# for condition in penicillin_conditions:
+#     numerator_hosp_penicillin_allergy_pf_<condition> = ...
+#     numerator_hosp_penicillin_allergy_gp_<condition> = ...
+# numerator_hosp_penicillin_allergy_pf_combined = 
+# numerator_hosp_penicillin_allergy_gp_combined = 
+# numerator_hosp_penicillin_allergy_all = 
+# numerator_gp_treatment_penicillin_allergy_all = 
+# numerator_ae_treatment_penicillin_allergy_all = 
+
+# # Doxycycline linked to sinusitis consultations
+# numerator_doxycycline_rx_pf_sinusitis = ...
+# numerator_doxycycline_rx_gp_sinusitis = ...
+
+# # UTI antibiotics linked to PF UTI consultations
+# # TODO: to check with Kim - data dictionary specified nitrofurantoin - is this variable for all UTI antibiotics or just nitrofurantoin?
+# numerator_antibiotic_rx_pf_uti = ...
+# numerator_nitrofurantoin_rx_pf_uti = ...
 
 
 
