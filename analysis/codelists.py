@@ -328,6 +328,11 @@ icd10_codelist_facial_nerve_paralysis = codelist_from_csv(
     column="code"
 )
 
+icd10_codelist_severe_medicine_allergic_reaction = codelist_from_csv(
+    "codelists/pharmacy-first-project-Severe-allergic-reaction-to-medicines-ICD10-codes.csv",
+    column="code"
+)
+
 #-------- Medication codelists, copied from P4------------
 amoxicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-amoxicillin.csv", column="code")
 co_amoxiclav_codelist = codelist_from_csv("codelists/pharmacy-first-project-co-amoxiclav-oral-preparations.csv", column="code")
@@ -335,4 +340,4 @@ flucloxacillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-fl
 phenoxymethylpenicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-phenoxymethylpenicillin.csv", column="code")
 pivmecillinam_codelist = codelist_from_csv("codelists/pharmacy-first-project-pivmecillinam.csv", column="code")
 cefalexin_codelist = codelist_from_csv("codelists/pharmacy-first-project-cefalexin.csv", column="code")
-penicillin_allergy_codelist = codelist_from_csv("pharmacy-first-project-penicillin-allergy.csv", column = "code")
+penicillin_allergy_codelist = codelist_from_csv("codelists/pharmacy-first-project-penicillin-allergy.csv", column = "code")

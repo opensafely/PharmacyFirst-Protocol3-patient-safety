@@ -63,3 +63,4 @@ pharmacy-first-project/phenoxymethylpenicillin/66f3d134/
 pharmacy-first-project/pivmecillinam/34d4eaca/
 pharmacy-first-project/cefalexin/7a9dc47d/
 pharmacy-first-project/penicillin-allergy/21899cca/
+pharmacy-first-project/Severe-allergic-reaction-to-medicines-ICD10-codes/3d84d14a
