@@ -327,3 +327,11 @@ icd10_codelist_facial_nerve_paralysis = codelist_from_csv(
     "codelists/pharmacy-first-project-facial-nerve-paralysis-using-icd10-codes.csv",
     column="code"
 )
+
+#-------- Medication codelists, copied from P4------------
+amoxicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-amoxicillin.csv", column="code")
+co_amoxiclav_codelist = codelist_from_csv("codelists/pharmacy-first-project-co-amoxiclav-oral-preparations.csv", column="code")
+flucloxacillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-flucloxacillin.csv", column="code")
+phenoxymethylpenicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-phenoxymethylpenicillin.csv", column="code")
+pivmecillinam_codelist = codelist_from_csv("codelists/pharmacy-first-project-pivmecillinam.csv", column="code")
+cefalexin_codelist = codelist_from_csv("codelists/pharmacy-first-project-cefalexin.csv", column="code")

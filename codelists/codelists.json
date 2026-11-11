@@ -169,10 +169,10 @@
       "sha": "70f9abf5bb25dca13dcbd0ba30416713fbac3f67"
     },
     "user-paolomazzone-openpregnosis-miscarriage-codes_v1.csv": {
-      "id": "user/paolomazzone/openpregnosis-miscarriage-codes_v1/383197f1",
-      "url": "https://www.opencodelists.org/codelist/user/paolomazzone/openpregnosis-miscarriage-codes_v1/383197f1/",
-      "downloaded_at": "2026-08-05 16:07:12.057051Z",
-      "sha": "4607551e164997c05d48f4e49aa13111d0460879"
+      "id": "user/paolomazzone/openpregnosis-miscarriage-codes_v1/6918def0",
+      "url": "https://www.opencodelists.org/codelist/user/paolomazzone/openpregnosis-miscarriage-codes_v1/6918def0/",
+      "downloaded_at": "2026-11-11 10:39:08.361040+00:00Z",
+      "sha": "958be9574f88e8cb8d6d4a67661c3e631e216826"
     },
     "user-paolomazzone-openpregnosis-molar-codes_v1.csv": {
       "id": "user/paolomazzone/openpregnosis-molar-codes_v1/035ff191",
@@ -347,6 +347,42 @@
       "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/urinary-tract-infection-codes-for-pharmacy-first-clone/6752767d/",
       "downloaded_at": "2026-09-25 11:36:08.335156+00:00Z",
       "sha": "62bd0ce55303e958478adc8a3ab43e05681feb39"
+    },
+    "pharmacy-first-project-amoxicillin.csv": {
+      "id": "pharmacy-first-project/amoxicillin/4252aa98",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/amoxicillin/4252aa98/",
+      "downloaded_at": "2026-11-11 10:39:11.303669+00:00Z",
+      "sha": "861b4101f3eef157e26d4d676be8d88ff9f1b257"
+    },
+    "pharmacy-first-project-co-amoxiclav-oral-preparations.csv": {
+      "id": "pharmacy-first-project/co-amoxiclav-oral-preparations/7d508473",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/co-amoxiclav-oral-preparations/7d508473/",
+      "downloaded_at": "2026-11-11 10:39:11.394104+00:00Z",
+      "sha": "99101165c6f9499a8cfab753a7f96f96b894d43a"
+    },
+    "pharmacy-first-project-flucloxacillin.csv": {
+      "id": "pharmacy-first-project/flucloxacillin/1912b79f",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/flucloxacillin/1912b79f/",
+      "downloaded_at": "2026-11-11 10:39:11.509875+00:00Z",
+      "sha": "b468b9830a5c50287351df96abb2766195e65f1d"
+    },
+    "pharmacy-first-project-phenoxymethylpenicillin.csv": {
+      "id": "pharmacy-first-project/phenoxymethylpenicillin/66f3d134",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/phenoxymethylpenicillin/66f3d134/",
+      "downloaded_at": "2026-11-11 10:39:11.607508+00:00Z",
+      "sha": "eb39d4c82a97930ec34bcb71dd9df44c42146e85"
+    },
+    "pharmacy-first-project-pivmecillinam.csv": {
+      "id": "pharmacy-first-project/pivmecillinam/34d4eaca",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/pivmecillinam/34d4eaca/",
+      "downloaded_at": "2026-11-11 10:39:11.679963+00:00Z",
+      "sha": "c6c87d12b0f298092e1d36ddb99eb6b6c8f11054"
+    },
+    "pharmacy-first-project-cefalexin.csv": {
+      "id": "pharmacy-first-project/cefalexin/7a9dc47d",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/cefalexin/7a9dc47d/",
+      "downloaded_at": "2026-11-11 10:39:11.808953+00:00Z",
+      "sha": "9b8078d3b50843f588d64423ea4a9c15c0fbd17e"
     }
   }
 }
