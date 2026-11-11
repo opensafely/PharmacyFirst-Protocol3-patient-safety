@@ -335,3 +335,4 @@ flucloxacillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-fl
 phenoxymethylpenicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-phenoxymethylpenicillin.csv", column="code")
 pivmecillinam_codelist = codelist_from_csv("codelists/pharmacy-first-project-pivmecillinam.csv", column="code")
 cefalexin_codelist = codelist_from_csv("codelists/pharmacy-first-project-cefalexin.csv", column="code")
+penicillin_allergy_codelist = codelist_from_csv("pharmacy-first-project-penicillin-allergy.csv", column = "code")

@@ -383,6 +383,12 @@
       "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/cefalexin/7a9dc47d/",
       "downloaded_at": "2026-11-11 10:39:11.808953+00:00Z",
       "sha": "9b8078d3b50843f588d64423ea4a9c15c0fbd17e"
+    },
+    "pharmacy-first-project-penicillin-allergy.csv": {
+      "id": "pharmacy-first-project/penicillin-allergy/21899cca",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/penicillin-allergy/21899cca/",
+      "downloaded_at": "2026-11-11 10:50:06.475358+00:00Z",
+      "sha": "fe8d07bbc510817eb8f48082d6bd8834aae9a43d"
     }
   }
 }
