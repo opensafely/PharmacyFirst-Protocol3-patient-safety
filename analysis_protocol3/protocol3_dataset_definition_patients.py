@@ -578,28 +578,173 @@ PGD contravention
 
 '''
 
-# # Allergy history - boolean
-# has_penicillin_allergy_before_month = ...
-# has_previous_penicillin_after_allergy = ... # for sensitivity analysis
 
-# # Counts of distinct consultations with a linked penicillin prescription
-# # TODO: to check with Kim - 6 or 5 conditions?
-# for condition in penicillin_conditions:
-#     numerator_penicillin_rx_pf_<condition> = ...
-#     numerator_penicillin_rx_gp_<condition> = ...
-# numerator_penicillin_rx_pf_combined = ...
-# numerator_penicillin_rx_gp_combined = ...
+#### Penicillin and cephalosporin antibiotic flags ####
+# Indicate whether the patient got penicillin antibiotic in this month, without linking to any PF/GP consultation
+# Medications prescribed during the study month
+monthly_medications = medications.where(medications.date.is_on_or_between(start_date, index_date))
 
-# # Subsequent allergic hospitalisation
-# # Number of hospital admissions due to penicillin allergy occurring within 0–72 hours following a penicillin prescription associated with a GP/PF consultation for the condition in question.
-# for condition in penicillin_conditions:
-#     numerator_hosp_penicillin_allergy_pf_<condition> = ...
-#     numerator_hosp_penicillin_allergy_gp_<condition> = ...
-# numerator_hosp_penicillin_allergy_pf_combined = 
-# numerator_hosp_penicillin_allergy_gp_combined = 
-# numerator_hosp_penicillin_allergy_all = 
-# numerator_gp_treatment_penicillin_allergy_all = 
-# numerator_ae_treatment_penicillin_allergy_all = 
+# Penicillin antibiotics
+# TODO: confirm whether any additional penicillin antibiotics are required
+penicillin_antibiotic_codes = (
+    codelists.amoxicillin_codelist
+    + codelists.co_amoxiclav_codelist
+    + codelists.flucloxacillin_codelist
+    + codelists.phenoxymethylpenicillin_codelist
+    + codelists.pivmecillinam_codelist
+)
+
+# Whether the patient had at least one penicillin antibiotic medication record during the study month
+penicillin_antibiotic = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        penicillin_antibiotic_codes
+    )
+).exists_for_patient()
+
+dataset.penicillin_antibiotic_flag = penicillin_antibiotic
+
+# Cephalosporin antibiotics
+# Currently cefalexin is the only cephalosporin identified in the PF medication codelists
+# TODO: confirm whether cephalosporins should be included in this part
+cephalosporin_antibiotic_codes = (
+    codelists.cefalexin_codelist
+)
+
+# Whether the patient had at least one cephalosporin antibiotic
+# medication record during the study month
+cephalosporin_antibiotic = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        cephalosporin_antibiotic_codes
+    )
+).exists_for_patient()
+
+dataset.cephalosporin_antibiotic_flag = cephalosporin_antibiotic
+
+#### Penicillin allergy flag ####
+# Whether exist penicillin allergy code in the patient's clinical event record before the month start
+allergy_to_penicillin = clinical_events.where(
+    clinical_events.snomedct_code.is_in(codelists.penicillin_allergy_codelist)
+    & clinical_events.date.is_on_or_before(start_date)
+).exists_for_patient()
+
+dataset.allergy_to_penicillin_flag = allergy_to_penicillin
+
+#### Hospitalisation_penicillin_allergy ####
+# Hospitalisation for a penicillin allergy or anaphylactic reaction
+# Overall number of hospital spells during the study month with a diagnosis indicating penicillin allergy or anaphylaxis.
+# hes_spells: HES hospitalisation in month
+# TODO: confirm codelist
+medicine_allergy_hospitalisations = hes_spells.where(
+    hes_spells.all_diagnoses.contains_any_of(
+        codelists.icd10_codelist_severe_medicine_allergic_reaction
+    )
+)
+
+dataset.hospitalisation_medicine_allergy_all = (
+    medicine_allergy_hospitalisations.apcs_ident
+    .count_distinct_for_patient()
+)
+
+# Hospitalisation for medicine allergy associated with a GP or PF consultation
+# TODO: confirm the logic - can connect consultation <-> medicine but cannot do hospitalisation <-> consultation
+# Number of hospital admissions due to penicillin allergy occurring within 0–72 hours following a penicillin prescription associated with a GP/PF consultation for the condition in question.
+# 1 - apcs hospitalisation apcs_ident due to medicine allergy admission date is in month & patient has penicillin medicine given in the month
+# 2 - for each of these apcs_ident, get the admission_date
+# 3 - back count 0-72 hrs from the admission_date and see whether the medicine dates fall in these extended dates
+linkage_start_date = start_date - days(3)
+
+linkage_events = select_events_between(clinical_events,
+    linkage_start_date,
+    index_date,
+)
+
+# PF consultations in the extended linkage period
+linkage_pf_service_events = select_events_from_codelist(
+    linkage_events,
+    codelists.pf_consultation_events_dict["pf_consultation_services_combined"],
+)
+linkage_pf_ids = linkage_pf_service_events.consultation_id
+
+# Non-PF GP consultations in the extended linkage period
+linkage_gp_events = linkage_events.where(
+    ~linkage_events.consultation_id.is_in(linkage_pf_ids)
+)
+linkage_gp_ids = linkage_gp_events.consultation_id
+
+# Penicillin medications in the extended linkage period
+penicillin_medications_for_linkage = medications.where(
+    medications.date.is_on_or_between(
+        linkage_start_date,
+        index_date,
+    )
+).where(
+    medications.dmd_code.is_in(
+        penicillin_antibiotic_codes
+    )
+)
+
+
+# Penicillin prescriptions linked to PF consultations
+pf_penicillin_medications = (
+    penicillin_medications_for_linkage.where(
+        penicillin_medications_for_linkage.consultation_id.is_in(
+            linkage_pf_ids
+        )
+    )
+)
+
+
+# Penicillin prescriptions linked to non-PF GP consultations
+gp_penicillin_medications = (
+    penicillin_medications_for_linkage.where(
+        penicillin_medications_for_linkage.consultation_id.is_in(
+            linkage_gp_ids
+        )
+    )
+)
+
+dataset.has_pf_penicillin_prescription = (
+    pf_penicillin_medications.exists_for_patient()
+)
+
+dataset.has_gp_penicillin_prescription = (
+    gp_penicillin_medications.exists_for_patient()
+)
+
+dataset.pf_penicillin_prescription_count = (
+    pf_penicillin_medications.consultation_id
+    .count_distinct_for_patient()
+)
+
+dataset.gp_penicillin_prescription_count = (
+    gp_penicillin_medications.consultation_id
+    .count_distinct_for_patient()
+)
+
+dataset.add_event_table(
+    "medicine_allergy_admissions",
+    apcs_ident=medicine_allergy_hospitalisations.apcs_ident,
+    admission_date=medicine_allergy_hospitalisations.admission_date,
+)
+
+dataset.add_event_table(
+    "pf_penicillin_prescriptions",
+    prescription_date=pf_penicillin_medications.date,
+    consultation_id=pf_penicillin_medications.consultation_id,
+    dmd_code=pf_penicillin_medications.dmd_code,
+)
+
+dataset.add_event_table(
+    "gp_penicillin_prescriptions",
+    prescription_date=gp_penicillin_medications.date,
+    consultation_id=gp_penicillin_medications.consultation_id,
+    dmd_code=gp_penicillin_medications.dmd_code,
+)
+
+
+
+
+
 
 # # Doxycycline linked to sinusitis consultations
 # numerator_doxycycline_rx_pf_sinusitis = ...
