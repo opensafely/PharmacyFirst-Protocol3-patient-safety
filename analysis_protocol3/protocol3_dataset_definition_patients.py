@@ -694,10 +694,14 @@ dataset.hospitalisation_medicine_allergy_any = medicine_allergy_hospitalisation_
 dataset.has_multiple_medicine_allergy_hosp_any = (medicine_allergy_hospitalisation_any_count > 1)
 dataset.has_multiple_medicine_allergy_hosp_primary = (medicine_allergy_hospitalisation_primary_count > 1)
 
-########################################################
-# Identify PF-linked and GP-linked penicillin prescriptions
-########################################################
-
+######################################################################################################
+#### Broad severe medicine-allergy reaction hospitalisation + recent penicillin prescription ####
+######################################################################################################
+# This section includes a set of variables which link hospital spells for severe medicine-related allergic reaction 
+# to PF or GP penicillin prescriptions
+# ------------------------------------------------------------
+# Step 1: Identify PF-linked and GP-linked penicillin prescriptions
+# ------------------------------------------------------------
 maximum_linkage_days = 14
 linkage_start_date = start_date - days(maximum_linkage_days)
 
@@ -741,17 +745,18 @@ gp_penicillin_medications = (
     )
 )
 
-########################################################
-# Link a prescription source to the first hospital admission
-#### hosp_pen_allergy_pf and hosp_pen_allergy_gp ####
-# These are monthly patient-level yes/no flags. 
-# They check whether the patient’s first medicine-allergy hospital admission of the month was preceded by a penicillin prescription from PF or GP consultations.
-########################################################
+# ------------------------------------------------------------
+# Step 2: check whether the patient’s first medicine-allergy hospital admission of the month was preceded by a penicillin prescription from PF or GP consultations.
+# - sensitivity analysis to check:
+# - using primary_diagnoses or all_diagnoses
+# - usng 3 days, 7 days, or 14 days as look-back window
+# name pattern: has_hosp_medicine_allergy_<primary/any>_<pf/gp>_penicillin_<3d/7d/14d>
+# ------------------------------------------------------------
 
 from analysis.pf_variable_library import has_prescription_before_first_admission
 
 # primary diagnosis and 3-day window
-dataset.hosp_pen_allergy_pf = (
+dataset.has_hosp_medicine_allergy_primary_pf_penicillin_3d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         pf_penicillin_medications,
@@ -759,7 +764,7 @@ dataset.hosp_pen_allergy_pf = (
     )
 )
 
-dataset.hosp_pen_allergy_gp = (
+dataset.has_hosp_medicine_allergy_primary_gp_penicillin_3d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         gp_penicillin_medications,
@@ -768,7 +773,7 @@ dataset.hosp_pen_allergy_gp = (
 )
 
 # Sensitivity analysis - any diagnosis
-dataset.hosp_pen_allergy_pf_anydiag = (
+dataset.has_hosp_medicine_allergy_any_pf_penicillin_3d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_any,
         pf_penicillin_medications,
@@ -776,7 +781,7 @@ dataset.hosp_pen_allergy_pf_anydiag = (
     )
 )
 
-dataset.hosp_pen_allergy_gp_anydiag = (
+dataset.has_hosp_medicine_allergy_any_gp_penicillin_3d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_any,
         gp_penicillin_medications,
@@ -785,7 +790,7 @@ dataset.hosp_pen_allergy_gp_anydiag = (
 )
 
 # Sensitivity analysis - longer window - 7 days
-dataset.hosp_pen_allergy_pf_7d = (
+dataset.has_hosp_medicine_allergy_primary_pf_penicillin_7d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         pf_penicillin_medications,
@@ -793,7 +798,7 @@ dataset.hosp_pen_allergy_pf_7d = (
     )
 )
 
-dataset.hosp_pen_allergy_gp_7d = (
+dataset.has_hosp_medicine_allergy_primary_gp_penicillin_7d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         gp_penicillin_medications,
@@ -802,7 +807,7 @@ dataset.hosp_pen_allergy_gp_7d = (
 )
 
 # Sensitivity analysis - longer window - 14 days
-dataset.hosp_pen_allergy_pf_14d = (
+dataset.has_hosp_medicine_allergy_primary_pf_penicillin_14d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         pf_penicillin_medications,
@@ -810,7 +815,7 @@ dataset.hosp_pen_allergy_pf_14d = (
     )
 )
 
-dataset.hosp_pen_allergy_gp_14d = (
+dataset.has_hosp_medicine_allergy_primary_gp_penicillin_14d = (
     has_prescription_before_first_admission(
         medicine_allergy_hospitalisations_primary,
         gp_penicillin_medications,
@@ -819,6 +824,63 @@ dataset.hosp_pen_allergy_gp_14d = (
 )
 
 
+########################################################
+# Penicillin-specific HES coding
+# Y40.0: severe medicine-allergy reaction with an additional code indicating that penicillin caused an adverse effect during therapeutic use.
+# T36.0: hospital spell containing a diagnosis of poisoning by penicillin.
+# TODO: may need to link these Y40.0 / T36.0 hospitalisation with PF/GP penicillin prescriptions
+########################################################
+# ------------------------------------------------------
+# 1. severe reaction + Y40.0
+# ------------------------------------------------------
+
+# Severe reaction in any diagnosis field, with Y40.0 in the same spell
+penicillin_adverse_effect_any = hes_spells.where(
+    hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_severe_medicine_allergic_reaction)
+    & hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_adverse_effect)
+)
+
+# Severe reaction as primary diagnosis, with Y40.0 anywhere in the spell
+penicillin_adverse_effect_primary = hes_spells.where(
+    hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_severe_medicine_allergic_reaction)
+    & hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_adverse_effect)
+)
+
+dataset.hosp_pen_y40_any = penicillin_adverse_effect_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_y40_primary = penicillin_adverse_effect_primary.apcs_ident.count_distinct_for_patient()
+
+# ------------------------------------------------------
+# 2. Penicillin poisoning: T36.0
+# ------------------------------------------------------
+
+penicillin_poisoning_any = hes_spells.where(hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_poisoning))
+penicillin_poisoning_primary = hes_spells.where(hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_penicillin_poisoning))
+
+dataset.hosp_pen_t36_any = penicillin_poisoning_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_t36_primary = penicillin_poisoning_primary.apcs_ident.count_distinct_for_patient()
+
+# ------------------------------------------------------
+# 3. Combined penicillin-specific definition: (severe reaction AND Y40.0) OR T36.0
+# ------------------------------------------------------
+
+penicillin_specific_hospitalisations_any = hes_spells.where(
+    (
+        hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_severe_medicine_allergic_reaction)
+        & hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_adverse_effect)
+    )
+    | hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_poisoning)
+)
+
+penicillin_specific_hospitalisations_primary = hes_spells.where(
+    (
+        hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_severe_medicine_allergic_reaction)
+        & hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_adverse_effect)
+    )
+    | hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_penicillin_poisoning)
+)
+
+dataset.hosp_pen_specific_any = penicillin_specific_hospitalisations_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_specific_primary = penicillin_specific_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
 
 
 

@@ -333,6 +333,9 @@ icd10_codelist_severe_medicine_allergic_reaction = codelist_from_csv(
     column="code"
 )
 
+icd10_codelist_penicillin_adverse_effect = ["Y400"]
+icd10_codelist_penicillin_poisoning = ["T360"]
+
 #-------- Medication codelists, copied from P4------------
 amoxicillin_codelist = codelist_from_csv("codelists/pharmacy-first-project-amoxicillin.csv", column="code")
 co_amoxiclav_codelist = codelist_from_csv("codelists/pharmacy-first-project-co-amoxiclav-oral-preparations.csv", column="code")
