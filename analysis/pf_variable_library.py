@@ -325,3 +325,31 @@ def ae_non_primary_diagnosis_match_events(ae_events, codelist):
     )
 
     return ae_events.where(match)
+
+
+def has_prescription_before_first_admission(
+    hospitalisations,
+    prescription_events,
+    lookback_days,
+):
+    """
+    This function return a flag. True if ...
+    """
+    first_admission_date = (
+        hospitalisations
+        .sort_by(hospitalisations.admission_date)
+        .first_for_patient()
+        .admission_date
+    )
+
+    prescriptions_before_admission = prescription_events.where(
+        prescription_events.date.is_on_or_between(
+            first_admission_date - days(lookback_days),
+            first_admission_date,
+        )
+    )
+
+    return (
+        first_admission_date.is_not_null()
+        & prescriptions_before_admission.exists_for_patient()
+    )

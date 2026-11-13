@@ -574,18 +574,21 @@ dataset.numerator_hes_all_cause_hospitalisation = (hes_spells.admission_date.cou
 ########################################################
 '''
 TODO:
-PGD contravention
+PGD contravention variables
 
 '''
 
+#####################################################
+#### Penicillin antibiotic flags ####
+#####################################################
+# This is a monthly patient-level yes/no flag. 
+# It is set to True if the patient had at least one prescription for a penicillin antibiotic during the study month,
+# without linking to any PF/GP consultation
 
-#### Penicillin and cephalosporin antibiotic flags ####
-# Indicate whether the patient got penicillin antibiotic in this month, without linking to any PF/GP consultation
-# Medications prescribed during the study month
+# Identify medications prescribed during the study month
 monthly_medications = medications.where(medications.date.is_on_or_between(start_date, index_date))
 
-# Penicillin antibiotics
-# TODO: confirm whether any additional penicillin antibiotics are required
+# Penicillin antibiotics dm+d codelists from Protocol 4 https://github.com/opensafely/PF-WP2-P4-antimicrobial-prescribing/blob/main/analysis/codelists.py
 penicillin_antibiotic_codes = (
     codelists.amoxicillin_codelist
     + codelists.co_amoxiclav_codelist
@@ -603,9 +606,13 @@ penicillin_antibiotic = monthly_medications.where(
 
 dataset.penicillin_antibiotic_flag = penicillin_antibiotic
 
-# Cephalosporin antibiotics
-# Currently cefalexin is the only cephalosporin identified in the PF medication codelists
-# TODO: confirm whether cephalosporins should be included in this part
+#####################################################
+#### Cephalosporin antibiotic flags ####
+#####################################################
+# Similar as the above, 
+# a flag to indicate whether he patient had at least one prescription for a cephalospori antibiotic during the study month
+
+# Cephalosporin antibiotics dm+d codelists
 cephalosporin_antibiotic_codes = (
     codelists.cefalexin_codelist
 )
@@ -619,99 +626,200 @@ cephalosporin_antibiotic = monthly_medications.where(
 
 dataset.cephalosporin_antibiotic_flag = cephalosporin_antibiotic
 
-#### Penicillin allergy flag ####
-# Whether exist penicillin allergy code in the patient's clinical event record before the month start
-allergy_to_penicillin = clinical_events.where(
+#####################################################
+#### Recorded Penicillin allergy flag ####
+#####################################################
+# This is a monthly patient-level yes/no flag. 
+# It is set to True if the patient has a penicillin allergy SNOMED code recorded in their GP clinical record 
+# before the start date of the study month - i.e., the patient’s full historical GP record, rather than only events recorded during the current month.
+historical_penicillin_allergy_events = clinical_events.where(
     clinical_events.snomedct_code.is_in(codelists.penicillin_allergy_codelist)
-    & clinical_events.date.is_on_or_before(start_date)
+    & clinical_events.date.is_before(start_date)
 ).exists_for_patient()
 
-dataset.allergy_to_penicillin_flag = allergy_to_penicillin
+dataset.allergy_to_penicillin_flag = historical_penicillin_allergy_events
 
-#### Hospitalisation_penicillin_allergy ####
-# Hospitalisation for a penicillin allergy or anaphylactic reaction
-# Overall number of hospital spells during the study month with a diagnosis indicating penicillin allergy or anaphylaxis.
-# hes_spells: HES hospitalisation in month
-# TODO: confirm codelist
-medicine_allergy_hospitalisations = hes_spells.where(
+# Date of the patient's first recorded penicillin allergy
+first_penicillin_allergy_date = (
+    historical_penicillin_allergy_events
+    .sort_by(historical_penicillin_allergy_events.date)
+    .first_for_patient()
+    .date
+)
+
+# Sensitivity analysis: penicillin prescription after the allergy was recorded
+penicillin_after_allergy = medications.where(
+    medications.dmd_code.is_in(penicillin_antibiotic_codes)
+    & medications.date.is_after(first_penicillin_allergy_date)
+    & medications.date.is_before(start_date)
+)
+
+dataset.penicillin_after_allergy_flag = (
+    first_penicillin_allergy_date.is_not_null()
+    & penicillin_after_allergy.exists_for_patient()
+)
+
+# TODO in the future: no known allergy - the snomed definition is not available for now.
+
+##############################################################
+#### Hospitalisations for severe medicine-related allergy ####
+##############################################################
+# This variable counts the number of distinct HES hospital spells during the study month 
+# where any diagnosis field contains an ICD-10 code for a severe medicine-related allergic reaction.
+# The counting unit is a distinct HES spell, identified using apcs_ident.
+# TODO next: this is different from the original data dictionary - currently do not have a penicillin-specific hospitalisation codelist. - T400, T360???
+# TODO next: allergic reaction during hospitalisation
+
+# Hospitalisation due to medicine allergy
+# - identified by primary diagnosis only
+medicine_allergy_hospitalisations_primary = hes_spells.where(
+    hes_spells.primary_diagnosis.is_in(
+        codelists.icd10_codelist_severe_medicine_allergic_reaction
+    )
+)
+medicine_allergy_hospitalisation_primary_count = medicine_allergy_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
+dataset.hospitalisation_medicine_allergy_primary = medicine_allergy_hospitalisation_primary_count
+
+# - identified byall_diagnosis - sensitivity analysis TODO
+medicine_allergy_hospitalisations_any = hes_spells.where(
     hes_spells.all_diagnoses.contains_any_of(
         codelists.icd10_codelist_severe_medicine_allergic_reaction
     )
 )
-medicine_allergy_hospitalisation_count = medicine_allergy_hospitalisations.apcs_ident.count_distinct_for_patient()
-# Number of hospital admissions for a severe medicine-related allergic reaction during the study month.
-dataset.hospitalisation_medicine_allergy_all = medicine_allergy_hospitalisation_count
+medicine_allergy_hospitalisation_any_count = medicine_allergy_hospitalisations_any.apcs_ident.count_distinct_for_patient()
+dataset.hospitalisation_medicine_allergy_any = medicine_allergy_hospitalisation_any_count
 
-# QA flag for the first-admission approximation
-# Whether the patient had more than one hospital admission for a severe medicine-related allergic reaction during the study month.
-dataset.has_multiple_medicine_allergy_hosp = (medicine_allergy_hospitalisation_count > 1)
+# QA flags for the first-admission approximation
+# It is set to True if the patient had more than one qualifying medicine-allergy hospital spell during the study month.
+dataset.has_multiple_medicine_allergy_hosp_any = (medicine_allergy_hospitalisation_any_count > 1)
+dataset.has_multiple_medicine_allergy_hosp_primary = (medicine_allergy_hospitalisation_primary_count > 1)
+
+########################################################
+# Identify PF-linked and GP-linked penicillin prescriptions
+########################################################
+
+maximum_linkage_days = 14
+linkage_start_date = start_date - days(maximum_linkage_days)
+
+# Look back for the extended time window
+clinical_events_linkage = select_events_between(clinical_events, linkage_start_date, index_date)
+
+# Consultations containing a PF service code
+pf_events_linkage = select_events_from_codelist(
+    clinical_events_linkage,
+    codelists.pf_consultation_events_dict["pf_consultation_services_combined"],
+)
+
+pf_ids_linkage = pf_events_linkage.consultation_id
 
 
-# Hospitalisation for medicine allergy associated with a GP or PF consultation
-# TODO: confirm the logic - can connect consultation <-> medicine but cannot do hospitalisation <-> consultation
-# The current implementation checks only the patient's first medicine-allergy admission in the study month and determines whether
-# any PF-linked or GP-linked penicillin prescription was recorded in the preceding 0–3 days.
+# Current operational definition of GP consultations: any consultation not identified as PF
+gp_events_linkage = clinical_events_linkage.where(~clinical_events_linkage.consultation_id.is_in(pf_ids_linkage))
+gp_ids_linkage = gp_events_linkage.consultation_id
 
-# Identify the first medicine hospital admission in month
-first_medicine_allergy_admission_date = (
-    medicine_allergy_hospitalisations
-    .sort_by(medicine_allergy_hospitalisations.admission_date)
-    .first_for_patient()
-).admission_date
+# Penicillin prescriptions in the extended period
+penicillin_medications_linkage = medications.where(
+    medications.date.is_on_or_between(linkage_start_date, index_date)
+).where(
+    medications.dmd_code.is_in(penicillin_antibiotic_codes)
+)
 
-# Select clinical events happened in month - include the three days before the study month
-clinical_events_wide = select_events_between(clinical_events, start_date - days(3), index_date)
-
-# Consultations containing a Pharmacy First service code
-pf_service_events_wide = select_events_from_codelist(clinical_events_wide, codelists.pf_consultation_events_dict["pf_consultation_services_combined"])
-pf_ids_wide = pf_service_events_wide.consultation_id
-
-# Clinical events belonging to consultations without a PF service code
-gp_events_wide = clinical_events_wide.where(~clinical_events_wide.consultation_id.is_in(pf_ids_wide))
-gp_ids_wide = gp_events_wide.consultation_id
-
-# Penicillin prescriptions in extended window
-penicillin_medications_wide = medications.where(
-    medications.date.is_on_or_between(start_date - days(3), index_date)
-).where(medications.dmd_code.is_in(penicillin_antibiotic_codes))
-
-# Penicillin prescriptions linked to PF consultations
-pf_penicillin_medications = (penicillin_medications_wide.where(penicillin_medications_wide.consultation_id.is_in(pf_ids_wide)))
-# PF penicillin prescriptions linked with the first medicien allergy hospitalisation
-pf_penicillin_before_hospitalisation = (
-    pf_penicillin_medications.where(
-        pf_penicillin_medications.date.is_on_or_between(
-            first_medicine_allergy_admission_date - days(3),
-            first_medicine_allergy_admission_date,
+# Assign penicillin prescriptions to PF or GP consultations based on consultation id
+pf_penicillin_medications = (
+    penicillin_medications_linkage.where(
+        penicillin_medications_linkage.consultation_id.is_in(
+            pf_ids_linkage
         )
     )
 )
-# Make it a flag
-has_pf_penicillin_before_hospitalisation = (
-    first_medicine_allergy_admission_date.is_not_null()
-    & pf_penicillin_before_hospitalisation.exists_for_patient()
-)
-# Whether the patient had a PF-linked penicillin prescription in the 0–3 days before their first medicine-allergy hospital admission of the month.
-dataset.hosp_pen_allergy_pf = has_pf_penicillin_before_hospitalisation
 
-# Penicillin prescriptions linked to non-PF GP consultations
-gp_penicillin_medications = (penicillin_medications_wide.where(penicillin_medications_wide.consultation_id.is_in(gp_ids_wide)))
-# GP penicillin prescriptions linked with the first medicine allergy hospitalisation
-gp_penicillin_before_hospitalisation = (
-    gp_penicillin_medications.where(
-        gp_penicillin_medications.date.is_on_or_between(
-            first_medicine_allergy_admission_date - days(3),
-            first_medicine_allergy_admission_date,
+gp_penicillin_medications = (
+    penicillin_medications_linkage.where(
+        penicillin_medications_linkage.consultation_id.is_in(
+            gp_ids_linkage
         )
     )
 )
-# Make it a flag
-has_gp_penicillin_before_hospitalisation = (
-    first_medicine_allergy_admission_date.is_not_null()
-    & gp_penicillin_before_hospitalisation.exists_for_patient()
+
+########################################################
+# Link a prescription source to the first hospital admission
+#### hosp_pen_allergy_pf and hosp_pen_allergy_gp ####
+# These are monthly patient-level yes/no flags. 
+# They check whether the patient’s first medicine-allergy hospital admission of the month was preceded by a penicillin prescription from PF or GP consultations.
+########################################################
+
+from analysis.pf_variable_library import has_prescription_before_first_admission
+
+# primary diagnosis and 3-day window
+dataset.hosp_pen_allergy_pf = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        pf_penicillin_medications,
+        lookback_days=3,
+    )
 )
-# Whether the patient had a GP-linked penicillin prescription in the 0–3 days before their first medicine-allergy hospital admission of the month.
-dataset.hosp_pen_allergy_gp = has_gp_penicillin_before_hospitalisation
+
+dataset.hosp_pen_allergy_gp = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        gp_penicillin_medications,
+        lookback_days=3,
+    )
+)
+
+# Sensitivity analysis - any diagnosis
+dataset.hosp_pen_allergy_pf_anydiag = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_any,
+        pf_penicillin_medications,
+        lookback_days=3,
+    )
+)
+
+dataset.hosp_pen_allergy_gp_anydiag = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_any,
+        gp_penicillin_medications,
+        lookback_days=3,
+    )
+)
+
+# Sensitivity analysis - longer window - 7 days
+dataset.hosp_pen_allergy_pf_7d = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        pf_penicillin_medications,
+        lookback_days=7,
+    )
+)
+
+dataset.hosp_pen_allergy_gp_7d = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        gp_penicillin_medications,
+        lookback_days=7,
+    )
+)
+
+# Sensitivity analysis - longer window - 14 days
+dataset.hosp_pen_allergy_pf_14d = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        pf_penicillin_medications,
+        lookback_days=14,
+    )
+)
+
+dataset.hosp_pen_allergy_gp_14d = (
+    has_prescription_before_first_admission(
+        medicine_allergy_hospitalisations_primary,
+        gp_penicillin_medications,
+        lookback_days=14,
+    )
+)
+
+
+
 
 
 
@@ -722,7 +830,6 @@ dataset.hosp_pen_allergy_gp = has_gp_penicillin_before_hospitalisation
 # numerator_doxycycline_rx_gp_sinusitis = ...
 
 # # UTI antibiotics linked to PF UTI consultations
-# # TODO: to check with Kim - data dictionary specified nitrofurantoin - is this variable for all UTI antibiotics or just nitrofurantoin?
 # numerator_antibiotic_rx_pf_uti = ...
 # numerator_nitrofurantoin_rx_pf_uti = ...
 
