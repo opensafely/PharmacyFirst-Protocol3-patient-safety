@@ -846,8 +846,8 @@ penicillin_adverse_effect_primary = hes_spells.where(
     & hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_adverse_effect)
 )
 
-dataset.hosp_pen_y40_any = penicillin_adverse_effect_any.apcs_ident.count_distinct_for_patient()
-dataset.hosp_pen_y40_primary = penicillin_adverse_effect_primary.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_y400_any = penicillin_adverse_effect_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_y400_primary = penicillin_adverse_effect_primary.apcs_ident.count_distinct_for_patient()
 
 # ------------------------------------------------------
 # 2. Penicillin poisoning: T36.0
@@ -856,8 +856,8 @@ dataset.hosp_pen_y40_primary = penicillin_adverse_effect_primary.apcs_ident.coun
 penicillin_poisoning_any = hes_spells.where(hes_spells.all_diagnoses.contains_any_of(codelists.icd10_codelist_penicillin_poisoning))
 penicillin_poisoning_primary = hes_spells.where(hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_penicillin_poisoning))
 
-dataset.hosp_pen_t36_any = penicillin_poisoning_any.apcs_ident.count_distinct_for_patient()
-dataset.hosp_pen_t36_primary = penicillin_poisoning_primary.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_t360_any = penicillin_poisoning_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_t360_primary = penicillin_poisoning_primary.apcs_ident.count_distinct_for_patient()
 
 # ------------------------------------------------------
 # 3. Combined penicillin-specific definition: (severe reaction AND Y40.0) OR T36.0
@@ -879,8 +879,8 @@ penicillin_specific_hospitalisations_primary = hes_spells.where(
     | hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_penicillin_poisoning)
 )
 
-dataset.hosp_pen_specific_any = penicillin_specific_hospitalisations_any.apcs_ident.count_distinct_for_patient()
-dataset.hosp_pen_specific_primary = penicillin_specific_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_y400_t360_specific_any = penicillin_specific_hospitalisations_any.apcs_ident.count_distinct_for_patient()
+dataset.hosp_pen_y400_t360_specific_primary = penicillin_specific_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
 
 
 
