@@ -175,10 +175,10 @@
       "sha": "958be9574f88e8cb8d6d4a67661c3e631e216826"
     },
     "user-paolomazzone-openpregnosis-molar-codes_v1.csv": {
-      "id": "user/paolomazzone/openpregnosis-molar-codes_v1/035ff191",
-      "url": "https://www.opencodelists.org/codelist/user/paolomazzone/openpregnosis-molar-codes_v1/035ff191/",
-      "downloaded_at": "2026-08-05 16:07:12.125543Z",
-      "sha": "837bd375f2ffa1ffa7fa7547410576fe207aeb61"
+      "id": "user/paolomazzone/openpregnosis-molar-codes_v1/26325d8b",
+      "url": "https://www.opencodelists.org/codelist/user/paolomazzone/openpregnosis-molar-codes_v1/26325d8b/",
+      "downloaded_at": "2026-11-19 11:34:03.395539+00:00Z",
+      "sha": "32dc3136e970a4b35068c571db928c2662ad11f3"
     },
     "user-paolomazzone-openpregnosis-blighted-ovum-codes_v1.csv": {
       "id": "user/paolomazzone/openpregnosis-blighted-ovum-codes_v1/1c6f64c6",
@@ -395,6 +395,18 @@
       "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/Severe-allergic-reaction-to-medicines-ICD10-codes/3d84d14a/",
       "downloaded_at": "2026-11-11 11:23:33.094802+00:00Z",
       "sha": "b37b24fc9c03591e57f9906cd5f839ff7a331ae8"
+    },
+    "pharmacy-first-project-doxycycline.csv": {
+      "id": "pharmacy-first-project/doxycycline/6441113e",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/doxycycline/6441113e/",
+      "downloaded_at": "2026-11-19 11:34:07.583178+00:00Z",
+      "sha": "0f6cc64eba293f43378e8d9f9482fa7d26398669"
+    },
+    "pharmacy-first-project-nitrofurantoin.csv": {
+      "id": "pharmacy-first-project/nitrofurantoin/081b844c",
+      "url": "https://www.opencodelists.org/codelist/pharmacy-first-project/nitrofurantoin/081b844c/",
+      "downloaded_at": "2026-11-19 12:17:11.950513+00:00Z",
+      "sha": "6a1d35a5837c7075b651fbd9d9ca43fcff638bbf"
     }
   }
 }

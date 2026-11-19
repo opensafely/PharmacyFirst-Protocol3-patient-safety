@@ -27,7 +27,7 @@ pharmacy-first-project/infected-insect-bites-codes-for-pharmacy-first-strict-def
 pharmacy-first-project/all-insect-bites-codes-for-pharmacy-first/12166798
 pharmacy-first-project/cellulitis-using-snomed-ct-codes/521b1c16
 user/paolomazzone/openpregnosis-miscarriage-codes_v1/6918def0 
-user/paolomazzone/openpregnosis-molar-codes_v1/035ff191 
+user/paolomazzone/openpregnosis-molar-codes_v1/26325d8b
 user/paolomazzone/openpregnosis-blighted-ovum-codes_v1/1c6f64c6 
 user/paolomazzone/openpregnosis-ectopic-codes_v1/6a507e5b 
 pharmacy-first-project/pyelonephritis-using-snomed-ct-codes/6f6ab65f
@@ -63,4 +63,6 @@ pharmacy-first-project/phenoxymethylpenicillin/66f3d134/
 pharmacy-first-project/pivmecillinam/34d4eaca/
 pharmacy-first-project/cefalexin/7a9dc47d/
 pharmacy-first-project/penicillin-allergy/21899cca/
-pharmacy-first-project/Severe-allergic-reaction-to-medicines-ICD10-codes/3d84d14a
+pharmacy-first-project/Severe-allergic-reaction-to-medicines-ICD10-codes/3d84d14a/
+pharmacy-first-project/doxycycline/6441113e/
+pharmacy-first-project/nitrofurantoin/081b844c/

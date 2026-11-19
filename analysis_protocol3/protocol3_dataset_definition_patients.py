@@ -578,17 +578,111 @@ PGD contravention variables
 
 '''
 
-#####################################################
-#### Penicillin antibiotic flags ####
-#####################################################
-# This is a monthly patient-level yes/no flag. 
-# It is set to True if the patient had at least one prescription for a penicillin antibiotic during the study month,
-# without linking to any PF/GP consultation
 
 # Identify medications prescribed during the study month
 monthly_medications = medications.where(medications.date.is_on_or_between(start_date, index_date))
 
-# Penicillin antibiotics dm+d codelists from Protocol 4 https://github.com/opensafely/PF-WP2-P4-antimicrobial-prescribing/blob/main/analysis/codelists.py
+########################################################
+#### Doxycycline prescription ####
+# - flags to indicate whether doxycycline has been prescribed
+# - counts for doxycycline prescriptions for pregnant patients
+########################################################
+
+doxycycline_medications = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        codelists.doxycycline_codelist
+    )
+)
+
+dataset.doxycycline_flag = doxycycline_medications.exists_for_patient()
+
+# Number of doxycycline medication records during the month among patients identified as pregnant
+dataset.doxycycline_pregnancy_count = case(
+    when(pregnant_this_month).then(
+        doxycycline_medications.count_for_patient()
+    ),
+    otherwise=0,
+)
+
+########################################################
+#### Nitrofurantoin prescription ####
+# - flag to indicate whether nitrofurantoin has been prescribed to a patient
+# - count on the number of PF UTI consultations in which nitrofurantoin was prescribed to a pregnant patient
+########################################################
+
+nitrofurantoin_medications = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        codelists.nitrofurantoin_codelist
+    )
+)
+
+dataset.nitrofurantoin_flag = nitrofurantoin_medications.exists_for_patient()
+
+# Identify PF UTI consultations
+pf_uti_consultation_ids = selected_pf_id_events.where(
+    selected_pf_id_events.snomedct_code.is_in(
+        codelists.uti_code
+    )
+).consultation_id
+
+# Identify nitrofurantoin prescriptions linked to PF UTI consultations
+pf_uti_nitrofurantoin_medications = (
+    monthly_medications.where(
+        monthly_medications.dmd_code.is_in(
+            codelists.nitrofurantoin_codelist
+        )
+        & monthly_medications.consultation_id.is_in(
+            pf_uti_consultation_ids
+        )
+    )
+)
+
+# Number of distinct PF UTI consultations in which nitrofurantoin was prescribed to a pregnant patient
+dataset.nitrofurantoin_pregnancy_pf_count = case(
+    when(pregnant_this_month).then(
+        pf_uti_nitrofurantoin_medications.consultation_id
+        .count_distinct_for_patient()
+    ),
+    otherwise=0,
+)
+
+########################################################
+#### Recurrent UTI treatment through PF UTI consultations ####
+# - count on the number of PF UTI consultations in which patient: (not pregnant but with recurrent UTI) & get prescriptions
+########################################################
+
+# Identify UTI antibiotic prescriptions linked to PF UTI consultations
+pf_uti_antibiotic_medications = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        codelists.tx_codelist_pf_urinary_tract_infection
+    )
+    & monthly_medications.consultation_id.is_in(
+        pf_uti_consultation_ids
+    )
+)
+
+# Patient-level eligibility for this contravention
+recurrent_uti_non_pregnant_female = (
+    female
+    & ~pregnant_this_month
+    & recurrent_uti
+)
+
+# Number of distinct PF UTI consultations with an antibiotic prescription among non-pregnant women with recurrent UTI
+dataset.recurrent_uti_treatment_count = case(
+    when(recurrent_uti_non_pregnant_female).then(
+        pf_uti_antibiotic_medications.consultation_id
+        .count_distinct_for_patient()
+    ),
+    otherwise=0,
+)
+
+#####################################################
+#### Penicillin, Cephalosporin - antibiotic flags ####
+# - flags to indicate if the patient had at least one prescription for a Penicillin or Cephalosporin antibiotic during the study month
+#####################################################
+
+# Penicillin antibiotics dm+d codelists from Protocol 4
 penicillin_antibiotic_codes = (
     codelists.amoxicillin_codelist
     + codelists.co_amoxiclav_codelist
@@ -598,19 +692,13 @@ penicillin_antibiotic_codes = (
 )
 
 # Whether the patient had at least one penicillin antibiotic medication record during the study month
-penicillin_antibiotic = monthly_medications.where(
+penicillin_antibiotic_flag = monthly_medications.where(
     monthly_medications.dmd_code.is_in(
         penicillin_antibiotic_codes
     )
 ).exists_for_patient()
 
-dataset.penicillin_antibiotic_flag = penicillin_antibiotic
-
-#####################################################
-#### Cephalosporin antibiotic flags ####
-#####################################################
-# Similar as the above, 
-# a flag to indicate whether he patient had at least one prescription for a cephalospori antibiotic during the study month
+dataset.penicillin_antibiotic_flag = penicillin_antibiotic_flag
 
 # Cephalosporin antibiotics dm+d codelists
 cephalosporin_antibiotic_codes = (
@@ -628,17 +716,22 @@ dataset.cephalosporin_antibiotic_flag = cephalosporin_antibiotic
 
 #####################################################
 #### Recorded Penicillin allergy flag ####
+# - flag to indicate if the patient has a penicillin allergy SNOMED code recorded in their GP clinical record before the start date of the study month
 #####################################################
-# This is a monthly patient-level yes/no flag. 
-# It is set to True if the patient has a penicillin allergy SNOMED code recorded in their GP clinical record 
-# before the start date of the study month - i.e., the patient’s full historical GP record, rather than only events recorded during the current month.
+
+# the patient’s full historical GP record before the start of the current month.
 historical_penicillin_allergy_events = clinical_events.where(
     clinical_events.snomedct_code.is_in(codelists.penicillin_allergy_codelist)
     & clinical_events.date.is_before(start_date)
-).exists_for_patient()
+)
 
-dataset.allergy_to_penicillin_flag = historical_penicillin_allergy_events
+# recorded penicillin allergy flag
+penicillin_allergy_flag = historical_penicillin_allergy_events.exists_for_patient()
+dataset.penicillin_allergy_flag = penicillin_allergy_flag
 
+# ------------------------------------------------------
+# Sensitivity analysis TODO: whether the patient has penicillin prescriptions before the study month, after the allergy was recorded
+# ------------------------------------------------------
 # Date of the patient's first recorded penicillin allergy
 first_penicillin_allergy_date = (
     historical_penicillin_allergy_events
@@ -647,19 +740,51 @@ first_penicillin_allergy_date = (
     .date
 )
 
-# Sensitivity analysis: penicillin prescription after the allergy was recorded
-penicillin_after_allergy = medications.where(
+# penicillin prescription after the allergy was recorded
+penicillin_before_month_after_allergy = medications.where(
     medications.dmd_code.is_in(penicillin_antibiotic_codes)
     & medications.date.is_after(first_penicillin_allergy_date)
     & medications.date.is_before(start_date)
 )
 
-dataset.penicillin_after_allergy_flag = (
+# Whether the patient previously received penicillin before the current study month, after their recorded allergy
+dataset.penicillin_before_month_after_allergy_flag = (
     first_penicillin_allergy_date.is_not_null()
-    & penicillin_after_allergy.exists_for_patient()
+    & penicillin_before_month_after_allergy.exists_for_patient()
 )
 
-# TODO in the future: no known allergy - the snomed definition is not available for now.
+#####################################################
+#### Monthly penicillin antibiotic counts by PF/GP ####
+# - counts of consultations with penicillin prescription
+#####################################################
+
+# Penicillin medication records during the study month
+monthly_penicillin_medications = monthly_medications.where(
+    monthly_medications.dmd_code.is_in(
+        penicillin_antibiotic_codes
+    )
+)
+
+# Penicillin prescriptions linked to PF consultations
+pf_penicillin_medications = monthly_penicillin_medications.where(
+    monthly_penicillin_medications.consultation_id.is_in(pf_ids)
+)
+
+# Penicillin prescriptions linked to non-PF GP consultations
+gp_penicillin_medications = monthly_penicillin_medications.where(
+    monthly_penicillin_medications.consultation_id.is_in(
+        gp_events_clean.consultation_id
+    )
+)
+
+# Number of distinct consultations containing a penicillin prescription, regardless of whether the consultation was classified as PF or GP
+dataset.penicillin_antibiotic_count = monthly_penicillin_medications.consultation_id.count_distinct_for_patient()
+
+# Number of distinct PF consultations containing a penicillin prescription
+dataset.penicillin_antibiotic_pf_count = pf_penicillin_medications.consultation_id.count_distinct_for_patient()
+
+# Number of distinct non-PF GP consultations containing a penicillin prescription
+dataset.penicillin_antibiotic_gp_count = gp_penicillin_medications.consultation_id.count_distinct_for_patient()
 
 ##############################################################
 #### Hospitalisations for severe medicine-related allergy ####
@@ -667,7 +792,6 @@ dataset.penicillin_after_allergy_flag = (
 # This variable counts the number of distinct HES hospital spells during the study month 
 # where any diagnosis field contains an ICD-10 code for a severe medicine-related allergic reaction.
 # The counting unit is a distinct HES spell, identified using apcs_ident.
-# TODO next: this is different from the original data dictionary - currently do not have a penicillin-specific hospitalisation codelist. - T400, T360???
 # TODO next: allergic reaction during hospitalisation
 
 # Hospitalisation due to medicine allergy
@@ -680,7 +804,7 @@ medicine_allergy_hospitalisations_primary = hes_spells.where(
 medicine_allergy_hospitalisation_primary_count = medicine_allergy_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
 dataset.hospitalisation_medicine_allergy_primary = medicine_allergy_hospitalisation_primary_count
 
-# - identified byall_diagnosis - sensitivity analysis TODO
+# - identified by all_diagnosis - sensitivity analysis TODO
 medicine_allergy_hospitalisations_any = hes_spells.where(
     hes_spells.all_diagnoses.contains_any_of(
         codelists.icd10_codelist_severe_medicine_allergic_reaction
@@ -828,7 +952,7 @@ dataset.has_hosp_medicine_allergy_primary_gp_penicillin_14d = (
 # Penicillin-specific HES coding
 # Y40.0: severe medicine-allergy reaction with an additional code indicating that penicillin caused an adverse effect during therapeutic use.
 # T36.0: hospital spell containing a diagnosis of poisoning by penicillin.
-# TODO: may need to link these Y40.0 / T36.0 hospitalisation with PF/GP penicillin prescriptions
+# TODO in the future: may need to link these Y40.0 / T36.0 hospitalisation with PF/GP penicillin prescriptions
 ########################################################
 # ------------------------------------------------------
 # 1. severe reaction + Y40.0
@@ -879,21 +1003,40 @@ penicillin_specific_hospitalisations_primary = hes_spells.where(
     | hes_spells.primary_diagnosis.is_in(codelists.icd10_codelist_penicillin_poisoning)
 )
 
-dataset.hosp_pen_y400_t360_specific_any = penicillin_specific_hospitalisations_any.apcs_ident.count_distinct_for_patient()
-dataset.hosp_pen_y400_t360_specific_primary = penicillin_specific_hospitalisations_primary.apcs_ident.count_distinct_for_patient()
+penicillin_specific_hosp_any_count = (
+    penicillin_specific_hospitalisations_any.apcs_ident
+    .count_distinct_for_patient()
+)
+
+penicillin_specific_hosp_primary_count = (
+    penicillin_specific_hospitalisations_primary.apcs_ident
+    .count_distinct_for_patient()
+)
+
+dataset.hosp_pen_y400_t360_specific_any = penicillin_specific_hosp_any_count
+dataset.hosp_pen_y400_t360_specific_primary = penicillin_specific_hosp_primary_count
 
 
+########################################################
+# Hospitalisation_penicillin_allergy_known_allergy
+# Hospitalisation for a penicillin allergy or anaphylactic reaction in patients with a known allergy
+# - Known penicillin allergy before the month
+# - AND penicillin-related hospitalisation during the month # TODO: this is currently using hospitalisation count for ((severe allergic reaction & Y40.0 adverse effect) | T36.0 poisoning)
+########################################################
+dataset.hosp_primary_pen_allergy_known_pen_allergy = case(
+    when(allergy_to_penicillin).then(
+        penicillin_specific_hosp_primary_count
+    ),
+    otherwise=0,
+)
 
+dataset.hosp_any_pen_allergy_known_pen_allergy = case(
+    when(allergy_to_penicillin).then(
+        penicillin_specific_hosp_any_count
+    ),
+    otherwise=0,
+)
 
-
-
-# # Doxycycline linked to sinusitis consultations
-# numerator_doxycycline_rx_pf_sinusitis = ...
-# numerator_doxycycline_rx_gp_sinusitis = ...
-
-# # UTI antibiotics linked to PF UTI consultations
-# numerator_antibiotic_rx_pf_uti = ...
-# numerator_nitrofurantoin_rx_pf_uti = ...
 
 
 

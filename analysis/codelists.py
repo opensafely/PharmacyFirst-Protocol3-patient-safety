@@ -344,3 +344,5 @@ phenoxymethylpenicillin_codelist = codelist_from_csv("codelists/pharmacy-first-p
 pivmecillinam_codelist = codelist_from_csv("codelists/pharmacy-first-project-pivmecillinam.csv", column="code")
 cefalexin_codelist = codelist_from_csv("codelists/pharmacy-first-project-cefalexin.csv", column="code")
 penicillin_allergy_codelist = codelist_from_csv("codelists/pharmacy-first-project-penicillin-allergy.csv", column = "code")
+doxycycline_codelist = codelist_from_csv("codelists/pharmacy-first-project-doxycycline.csv", column="code")
+nitrofurantoin_codelist = codelist_from_csv("codelists/pharmacy-first-project-nitrofurantoin.csv", column="code")
